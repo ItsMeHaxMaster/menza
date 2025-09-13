@@ -34,7 +34,7 @@ h1 {
   text-align: center;
 }
 
-header img {
+header > img {
   max-width: 50px;
 }
 
@@ -63,7 +63,20 @@ table, th, td {
   text-align: left;
 }
 
+td > div {
+  display: none;
+  position: absolute;
+  background: var(--background);
+  color: var(--foreground);
+  border: 2px solid var(--foreground);
+  padding: 8px;
+  margin-top: 8px;
+  z-index: 10;
+  width: 300px;
+}
+
 td:hover {
   background: var(--foreground);
   color: var(--background);
+  display: block;
 }
