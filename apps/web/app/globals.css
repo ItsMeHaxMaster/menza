@@ -5,7 +5,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #171717;
     --foreground: #ededed;
   }
 }
@@ -24,6 +24,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+header{
+  display: flex;
+  width: 100%;
+}
+
+h1 {
+  flex: 1;
+  text-align: center;
+}
+
+header img {
+  max-width: 50px;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -39,4 +53,17 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+table, th, td {
+  border-collapse: collapse;
+  width: fit-content;
+  border: 2px solid var(--foreground);
+  padding: 12px 8px;
+  text-align: left;
+}
+
+td:hover {
+  background: var(--foreground);
+  color: var(--background);
 }
