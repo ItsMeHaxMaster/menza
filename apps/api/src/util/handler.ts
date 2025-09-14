@@ -36,7 +36,8 @@ export class Request {
     this.params = req.params;
     this.cookies = req.cookies;
 
-    this.ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.ip;
+    this.ip =
+      req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.ip;
 
     this.req = req;
     this.res = res;
@@ -44,9 +45,9 @@ export class Request {
 
   /**
    * Get a header from the request.
-   * 
+   *
    * @param key The header's name.
-   * 
+   *
    * @returns The header's value.
    */
   public getHeader(key: string): string | undefined {
@@ -57,7 +58,7 @@ export class Request {
    * Get a route parameter from the request.
    *
    * @param key The parameter's name.
-   * 
+   *
    * @returns The parameter's value.
    */
   public getParam(key: string): string | number | undefined {
@@ -68,7 +69,7 @@ export class Request {
    * Get a query parameter from the request.
    *
    * @param key The parameter's name.
-   * 
+   *
    * @returns The parameter's value.
    */
   public getQuery(key: string): string | number | undefined {
@@ -79,7 +80,7 @@ export class Request {
    * Get a cookie from the request.
    *
    * @param key The cookie's name.
-   * 
+   *
    * @returns The cookie's value.
    */
   public getCookie(key: string): string | number | undefined {
