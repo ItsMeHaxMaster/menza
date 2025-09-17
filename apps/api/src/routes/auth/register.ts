@@ -3,6 +3,9 @@ import Status from '@/enum/status';
 import { Request, Response } from '@/util/handler';
 import { verify } from '@/util/turnstile';
 import snowflake from '@/util/snowflake';
+import { orm } from '@/util/orm';
+
+import { User } from '@/entities/user.entity';
 
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
@@ -21,6 +24,8 @@ const registerSchema = z.object({
 });
 
 export const post = async (req: Request, res: Response<RegRes>) => {
+  const db = (await orm).em;
+
   try {
     const { name, email, password, turnstile } = req.validate(registerSchema);
 
@@ -29,6 +34,15 @@ export const post = async (req: Request, res: Response<RegRes>) => {
 
     const saltedPassword = await bcrypt.hash(password, 10);
     const uid = snowflake.getUniqueID() as bigint;
+
+    const userObject = new User();
+
+    userObject.id = uid;
+    userObject.name = name;
+    userObject.email = email;
+    userObject.password = saltedPassword;
+
+    await db.persist(userObject).flush();
 
     const token = sign(
       {
