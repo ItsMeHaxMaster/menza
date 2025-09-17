@@ -7,6 +7,9 @@
   :root {
     --background: #171717;
     --foreground: #ededed;
+    --button: #4f46e5;
+    --secondary: #222222;
+    --primary: #2938DC;
   }
 }
 
@@ -55,12 +58,23 @@ a {
   }
 }
 
+table {
+  width: 100%;
+  height: fit-content;
+  font-size: 25px;
+}
+
 table, th, td {
   border-collapse: collapse;
   width: fit-content;
   border: 2px solid var(--foreground);
   padding: 12px 8px;
-  text-align: left;
+}
+
+table > th{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 td > div {
@@ -75,8 +89,38 @@ td > div {
   width: 300px;
 }
 
-td:hover {
+td{
+  display: flex;
+}
+
+td > span {
+  font-size: 100%;
+  align-items: left;
+}
+
+/* td:hover:not(:first-child) > div {
   background: var(--foreground);
   color: var(--background);
   display: block;
+} */
+
+td:hover:not(:first-child) {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.navButton {
+  background-color: transparent;
+  border: none;
+}
+
+.infoButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--button);
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
 }
