@@ -1,6 +1,7 @@
 'use client';
 import Image from "next/image";
 import styles from "./page.module.css";
+import { ShoppingCart, User } from "lucide-react";
 
 export default function Home() {
   return (
@@ -24,7 +25,7 @@ export default function Home() {
           <tbody>
             <tr>
               <td>Menü 1</td>
-              <td> <span>Gulyás</span> <div> <img src="./imgs/account.png" alt="asd" />
+              <td> <span>Gulyás</span> <div> <User /> <ShoppingCart />
                 Összetevők
 Az allergének vastag betűvel jelölve
 padlizsán, vöröshagyma, paradicsom, pritaminpaprika, napraforgóolaj, olívaolaj, aszalt paradicsom (paradicsom, napraforgóolaj, borecet, fuszerek, citromsav, aszkorbinsav. szulfitokat tartalmazhat), kapribogyó, halloumi grillsajt (paszt. tehéntej; paszt. kecsketej és juhtej; só; oltóenzim; szárított mentalevél), fokhagyma, steakfűszer (só, bors, vöröshagyma, fokhagyma, mustármag, fűszerek) a fűszer nyomokban gluténtartalmú gabonaféléket, tojást, tejet (laktóz), zellert, szóját, mustárt és szezámmagot tartalmazhat, menta, balzsamecet (fehérborecet, szőlőlésűrítmény, almalésűr., tölgyfaforgács kivonat, kálium-metabiszulfit, ammóniás karamell),barnacukor, bazsalikom, só,bors, zellerszár</div></td>
