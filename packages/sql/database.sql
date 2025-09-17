@@ -2,6 +2,7 @@ CREATE DATABASE `canteen`;
 
 CREATE TABLE 'users' (
   "id" BIGINT PRIMARY KEY,
+  "name" VARCHAR(1024) NOT NULL,
   "email" VARCHAR(320) NOT NULL UNIQUE,
   "password" VARCHAR(72) NOT NULL,
 );
