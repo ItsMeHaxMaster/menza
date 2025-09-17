@@ -1,7 +1,11 @@
 import Status from '@/enum/status';
 import Method from '@/enum/method';
 
+import { ValidationError } from '@/util/errors';
+
 import { CookieOptions, RequestFile } from '@/interfaces';
+
+import { ZodObject } from 'zod';
 
 /**
  * Request class to handle incoming requests.
@@ -85,6 +89,50 @@ export class Request {
    */
   public getCookie(key: string): string | number | undefined {
     return this.cookies[key.toLowerCase()];
+  }
+
+  public validate<T extends ZodObject<any>>(schema: T): T['_output'] {
+    if (!this.res) new Error();
+    const res = schema.safeParse(this.req.body);
+
+    if (!res.success) {
+      const issues = res.error.issues;
+      const missingFields: string[] = [];
+      const malformedFields: { name: string; type: string }[] = [];
+
+      issues.forEach((issue) => {
+        if (issue.code === 'invalid_type' && issue.received === 'undefined')
+          missingFields.push(issue.path.join('.'));
+        if (issue.code === 'invalid_string')
+          malformedFields.push({
+            name: issue.path.join('.'),
+            type: issue.validation as string
+          });
+      });
+
+      if (missingFields.length > 0) {
+        if (missingFields.length === 1) {
+          this.res!.error(
+            Status.BadRequest,
+            `error.generic.fieldMissing;("${missingFields[0]}")`
+          );
+        } else {
+          this.res!.error(
+            Status.BadRequest,
+            `error.generic.fieldsMissing;("${missingFields.join('","')}")`
+          );
+        }
+      } else if (malformedFields.length > 0) {
+        this.res!.error(
+          Status.BadRequest,
+          `error.generic.fieldMalformed;("${malformedFields[0].name}","${malformedFields[0].type}")`
+        );
+      }
+
+      throw new ValidationError(issues);
+    }
+
+    return res.data;
   }
 }
 
