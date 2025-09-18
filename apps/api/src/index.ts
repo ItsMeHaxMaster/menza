@@ -13,6 +13,7 @@ import Logger from '@/util/logger';
 import getRoutes from '@/util/get_routes';
 import pathParser from '@/util/path_parser';
 import version from '@/util/version';
+import { orm } from '@/util/orm';
 
 import Method from '@/enum/method';
 
@@ -46,6 +47,12 @@ app.use(cookies());
 (async () => {
   const startTimestamp = Date.now();
 
+  // Check if db is alive otherwise throw an error.
+  const db = await orm;
+  const { ok } = await db.checkConnection();
+  if (!ok) throw new Error();
+  await db.schema.updateSchema();
+
   const routes: string[] = await getRoutes(path.join(__dirname, 'routes'));
 
   logger.info('○ Routes:', routes.length);
@@ -66,13 +73,13 @@ app.use(cookies());
         if (m === 'options') return Method.Options;
         if (m === 'head') return Method.Head;
         if (m === 'ws') return Method.WebSocket;
-        else return Method.Get;
-      });
+      })
+      .filter((key) => typeof key != 'undefined');
     const isValid = methods.length > 0;
 
     if (isValid) {
       logger.info(
-        chalk.green('◆'),
+        chalk.green('⦿'),
         `\`${routePath}\``,
         '(' + methods.join(', ') + ')'
       );
@@ -117,7 +124,7 @@ app.use(cookies());
           });
         }
       });
-    } else logger.info(chalk.red('◇'), `\`${routePath}\``);
+    } else logger.info(chalk.red('⦿'), `\`${routePath}\``);
   }
 
   app.use((req, res) => {
@@ -140,6 +147,7 @@ app.use(cookies());
 });
 
 // :3
+// Override default toString()s to return stuff in a 'better' way.
 (Date.prototype as any).toJSON = function () {
   return this.getTime();
 };
