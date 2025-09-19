@@ -2,7 +2,6 @@ import Status from '@/enum/status';
 
 import { Request, Response } from '@/util/handler';
 import { verify } from '@/util/turnstile';
-import snowflake from '@/util/snowflake';
 import { orm } from '@/util/orm';
 
 import { User } from '@/entities/user.entity';

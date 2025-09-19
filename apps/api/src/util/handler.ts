@@ -91,6 +91,18 @@ export class Request {
     return this.cookies[key.toLowerCase()];
   }
 
+  /**
+   * Validate the request's body against a Zod object.
+   *
+   * @example
+   * const { text } = req.validate(z.object({
+   *   text: z.string()
+   * }));
+   *
+   * @param {T} schema A Zod object.
+   *
+   * @returns {T['_output']} The reqest's body.
+   */
   public validate<T extends ZodObject<any>>(schema: T): T['_output'] {
     if (!this.res) new Error();
     const res = schema.safeParse(this.req.body);

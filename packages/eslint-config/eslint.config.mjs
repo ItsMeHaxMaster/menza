@@ -19,7 +19,6 @@ export default tseslint.config(
     files: ['**/*.{js,mjs,cjs,ts}'],
     ignores: ['node_modules/*', 'node_modules/**/*', 'build/*', 'build/**/*'],
     rules: {
-      indent: ['error', 2, { SwitchCase: 1 }],
       quotes: ['error', 'single', { avoidEscape: true }],
       semi: ['error', 'always'],
       '@typescript-eslint/no-explicit-any': 'warn',

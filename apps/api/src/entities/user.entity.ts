@@ -1,6 +1,5 @@
 import snowflake from '@/util/snowflake';
 import {
-  BeforeCreate,
   BigIntType,
   Entity,
   PrimaryKey,
@@ -11,7 +10,7 @@ import {
 @Entity()
 export class User {
   @PrimaryKey({ type: BigIntType })
-  id!: bigint;
+  id: bigint = snowflake.getUniqueID() as bigint;
 
   @Property()
   name!: string;
@@ -24,13 +23,8 @@ export class User {
   password!: string;
 
   @Property({ onCreate: () => new Date() })
-  createdAt!: Date;
+  createdAt: Date = new Date();
 
-  @Property({ onCreate: () => new Date(), onUpdate: () => new Date() })
-  updatedAt!: Date;
-
-  @BeforeCreate()
-  assignId() {
-    this.id = snowflake.getUniqueID() as bigint;
-  }
+  @Property({ onUpdate: () => new Date() })
+  updatedAt: Date = new Date();
 }
