@@ -1,26 +1,28 @@
 import snowflake from '@/util/snowflake';
 import {
   BigIntType,
+  Collection,
   Entity,
+  ManyToMany,
   PrimaryKey,
-  Property,
-  Unique
+  Property
 } from '@mikro-orm/core';
 
+import { Food } from './food.entity';
+
 @Entity()
-export class User {
+export class Allergen {
   @PrimaryKey({ type: BigIntType })
   id: bigint = snowflake.getUniqueID() as bigint;
 
-  @Property({ length: 1024 })
+  @Property({ length: 256 })
   name!: string;
 
-  @Property({ length: 320 })
-  @Unique()
-  email!: string;
+  @Property({ length: 128 })
+  icon!: string;
 
-  @Property({ length: 72 })
-  password!: string;
+  @ManyToMany(() => Food, (menu) => menu.allergens)
+  foods = new Collection<Food>(this);
 
   @Property()
   createdAt: Date = new Date();
