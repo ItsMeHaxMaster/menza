@@ -32,9 +32,15 @@ header{
   width: 100%;
 }
 
-h1 {
+h1, h2{
   flex: 1;
   text-align: center;
+  justify-content: center;
+}
+
+h1{
+  font-size: 60px;
+  margin: 20px 0 10px 0;
 }
 
 header > img {
@@ -58,7 +64,9 @@ a {
   }
 }
 
-table {
+
+
+/* table {
   width: 100%;
   height: fit-content;
   font-size: 25px;
@@ -96,7 +104,7 @@ td{
 td > span {
   font-size: 100%;
   align-items: left;
-}
+} */
 
 /* td:hover:not(:first-child) > div {
   background: var(--foreground);
@@ -104,23 +112,12 @@ td > span {
   display: block;
 } */
 
-td:hover:not(:first-child) {
+/* td:hover:not(:first-child) {
   background: var(--foreground);
   color: var(--background);
-}
+} */
 
 .navButton {
   background-color: transparent;
   border: none;
-}
-
-.infoButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--button);
-  border: none;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
 }
