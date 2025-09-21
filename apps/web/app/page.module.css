@@ -1,40 +1,65 @@
-.menu {
-  margin-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
-  font-size: 30px;
+.menuContainer {
+  background: rgba(79, 70, 229, 0.1);
+  border-radius: 16px;
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  padding: 0;
+  margin: 0 4vw 0 4vw;
 }
 
 .days {
+  display: grid;
+  grid-template-columns: 150px repeat(5, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(79, 70, 229, 0.3);
+  margin: 0;
+}
+
+.days > div {
+  text-align: center;
+  padding: 1rem;
+  background: var(--secondary);
+  border-radius: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  cursor: default;
+}
+
+.days > div:first-child {
+  background: linear-gradient(45deg, var(--button), var(--primary));
+  color: white;
   display: flex;
-  width: 100%;
-  font-weight: bold;
-  gap: 20px;
-  padding: 10px;
-  justify-content: center;
   align-items: center;
-  >div {
-    flex: 1;
-    text-align: center;
-  }
+  justify-content: center;
+}
+
+.menuContent {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .option1, .option2, .option3 {
-  display: flex;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 150px repeat(5, 1fr);
+  gap: 1rem;
   width: 100%;
-  >div {
-    flex: 1;
-    text-align: left;
-  }
+  align-items: start;
 }
 
 .optionTitle {
+  font-size: 1.5rem;
   font-weight: bold;
-  min-width: 70px;
-  text-align: center !important;
+  text-align: center;
+  background: var(--secondary);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .foodInfo {
@@ -59,7 +84,6 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  
   padding: 5px;
 }
 
@@ -83,6 +107,7 @@
   background: var(--primary);
   transform: scale(1.1);
 }
+
 .menuCard {
   background: var(--secondary);
   border-radius: 12px;
@@ -90,24 +115,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
   border: 1px solid rgba(79, 70, 229, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
 }
 
 .menuCard:hover {
   box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
-  border-color: var(--button);
-}
-
-.foodItem {
-  background: var(--background);
-  padding: 12px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid rgba(79, 70, 229, 0.2);
-}
-
-.foodItem:hover {
   border-color: var(--button);
 }
 
@@ -190,25 +205,107 @@
   font-weight: 600;
 }
 
+.menuHeader {
+  margin: 6vh 10vw 6vh 10vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--secondary) 0%, rgba(79, 70, 229, 0.1) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(79, 70, 229, 0.3);
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menuTitle {
+  font-size: 3rem !important;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--button), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 !important;
+}
+
+.weekInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weekDate {
+  color: rgba(237, 237, 237, 0.7);
+  font-size: 1.1rem;
+}
+
+.statusBadge {
+  background: #10b981;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.menuStats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.statNumber {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--button);
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: rgba(237, 237, 237, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 @media (max-width: 768px) {
-  .menuGrid {
+  .days {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .option1, .option2, .option3 {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
   .header {
     padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
   }
   
-  .nav {
-    gap: 0.5rem;
+  .navbar {
+    width: 100%;
+    justify-content: center;
   }
   
-  .navButton span {
-    display: none;
+  .menuHeader {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
-  .menu {
-    margin-top: 5vh;
-    font-size: 1rem;
+  
+  .menuStats {
+    gap: 1rem;
   }
 }
