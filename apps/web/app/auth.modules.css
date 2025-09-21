@@ -4,12 +4,11 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: var(--background); /* világos szürke háttér */
+  background-color: var(--background);
   padding: 16px;
 }
 .auth-form {
-  background-color: var(--background);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--foreground);
   border-radius: 16px;
   padding: 32px;
   width: 100%;

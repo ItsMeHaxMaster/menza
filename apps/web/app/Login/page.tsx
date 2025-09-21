@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "../globals.css";
+import "../auth.modules.css";
 
 export default function Register() {
   const [form, setForm] = useState({
