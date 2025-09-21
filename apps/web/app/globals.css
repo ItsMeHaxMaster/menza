@@ -209,3 +209,59 @@ td > span {
 #auth-opp-btn:hover {
   text-decoration: underline;
 }
+/*Cart*/
+.cart-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: Arial, sans-serif;
+  color: var(--secondary);
+}
+.cart-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.cart-elements {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background-color: #ededed;
+}
+.empty-cart {
+  text-align: center;
+  color: #666;
+  font-size: 1rem;
+}
+.cart-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-blue {
+  background-color: #4f46e5;
+  color: white;
+}
+.btn-blue:hover {
+  background-color: #2938DC;
+}
+.btn-black {
+  background-color: #222222;
+  color: white;
+}
+.btn-black:hover {
+  background-color: #171717;
+}
