@@ -1,6 +1,6 @@
 //import styles from "./globals.css";
 
-export default function Cart() {
+export default function CartPage() {
   return (
     <main>
         <h1>Kosár és fizetés</h1>
