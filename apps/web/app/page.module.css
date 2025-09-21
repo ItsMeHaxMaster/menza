@@ -52,13 +52,14 @@
   font-size: 0.875rem;
   color: var(--button);
   font-weight: 600;
+  padding: 5px;
 }
 
 .actionButtons {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  
+  padding: 5px;
 }
 
 .addToCart {
@@ -72,9 +73,62 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .addToCart:hover {
   background: var(--primary);
   transform: scale(1.1);
+}
+.menuCard {
+  background: var(--secondary);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  border: 1px solid rgba(79, 70, 229, 0.6);
+}
+
+.menuCard:hover {
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
+  border-color: var(--button);
+}
+
+.foodItem {
+  background: var(--background);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.foodItem:hover {
+  border-color: var(--button);
+}
+
+@media (max-width: 768px) {
+  .menuGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .header {
+    padding: 1rem;
+  }
+  
+  .nav {
+    gap: 0.5rem;
+  }
+  
+  .navButton span {
+    display: none;
+  }
+  .menu {
+    margin-top: 5vh;
+    font-size: 1rem;
+  }
 }

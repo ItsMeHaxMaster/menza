@@ -25,8 +25,7 @@ export default function Home() {
           </div>
           <div className={styles.option1}>
             <div className={styles.optionTitle}>Opció 1</div>
-            <div className={styles.menuOption}>
-              <span className={styles.optionBadge}>1</span>
+          <div className={styles.menuCard}>
               <div className={styles.foodInfo}>
                 <span className={styles.foodName}>Gulyás leves</span>
                 <span className={styles.foodPrice}>1,200 Ft</span>
@@ -36,26 +35,152 @@ export default function Home() {
                 <button className={styles.addToCart}>+</button>
               </div>
             </div>
-            <div>Kaja2</div>
-            <div>Kaja3</div>
-            <div>Kaja4</div>
-            <div>Kaja5</div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja2</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja3</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja4</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja5</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
           </div>
           <div className={styles.option2}>
             <div className={styles.optionTitle}>Opció 2</div>
-            <div>Kaja6</div>
-            <div>Kaja7</div>
-            <div>Kaja8</div>
-            <div>Kaja9</div>
-            <div>Kaja10</div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja6</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja7</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja8</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja9</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja10</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
           </div>
           <div className={styles.option3}>
             <div className={styles.optionTitle}>Opció 3</div>
-            <div>Kaja11</div>
-            <div>Kaja12</div>
-            <div>Kaja13</div>
-            <div>Kaja14</div>
-            <div>Kaja15</div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja11</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja12</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja13</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja14</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
+            <div className={styles.menuCard}>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Kaja15</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
           </div>
         </div>
       </main>
