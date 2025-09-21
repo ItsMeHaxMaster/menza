@@ -25,7 +25,17 @@ export default function Home() {
           </div>
           <div className={styles.option1}>
             <div className={styles.optionTitle}>Opció 1</div>
-            <div>Kaja1 <InfoButton text={"padlizsán, vöröshagyma, paradicsom, pritaminpaprika, napraforgóolaj, olívaolaj, aszalt paradicsom (paradicsom, napraforgóolaj, borecet, fuszerek, citromsav, aszkorbinsav. szulfitokat tartalmazhat), kapribogyó, halloumi grillsajt (paszt. tehéntej; paszt. kecsketej és juhtej; só; oltóenzim; szárított mentalevél), fokhagyma, steakfűszer (só, bors, vöröshagyma, fokhagyma, mustármag, fűszerek) a fűszer nyomokban gluténtartalmú gabonaféléket, tojást, tejet (laktóz), zellert, szóját, mustárt és szezámmagot tartalmazhat, menta, balzsamecet (fehérborecet, szőlőlésűrítmény, almalésűr., tölgyfaforgács kivonat, kálium-metabiszulfit, ammóniás karamell),barnacukor, bazsalikom, só,bors, zellerszár"} /></div>
+            <div className={styles.menuOption}>
+              <span className={styles.optionBadge}>1</span>
+              <div className={styles.foodInfo}>
+                <span className={styles.foodName}>Gulyás leves</span>
+                <span className={styles.foodPrice}>1,200 Ft</span>
+              </div>
+              <div className={styles.actionButtons}>
+                <InfoButton text="Összetevők..." />
+                <button className={styles.addToCart}>+</button>
+              </div>
+            </div>
             <div>Kaja2</div>
             <div>Kaja3</div>
             <div>Kaja4</div>

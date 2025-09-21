@@ -59,4 +59,11 @@
     border-radius: 4px;
     width: 30px;
     height: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.button:hover {
+    background: var(--primary);
+    transform: scale(1.1);
 }
