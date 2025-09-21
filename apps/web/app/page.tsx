@@ -7,11 +7,23 @@ import InfoButton from "../components/InfoButton";
 export default function Home() {
   return (
     <div className={styles.page}>
-      <header>
-        <h1>Logiker Menza</h1>
-        <button className={"navButton"}><User size={40}/></button>
-        <button className={"navButton"} style={{ marginLeft: '1rem'}}><ShoppingCart size={40}/></button>
-      </header>
+      <header className={styles.header}>
+  <div className={styles.logoSection}>
+    <div className={styles.logo}>🍽️</div>
+    <h1 className={styles.title}>Logiker Menza</h1>
+  </div>
+  <nav className={styles.navbar}>
+    <button className={styles.navButton}>
+      <User size={24}/>
+      <span>Profil</span>
+    </button>
+    <button className={styles.navButton}>
+      <ShoppingCart size={24}/>
+      <span>Kosár</span>
+      <div className={styles.cartBadge}>3</div>
+    </button>
+  </nav>
+</header>
       <main className={styles.main}>
         <div className={styles.menu}>
           <h2>Heti menü</h2>
