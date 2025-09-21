@@ -4,7 +4,7 @@
   margin: 0 auto;
   padding: 2rem 1rem;
   font-family: Arial, sans-serif;
-  color: var(--secondary);
+  color: var(--foreground);
 }
 .cart-title {
   font-size: 2rem;
@@ -17,7 +17,7 @@
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  background-color: #ededed;
+  background-color: var(--foreground);
 }
 .empty-cart {
   text-align: center;
@@ -41,16 +41,13 @@
   transform: translateY(-2px);
 }
 .btn-blue {
-  background-color: #4f46e5;
+  background-color: var( --button);
   color: white;
 }
 .btn-blue:hover {
-  background-color: #2938DC;
+  background-color: var(--primary);
 }
-.btn-black {
-  background-color: #222222;
-  color: white;
-}
-.btn-black:hover {
-  background-color: #171717;
+.btn-back {
+  background-color: var(--foreground);
+  color: var(--background);
 }

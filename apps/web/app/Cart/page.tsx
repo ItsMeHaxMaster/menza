@@ -1,4 +1,5 @@
 import "../globals.css";
+import "./page.modules.css";
 
 export default function CartPage() {
   return (
@@ -13,7 +14,7 @@ export default function CartPage() {
 
       <div className="cart-buttons">
         <button className="btn btn-blue">Fizetés</button>
-        <button className="btn btn-black">Vissza a menühöz</button>
+        <button className="btn btn-back"><a href=""></a>Vissza a menühöz</button>
       </div>
     </main>
   );
