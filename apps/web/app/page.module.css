@@ -1,3 +1,13 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+}
+
 .menuContainer {
   background: rgba(79, 70, 229, 0.1);
   border-radius: 16px;
@@ -144,11 +154,27 @@
 }
 
 .logo {
-  font-size: 2.5rem;
+  width: 60px;
+  height: 60px;
   background: linear-gradient(45deg, var(--button), var(--primary));
-  border-radius: 12px;
-  padding: 0.5rem;
-  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.logo:hover {
+  transform: translateY(-2px) rotate(5deg);
+  box-shadow: 0 8px 30px rgba(79, 70, 229, 0.6);
+}
+
+.logo svg {
+  width: 32px;
+  height: 32px;
+  stroke-width: 2.5;
 }
 
 .title {
@@ -180,6 +206,8 @@
   transition: all 0.3s ease;
   position: relative;
   backdrop-filter: blur(5px);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .navButton:hover {
@@ -278,6 +306,20 @@
 }
 
 @media (max-width: 768px) {
+    .logo {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .logo svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .title {
+    font-size: 2rem !important;
+  }
+  
   .days {
     grid-template-columns: 1fr;
     gap: 0.5rem;

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import "../globals.css";
 import "../auth.modules.css";
 
@@ -71,7 +72,10 @@ export default function Register() {
       {loading ? "Küldés..." : "Bejelentkezek"}
     </button>
 
-    <a href="./Registration" id="auth-opp-btn">Regisztráció</a>
+    
+    <Link href="./Registration" id="auth-opp-btn">
+      Regisztrálás
+    </Link>
 
     {message && <p className="form-message">{message}</p>}
   </form>

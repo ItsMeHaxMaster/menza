@@ -1,27 +1,29 @@
 'use client';
-import Image from "next/image";
+import Image from "next/image"; 
 import styles from "./page.module.css";
-import { Info, ShoppingCart, User, Utensils } from "lucide-react";
+import { Info, ShoppingCart, User, Utensils, UtensilsCrossed } from "lucide-react";
+import Link from "next/link";
 import InfoButton from "../components/InfoButton";
+
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logoSection}>
-          <div className={styles.logo}>🍽️</div>
+          <div className={styles.logo}><UtensilsCrossed /></div>
           <h1 className={styles.title}>Logiker Menza</h1>
         </div>
         <nav className={styles.navbar}>
-          <button className={styles.navButton}>
+          <Link className={styles.navButton} href="./Login">
             <User size={24}/>
             <span>Profil</span>
-          </button>
-          <button className={styles.navButton}>
+          </Link>
+          <Link className={styles.navButton} href="./Cart">
             <ShoppingCart size={24}/>
             <span>Kosár</span>
             <div className={styles.cartBadge}>3</div>
-          </button>
+          </Link>
         </nav>
       </header>
       
