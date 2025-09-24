@@ -31,7 +31,7 @@ export const post = async (
   const db = (await orm).em.fork();
 
   try {
-    const { email, password, turnstile } = req.validate(schemas.post.req);
+    const { email, password, turnstile } = req.validateBody(schemas.post.req);
 
     if (!(await verify(turnstile, req.ip)))
       return res.error(Status.Forbidden, 'Captcha failed.');
