@@ -73,7 +73,7 @@ export default function Register() {
     </button>
 
     
-    <Link href="./Registration" id="auth-opp-btn">
+    <Link href="./registration" id="auth-opp-btn">
       Regisztrálás
     </Link>
 

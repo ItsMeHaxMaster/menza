@@ -82,7 +82,7 @@ export default function Register() {
       {loading ? "Küldés..." : "Regisztrálok"}
     </button>
 
-    <Link href="./Login" id="auth-opp-btn">
+    <Link href="./login" id="auth-opp-btn">
       Bejelentkezés
     </Link>
 

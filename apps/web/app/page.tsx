@@ -15,11 +15,11 @@ export default function Home() {
           <h1 className={styles.title}>Logiker Menza</h1>
         </div>
         <nav className={styles.navbar}>
-          <Link className={styles.navButton} href="./Login">
+          <Link className={styles.navButton} href="./profile">
             <User size={24}/>
             <span>Profil</span>
           </Link>
-          <Link className={styles.navButton} href="./Cart">
+          <Link className={styles.navButton} href="./cart">
             <ShoppingCart size={24}/>
             <span>Kosár</span>
             <div className={styles.cartBadge}>3</div>

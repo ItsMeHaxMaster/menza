@@ -18,7 +18,7 @@ export default function Profile() {
             <UtensilsCrossed size={24}/>
             <span>Menü</span>
           </Link>
-          <Link className={styles.navButton} href="/Cart">
+          <Link className={styles.navButton} href="/cart">
             <ShoppingCart size={24}/>
             <span>Kosár</span>
             <div className={styles.cartBadge}>3</div>
