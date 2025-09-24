@@ -40,7 +40,7 @@ export default function Register() {
           Bejelentkezek
         </button>
         
-        <Link href="./registration" id="auth-opp-btn">
+        <Link href="/register" id="auth-opp-btn">
           Regisztrálás
         </Link>
 
