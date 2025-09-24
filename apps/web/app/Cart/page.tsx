@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import React from "react";
 
 import "../globals.css";
@@ -19,8 +20,12 @@ export default function CartPage() {
 
 
       <div className="cart-buttons">
-        <button className="btn btn-blue">Fizetés</button>
-        <button className="btn btn-back" onClick={() => router.push("/")}>Vissza a menühöz</button> 
+        <Link href="" className="btn btn-blue">
+          Fizetés
+        </Link>
+        <Link href="/" className="btn btn-blue">
+          Vissza a menühöz
+        </Link>
       </div>
     </main>
   );

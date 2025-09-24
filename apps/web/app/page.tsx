@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { Info, ShoppingCart, User, Utensils } from "lucide-react";
 import InfoButton from "../components/InfoButton";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -15,11 +16,15 @@ export default function Home() {
         <nav className={styles.navbar}>
           <button className={styles.navButton}>
             <User size={24}/>
+            <Link href="./Login">
             <span>Profil</span>
+            </Link>
           </button>
           <button className={styles.navButton}>
             <ShoppingCart size={24}/>
+            <Link href="./Cart">
             <span>Kosár</span>
+            </Link>
             <div className={styles.cartBadge}>3</div>
           </button>
         </nav>
