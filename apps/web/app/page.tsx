@@ -5,6 +5,7 @@ import { Info, ShoppingCart, User, Utensils, UtensilsCrossed } from "lucide-reac
 import Link from "next/link";
 import InfoButton from "../components/InfoButton";
 
+
 export default function Home() {
   return (
     <div className={styles.page}>
@@ -14,11 +15,11 @@ export default function Home() {
           <h1 className={styles.title}>Logiker Menza</h1>
         </div>
         <nav className={styles.navbar}>
-          <Link className={styles.navButton} href="/Profile">
+          <Link className={styles.navButton} href="./Login">
             <User size={24}/>
             <span>Profil</span>
           </Link>
-          <Link className={styles.navButton} href="/Cart">
+          <Link className={styles.navButton} href="./Cart">
             <ShoppingCart size={24}/>
             <span>Kosár</span>
             <div className={styles.cartBadge}>3</div>
