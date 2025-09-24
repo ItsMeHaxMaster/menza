@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import { Info, ShoppingCart, User, Utensils } from "lucide-react";
 import Link from "next/link";
 import InfoButton from "../components/InfoButton";
-import Link from "next/link";
+
 
 export default function Home() {
   return (
