@@ -97,15 +97,20 @@ export class Request {
    * @example
    * const { text } = req.validate(z.object({
    *   text: z.string()
-   * }));
+   * }), { text: 'Hello, World' });
    *
    * @param {T} schema A Zod object.
+   * @param data Input object to validate.
    *
-   * @returns {T['_output']} The reqest's body.
+   * @returns {T['_output']} The input object.
+   * @throws {ValidationError}
    */
-  public validate<T extends ZodObject<any>>(schema: T): T['_output'] {
+  public validate<T extends ZodObject<any>>(
+    schema: T,
+    data: any
+  ): T['_output'] {
     if (!this.res) new Error();
-    const res = schema.safeParse(this.req.body);
+    const res = schema.safeParse(data);
 
     if (!res.success) {
       const issues = res.error.issues;
@@ -145,6 +150,40 @@ export class Request {
     }
 
     return res.data;
+  }
+
+  /**
+   * Validate the request's body against a Zod object.
+   *
+   * @example
+   * const { text } = req.validate(z.object({
+   *   text: z.string()
+   * }));
+   *
+   * @param {T} schema A Zod object.
+   *
+   * @returns {T['_output']} The request's body.
+   * @throws {ValidationError}
+   */
+  public validateBody<T extends ZodObject<any>>(schema: T): T['_output'] {
+    return this.validate(schema, this.req.body);
+  }
+
+  /**
+   * Validate the request's query params against a Zod object.
+   *
+   * @example
+   * const { text } = req.validate(z.object({
+   *   text: z.string()
+   * }));
+   *
+   * @param {T} schema A Zod object.
+   *
+   * @returns {T['_output']} The request's query object.
+   * @throws {ValidationError}
+   */
+  public validateQuery<T extends ZodObject<any>>(schema: T): T['_output'] {
+    return this.validate(schema, this.req.query);
   }
 }
 

@@ -10,7 +10,8 @@
     "lint": "eslint",
     "fix": "eslint --fix",
     "prepare": "husky || true",
-    "tool:gen_client": "ts-node -r dotenv/config -r tsconfig-paths/register src/tools/genclient.ts"
+    "tool:gen_client": "ts-node -r dotenv/config -r tsconfig-paths/register src/tools/genclient.ts",
+    "tool:seed_db": "ts-node -r dotenv/config -r tsconfig-paths/register src/tools/seed.ts"
   },
   "keywords": [],
   "author": "",
