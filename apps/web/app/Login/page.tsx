@@ -1,84 +1,51 @@
 "use client";
-import React, { useState } from "react";
+import React, { useActionState } from "react";
 import Link from "next/link";
 import "../globals.css";
 import "../auth.modules.css";
 
+import { login } from "@/actions/auth";
+
+// 0x4AAAAAAB3E4tl6nWFLbTmH
+
+const initialState = {
+  message: '',
+}
+
 export default function Register() {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    turnstile: "", 
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage(null);
-
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setMessage(err.message || "Hiba történt.");
-      } else {
-        const data = await res.json();
-        setMessage("Sikeres bejelentkezés 🎉");
-        console.log("JWT:", data.jwt);
-      }
-    } catch (error) {
-      setMessage("Szerver hiba!");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [state, formAction, pending] = useActionState(login, initialState);
 
   return (
     <div className="container">
-  <form onSubmit={handleSubmit} className="auth-form">
-    <h2>Bejelentkezés</h2>
+      <form action={formAction} className="auth-form">
+        <h2>Bejelentkezés</h2>
 
-    <input
-      type="email"
-      name="email"
-      placeholder="Email"
-      value={form.email}
-      onChange={handleChange}
-      required
-    />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+        />
 
-    <input
-      type="password"
-      name="password"
-      placeholder="Jelszó"
-      value={form.password}
-      onChange={handleChange}
-      required
-    />
+        <input
+          type="password"
+          name="password"
+          placeholder="Jelszó"
+          required
+        />
 
-    <button type="submit" disabled={loading}>
-      {loading ? "Küldés..." : "Bejelentkezek"}
-    </button>
+        <div className="cf-turnstile" data-sitekey="1x00000000000000000000BB" />
 
-    
-    <Link href="./registration" id="auth-opp-btn">
-      Regisztrálás
-    </Link>
+        <button type="submit" disabled={pending}>
+          Bejelentkezek
+        </button>
+        
+        <Link href="./registration" id="auth-opp-btn">
+          Regisztrálás
+        </Link>
 
-    {message && <p className="form-message">{message}</p>}
-  </form>
-</div>
+        {state!.message && <p className="form-message">{state!.message}</p>}
+      </form>
+    </div>
   );
 }

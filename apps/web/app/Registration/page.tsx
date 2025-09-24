@@ -78,6 +78,8 @@ export default function Register() {
       required
     />
 
+    <div className="cf-turnstile" data-sitekey="0x4AAAAAAB3E4tl6nWFLbTmH" />
+
     <button type="submit" disabled={loading}>
       {loading ? "Küldés..." : "Regisztrálok"}
     </button>
