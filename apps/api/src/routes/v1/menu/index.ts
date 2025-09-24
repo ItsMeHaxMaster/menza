@@ -79,19 +79,6 @@ export const get = async (
       })
     );
 
-    console.log(`Found ${weekMenus.length} menus for the week`);
-    console.log(
-      `Date range: ${monday.toDateString()} to ${friday.toDateString()}`
-    );
-    console.log('Populated menus:', populatedMenus.length);
-
-    // Log summary of each menu
-    populatedMenus.forEach((menu, index) => {
-      console.log(
-        `Menu ${index + 1}: ${menu.date.toDateString()} - ${menu.foods.length} foods: ${menu.foods.map((f) => f.name).join(', ')}`
-      );
-    });
-
     res.status(Status.Ok).json(populatedMenus);
   } catch (e: unknown) {
     console.error(e);

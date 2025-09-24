@@ -1,12 +1,71 @@
-'use client';
 import Image from "next/image"; 
 import styles from "./page.module.css";
 import { Info, ShoppingCart, User, Utensils, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
 import InfoButton from "../components/InfoButton";
+import api from "@/lib/api";
 
+const dateRange = (start_date: Date) => {
+  const monday = start_date;
+  const friday = new Date(monday);
+  friday.setDate(monday.getDate() + 4);
 
-export default function Home() {
+  if (parseInt(monday.toLocaleDateString('hu-HU', { day: '2-digit' })) > parseInt(friday.toLocaleDateString('hu-HU', { day: '2-digit' })))
+    return monday.toLocaleDateString('hu-HU', { year: "numeric", month: 'short', day: '2-digit' }) + ' - ' + friday.toLocaleDateString('hu-HU', { month: "short", day: '2-digit' })
+
+  return monday.toLocaleDateString('hu-HU', { year: "numeric", month: "short" }) +
+  ' ' + monday.toLocaleDateString('hu-HU', { day: '2-digit' }) + ' - ' + friday.toLocaleDateString('hu-HU', { day: '2-digit' }) + '.';
+}
+
+export default async function Home() {
+  const menu = await api.getMenu(new Date(1758547551000));
+
+  const getMondaysFor2025 = (): Date[] => {
+    const mondays: Date[] = [];
+    const year = 2025;
+    
+    // Start from January 1, 2025
+    const date = new Date(year, 0, 1);
+    
+    // Find the first Monday of the year
+    while (date.getDay() !== 1) {
+      date.setDate(date.getDate() + 1);
+    }
+    
+    // Collect all Mondays for 2025
+    while (date.getFullYear() === year) {
+      const monday = new Date(date);
+      monday.setHours(0, 0, 0, 0);
+      mondays.push(monday);
+      date.setDate(date.getDate() + 7);
+    }
+    
+    return mondays;
+  };
+
+  const getCurrentMonday = (): Date => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const monday = new Date(today);
+    
+    // Calculate days to subtract to get to Monday (1)
+    // If today is Sunday (0), we need to go back 6 days
+    // If today is Monday (1), we need to go back 0 days
+    // If today is Tuesday (2), we need to go back 1 day, etc.
+    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    monday.setDate(today.getDate() - daysToSubtract);
+    
+    // Set time to midnight (00:00:00.000)
+    monday.setHours(0, 0, 0, 0);
+    
+    return monday;
+  };
+
+  const mondaysIn2025 = getMondaysFor2025();
+  const currentMonday = getCurrentMonday();
+
+  console.log(menu, mondaysIn2025, currentMonday);
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -33,6 +92,11 @@ export default function Home() {
             <h2 className={styles.menuTitle}>Heti menü</h2>
             <div className={styles.weekInfo}>
               <span className={styles.weekDate}>2025. szeptember 21-25.</span>
+              <select defaultValue={currentMonday.getTime()}>
+                {mondaysIn2025.map(monday => (
+                  <option key={monday.getTime()} value={monday.getTime()}>{dateRange(monday)}</option>
+                ))}
+              </select>
               <div className={styles.statusBadge}>Friss</div>
             </div>
           </div>
@@ -60,167 +124,31 @@ export default function Home() {
           </div>
 
           <div className={styles.menuContent}>
-            <div className={styles.option1}>
+            <div className={styles.optionTitles}>
               <div className={styles.optionTitle}>A</div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Gulyás leves</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja2</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja3</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja4</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja5</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.option2}>
               <div className={styles.optionTitle}>B</div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja6</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja7</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja8</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja9</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja10</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.option3}>
               <div className={styles.optionTitle}>C</div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja11</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja12</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja13</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja14</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
-              <div className={styles.menuCard}>
-                <div className={styles.foodInfo}>
-                  <span className={styles.foodName}>Kaja15</span>
-                  <span className={styles.foodPrice}>1,200 Ft</span>
-                </div>
-                <div className={styles.actionButtons}>
-                  <InfoButton text="Összetevők..." />
-                  <button className={styles.addToCart}>+</button>
-                </div>
-              </div>
             </div>
+  
+            {menu.map((day) => (
+              <div className={styles.day} key={day.id}>
+                {day.foods.map((food) => (
+                  <div className={styles.menuCard} key={food.id}>
+                    <div className={styles.foodInfo}>
+                      <span className={styles.foodName}>{food.name}</span>
+                      <span className={styles.foodPrice}>
+                        {new Intl.NumberFormat("hu-HU", { style: "currency", currency: "HUF" }).format(food.price)}
+                      </span>
+                    </div>
+                    <div className={styles.actionButtons}>
+                      <InfoButton text={food.description} />
+                      <input type="radio" name={day.id} style={{ display: 'none' }} />
+                      <button className={styles.addToCart}>+</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </main>
