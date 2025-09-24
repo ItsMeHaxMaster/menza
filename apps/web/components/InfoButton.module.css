@@ -61,6 +61,7 @@
     height: 30px;
     cursor: pointer;
     transition: all 0.2s ease;
+    color: white;
 }
 
 .button:hover {
