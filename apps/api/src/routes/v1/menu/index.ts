@@ -50,6 +50,9 @@ export const get = async (
       }
     });
 
+    if (weekMenus.length <= 0)
+      return res.error(Status.NotFound, 'Menu for this week is not found.');
+
     const populatedMenus = await Promise.all(
       weekMenus.map(async (menu) => {
         await menu.foods.init();
@@ -82,5 +85,7 @@ export const get = async (
     res.status(Status.Ok).json(populatedMenus);
   } catch (e: unknown) {
     console.error(e);
+
+    res.error(Status.InternalServerError, 'Internal Server Error');
   }
 };
