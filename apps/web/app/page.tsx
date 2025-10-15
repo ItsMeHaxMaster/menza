@@ -1,32 +1,39 @@
-'use client';
-import Image from "next/image"; 
+"use client";
+import Image from "next/image";
 import styles from "./page.module.css";
-import { Info, ShoppingCart, User, Utensils, UtensilsCrossed } from "lucide-react";
+import {
+  Info,
+  ShoppingCart,
+  User,
+  Utensils,
+  UtensilsCrossed,
+} from "lucide-react";
 import Link from "next/link";
 import InfoButton from "../components/InfoButton";
-
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logoSection}>
-          <div className={styles.logo}><UtensilsCrossed /></div>
+          <div className={styles.logo}>
+            <UtensilsCrossed />
+          </div>
           <h1 className={styles.title}>Logiker Menza</h1>
         </div>
         <nav className={styles.navbar}>
           <Link className={styles.navButton} href="./profile">
-            <User size={24}/>
+            <User size={24} />
             <span>Profil</span>
           </Link>
           <Link className={styles.navButton} href="./cart">
-            <ShoppingCart size={24}/>
+            <ShoppingCart size={24} />
             <span>Kosár</span>
             <div className={styles.cartBadge}>3</div>
           </Link>
         </nav>
       </header>
-      
+
       <main className={styles.main}>
         <div className={styles.menuHeader}>
           <div className={styles.titleSection}>
@@ -36,7 +43,7 @@ export default function Home() {
               <div className={styles.statusBadge}>Friss</div>
             </div>
           </div>
-          
+
           <div className={styles.menuStats}>
             <div className={styles.stat}>
               <span className={styles.statNumber}>15</span>
@@ -51,7 +58,9 @@ export default function Home() {
 
         <div className={styles.menuContainer}>
           <div className={styles.days}>
-            <div><Utensils /></div>
+            <div>
+              <Utensils />
+            </div>
             <div>Hétfő</div>
             <div>Kedd</div>
             <div>Szerda</div>
