@@ -18,8 +18,6 @@ const dateRange = (start_date: Date) => {
 }
 
 export default async function Home() {
-  const menu = await api.getMenu(new Date(1758547551000));
-
   const getMondaysFor2025 = (): Date[] => {
     const mondays: Date[] = [];
     const year = 2025;
@@ -63,6 +61,8 @@ export default async function Home() {
 
   const mondaysIn2025 = getMondaysFor2025();
   const currentMonday = getCurrentMonday();
+
+  const menu = await api.getMenu(currentMonday);
 
   console.log(menu, mondaysIn2025, currentMonday);
 
