@@ -19,5 +19,11 @@ export class Menu {
   foods = new Collection<Food>(this);
 
   @Property()
-  date!: Date;
+  year!: number;
+
+  @Property()
+  week!: number;
+
+  @Property()
+  day!: number; // 1 = Monday, 2 = Tuesday, ... 5 = Friday
 }
