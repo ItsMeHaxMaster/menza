@@ -26,9 +26,10 @@ class Api {
     });
   }
 
-  public getMenu = cache(async (week_start: Date) => {
+  public getMenu = cache(async (week: number, year?: number) => {
     try {
-      const menu = await this.fetch(`/v1/menu?week_start=${week_start.getTime()}`);
+      const yearParam = year ? `&year=${year}` : '';
+      const menu = await this.fetch(`/v1/menu?week=${week}${yearParam}`);
       if (!menu.ok) return null;
       return await menu.json();
     } catch {
