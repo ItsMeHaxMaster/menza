@@ -6,6 +6,7 @@ import { ValidationError } from '@/util/errors';
 import { CookieOptions, RequestFile } from '@/interfaces';
 
 import { ZodObject } from 'zod';
+import { User } from '@/entities/user.entity';
 
 /**
  * Request class to handle incoming requests.
@@ -90,6 +91,14 @@ export class Request {
   public getCookie(key: string): string | number | undefined {
     return this.cookies[key.toLowerCase()];
   }
+
+  /*
+  public async getUser(): User {
+    const 
+
+    return;
+  }
+  */
 
   /**
    * Validate the request's body against a Zod object.

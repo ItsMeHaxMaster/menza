@@ -28,6 +28,8 @@ export async function login(initialState: any, formData: FormData) {
 
     redirect('/');
   } catch (e: any) {
+    if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;
+
     console.error(e);
     return { message: 'Very big hiba történt.' };
   }
@@ -63,6 +65,8 @@ export async function register(initialState: any, formData: FormData) {
 
     redirect('/');
   } catch (e: any) {
+    if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;
+
     console.error(e);
     return { message: 'Very big hiba történt.' };
   }
