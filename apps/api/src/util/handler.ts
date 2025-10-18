@@ -7,6 +7,14 @@ import { CookieOptions, RequestFile } from '@/interfaces';
 
 import { ZodObject } from 'zod';
 import { User } from '@/entities/user.entity';
+import { orm } from './orm';
+import { JwtPayload, verify } from 'jsonwebtoken';
+
+interface TokenData extends JwtPayload {
+  id: string;
+  email: string;
+  name: string;
+}
 
 /**
  * Request class to handle incoming requests.
@@ -92,13 +100,28 @@ export class Request {
     return this.cookies[key.toLowerCase()];
   }
 
-  /*
-  public async getUser(): User {
-    const 
+  /**
+   * Get the current user from the `Authorization` header.
+   *
+   * @returns {Promise<User>} The current user.
+   */
+  public async getUser(): Promise<User> {
+    const db = (await orm).em.fork();
 
-    return;
+    const token = this.getHeader('authorization')?.split(' ')[1];
+    if (!token) throw new Error('Unauthorized');
+
+    try {
+      const td = verify(token, process.env.JWT_SECRET!) as TokenData;
+
+      const user = await db.findOne(User, { id: td.id });
+      if (!user) throw new Error('Unauthorized');
+
+      return user;
+    } catch {
+      throw new Error('Unauthorized');
+    }
   }
-  */
 
   /**
    * Validate the request's body against a Zod object.
