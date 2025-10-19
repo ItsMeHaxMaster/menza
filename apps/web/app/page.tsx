@@ -3,6 +3,7 @@ import { ShoppingCart, User, Utensils, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
 import InfoButton from "../components/InfoButton";
 import api from "@/lib/api";
+import { useState } from "react";
 
 // Types for menu data
 interface Food {

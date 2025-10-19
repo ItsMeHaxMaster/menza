@@ -216,7 +216,7 @@ export async function generateDummyData() {
     console.log(`✅ Created ${foods.length} foods`);
 
     console.log(
-      '📅 Creating menus for 2 weeks (1 menu per day with 3 foods)...'
+      '📅 Creating menus for the entire year (1 menu per day with 3 foods)...'
     );
 
     // Helper function to get current ISO week number
@@ -232,15 +232,19 @@ export async function generateDummyData() {
       return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
     }
 
-    // Create menus for 2 weeks (day 1-5, Monday to Friday)
+    // Helper function to get the number of ISO weeks in a year
+    function getWeeksInYear(year: number): number {
+      const dec28 = new Date(year, 11, 28);
+      return getWeekNumber(dec28);
+    }
+
+    // Create menus for entire year (day 1-5, Monday to Friday)
     const today = new Date();
     const currentYear = today.getFullYear();
-    const currentWeekNumber = getWeekNumber(today);
+    const totalWeeks = getWeeksInYear(currentYear);
     const menus: Menu[] = [];
 
-    for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
-      const weekNumber = currentWeekNumber + weekOffset;
-
+    for (let weekNumber = 1; weekNumber <= totalWeeks; weekNumber++) {
       for (let dayNumber = 1; dayNumber <= 5; dayNumber++) {
         // day 1 = Monday, 2 = Tuesday, ... 5 = Friday
 
@@ -260,14 +264,19 @@ export async function generateDummyData() {
         menus.push(menu);
         em.persist(menu);
 
-        console.log(
-          `📋 Menu for ${currentYear}, week ${weekNumber}, day ${dayNumber}: ${selectedFoods.map((f) => f.name).join(', ')}`
-        );
+        if (weekNumber <= 2 || weekNumber >= totalWeeks - 1) {
+          // Log first 2 and last 2 weeks to avoid console spam
+          console.log(
+            `📋 Menu for ${currentYear}, week ${weekNumber}, day ${dayNumber}: ${selectedFoods.map((f) => f.name).join(', ')}`
+          );
+        }
       }
     }
 
     await em.flush();
-    console.log(`✅ Created ${menus.length} menus for 2 weeks`);
+    console.log(
+      `✅ Created ${menus.length} menus for the entire year (${totalWeeks} weeks)`
+    );
 
     // Summary
     console.log('\n🎉 Dummy data generation completed!');
@@ -275,11 +284,9 @@ export async function generateDummyData() {
     console.log(`   - ${allergens.length} allergens`);
     console.log(`   - ${foods.length} foods`);
     console.log(
-      `   - ${menus.length} menus (2 weeks, days 1-5, 3 foods per menu)`
+      `   - ${menus.length} menus (entire year, days 1-5, 3 foods per menu)`
     );
-    console.log(
-      `   - Year: ${menus[0].year}, Week range: ${menus[0].week} to ${menus[menus.length - 1].week}`
-    );
+    console.log(`   - Year: ${currentYear}, Weeks: 1 to ${totalWeeks}`);
   } catch (error) {
     console.error('❌ Error generating dummy data:', error);
     throw error;
