@@ -55,16 +55,18 @@ export default function Profile() {
   }
 
   if (error) {
-    return (
-      <div className={styles.page}>
-        <h2>Hiba történt</h2>
-        <p>{error}</p>
-        <Link href="/login" className={styles.logoutButton}>
-          Bejelentkezés
+  return (
+    <div className={styles.page}>
+      <div className={styles.errorContainer}>
+        <h2 className={styles.errorTitle}>Hiba történt</h2>
+        <p className={styles.errorMessage}>{error}</p>
+        <Link href="/login" className={styles.retryButton}>
+          Bejelentkezés újra
         </Link>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (!profile) {
     return <div className={styles.page}>Nincs adat.</div>;
