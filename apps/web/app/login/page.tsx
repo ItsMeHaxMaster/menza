@@ -5,6 +5,7 @@ import "../globals.css";
 import "../auth.modules.css";
 
 import { login } from "@/actions/auth";
+import Turnstile from "@/components/Turnstile";
 
 // 0x4AAAAAAB3E4tl6nWFLbTmH
 
@@ -34,7 +35,7 @@ export default function Register() {
           required
         />
 
-        <div className="cf-turnstile" data-sitekey="1x00000000000000000000BB" />
+        <Turnstile siteKey="1x00000000000000000000BB" />
 
         <button type="submit" disabled={pending}>
           Bejelentkezek

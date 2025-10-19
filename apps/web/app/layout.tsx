@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
 
-        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="beforeInteractive" />
       </body>
     </html>
   );

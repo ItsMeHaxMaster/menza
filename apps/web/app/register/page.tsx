@@ -4,6 +4,7 @@ import Link from "next/link";
 import "../globals.css";
 import "../auth.modules.css";
 import { register } from "@/actions/auth";
+import Turnstile from "@/components/Turnstile";
 
 const initialState = {
   message: '',
@@ -45,7 +46,7 @@ export default function Register() {
           required
         />
 
-        <div className="cf-turnstile" data-sitekey="1x00000000000000000000BB" />
+        <Turnstile siteKey="1x00000000000000000000BB" />
 
         <button type="submit" disabled={pending}>
           Regisztrálok
