@@ -17,60 +17,51 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+//
+
   useEffect(() => {
-    async function fetchProfile() {
+    const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setError("Nem vagy bejelentkezve");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/profile`, {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          setError("Hiba történt a profil betöltésekor.");
           setLoading(false);
           return;
         }
 
-        const response = await fetch("http://localhost:3000/api/v1/profile.ts", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Nem sikerült betölteni a profilt");
-        }
-
-        const data = await response.json();
-        setProfile(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
+        const { id, name, email, createdAt }: ProfileData = await res.json();
+        setProfile({ id, name, email, createdAt });
+        setLoading(false);
+      } catch (error) {
+        setError("Hiba történt a profil betöltésekor.");
         setLoading(false);
       }
-    }
+    };
 
     fetchProfile();
   }, []);
 
+  if (loading) return <div className={styles.page}>Betöltés...</div>;
 
-  if (loading) {
-    return <div className={styles.page}>Betöltés...</div>;
-  }
-
-  if (error) {
-  return (
-    <div className={styles.page}>
-      <div className={styles.errorContainer}>
-        <h2 className={styles.errorTitle}>Hiba történt</h2>
-        <p className={styles.errorMessage}>{error}</p>
-        <Link href="/login" className={styles.retryButton}>
-          Bejelentkezés újra
-        </Link>
+  if (error)
+    return (
+      <div className={styles.page}>
+        <div className={styles.errorContainer}>
+          <h2 className={styles.errorTitle}>Hiba történt</h2>
+          <p className={styles.errorMessage}>{error}</p>
+          <Link href="/login" className={styles.retryButton}>
+            Bejelentkezés újra
+          </Link>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
 
-  if (!profile) {
-    return <div className={styles.page}>Nincs adat.</div>;
-  }
+  if (!profile) return <div className={styles.page}>Nincs adat.</div>;
 
   return (
     <div className={styles.page}>
@@ -110,17 +101,20 @@ export default function Profile() {
 
           <div className={styles.profileDetails}>
             <h3>Felhasználói adatok</h3>
-            <p><strong>Név:</strong> {profile.name}</p>
+            <p><strong>Név:</strong> {}</p>
             <p><strong>Email:</strong> {profile.email}</p>
             <p>
               <strong>Regisztráció dátuma:</strong>{" "}
               {new Date(profile.createdAt).toLocaleDateString("hu-HU")}
             </p>
+
             <button className={styles.editButton}>Adatok szerkesztése</button>
+
             <button
               className={styles.logoutButton}
               onClick={() => {
-                localStorage.removeItem("token");
+                // cookie törlése
+                document.cookie = "session_mz=; max-age=0; path=/";
                 window.location.href = "/login";
               }}
             >
