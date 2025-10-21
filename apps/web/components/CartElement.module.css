@@ -1,0 +1,69 @@
+.foodItem{
+  background: var(--secondary);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+  border: 1px solid rgba(79, 70, 229, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+
+  margin-bottom: 16px;
+}
+
+.foodItem:hover{
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
+  border-color: var(--button);
+}
+
+.food{
+  font-size: 1.50rem;
+  font-weight: bold;
+}
+
+.foodPrice {
+  font-size: 1.25rem;
+  color: var(--button);
+  font-weight: 600;
+  padding: 5px;
+  margin-right: 0.5rem;
+}
+
+.buttons {
+ display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 5px;
+}
+
+.addToCart {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--button);
+  color: white;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addToCart:hover {
+  background: var(--primary);
+  transform: scale(1.1);
+}
+
+.addToCart[data-action="true"] {
+  background: rgba(107, 114, 128, 0.5);
+}
+.addToCart[data-action="true"]:hover {
+  background: rgba(255, 50, 50, 1);
+}

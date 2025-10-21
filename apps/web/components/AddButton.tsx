@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 export default function AddButton({
   className,
   foodId,
-  date
+  date,
+  onClick
 }: {
   className?: string;
   foodId: string;
   date: { year: number; week: number; day: number };
+  onClick?: any;
 }) {
   const [action, setAction] = useState(false);
 
@@ -64,6 +66,8 @@ export default function AddButton({
       setAction(true);
     }
     localStorage.setItem("cart", JSON.stringify(cart));
+
+    onClick();
   };
   return (
     <button className={className} data-action={action} onClick={click}>
