@@ -13,12 +13,12 @@ export default function AddButton({
   date: { year: number; week: number; day: number };
 }) {
   const [action, setAction] = useState(false);
-  const cart: {
-    id: string;
-    date: { year: number; week: number; day: number };
-  }[] = JSON.parse(localStorage.getItem("cart") || "[]");
 
   useEffect(() => {
+    const cart: {
+      id: string;
+      date: { year: number; week: number; day: number };
+    }[] = JSON.parse(localStorage.getItem("cart") || "[]");
     if (
       cart.find(
         (item) =>
@@ -30,7 +30,7 @@ export default function AddButton({
     ) {
       setAction(true);
     }
-  }, [cart, foodId, date]);
+  }, [foodId, date]);
 
   const click = () => {
     const cart: {
