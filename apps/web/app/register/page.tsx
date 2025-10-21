@@ -7,8 +7,8 @@ import { register } from "@/actions/auth";
 import Turnstile from "@/components/Turnstile";
 
 const initialState = {
-  message: '',
-}
+  message: "",
+};
 
 export default function Register() {
   const [state, formAction, pending] = useActionState(register, initialState);
@@ -18,26 +18,11 @@ export default function Register() {
       <form action={formAction} className="auth-form">
         <h2>Regisztráció</h2>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Név"
-          required
-        />
+        <input type="text" name="name" placeholder="Név" required />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-        />
+        <input type="email" name="email" placeholder="Email" required />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Jelszó"
-          required
-        />
+        <input type="password" name="password" placeholder="Jelszó" required />
 
         <input
           type="password"

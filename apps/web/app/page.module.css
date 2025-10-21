@@ -56,7 +56,9 @@
   gap: 1rem;
 }
 
-.option1, .option2, .option3 {
+.option1,
+.option2,
+.option3 {
   display: grid;
   grid-template-columns: 150px repeat(5, 1fr);
   gap: 1rem;
@@ -133,12 +135,21 @@
   transform: scale(1.1);
 }
 
+.addToCart[data-action="true"] {
+  background: rgba(107, 114, 128, 0.5);
+}
+.addToCart[data-action="true"]:hover {
+  background: rgba(255, 50, 50, 1);
+}
+
 .menuCard {
   background: var(--secondary);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
   border: 1px solid rgba(79, 70, 229, 0.6);
   display: flex;
   align-items: center;
@@ -152,7 +163,11 @@
 }
 
 .header {
-  background: linear-gradient(135deg, var(--secondary) 0%, rgba(79, 70, 229, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--secondary) 0%,
+    rgba(79, 70, 229, 0.1) 100%
+  );
   padding: 1rem 2rem;
   border-bottom: 1px solid rgba(79, 70, 229, 0.3);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -254,7 +269,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
-  background: linear-gradient(135deg, var(--secondary) 0%, rgba(79, 70, 229, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--secondary) 0%,
+    rgba(79, 70, 229, 0.1) 100%
+  );
   border-radius: 20px;
   border: 1px solid rgba(79, 70, 229, 0.3);
 }
@@ -321,47 +340,49 @@
 }
 
 @media (max-width: 768px) {
-    .logo {
+  .logo {
     width: 50px;
     height: 50px;
   }
-  
+
   .logo svg {
     width: 24px;
     height: 24px;
   }
-  
+
   .title {
     font-size: 2rem !important;
   }
-  
+
   .days {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
-  
-  .option1, .option2, .option3 {
+
+  .option1,
+  .option2,
+  .option3 {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .header {
     padding: 1rem;
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .navbar {
     width: 100%;
     justify-content: center;
   }
-  
+
   .menuHeader {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
   }
-  
+
   .menuStats {
     gap: 1rem;
   }

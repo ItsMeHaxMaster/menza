@@ -4,6 +4,7 @@ import Link from "next/link";
 import InfoButton from "../components/InfoButton";
 import api from "@/lib/api";
 import { useState } from "react";
+import AddButton from "@/components/AddButton";
 
 // Types for menu data
 interface Food {
@@ -42,32 +43,49 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
   const jan4 = new Date(year, 0, 4);
   const firstThursday = new Date(jan4);
   firstThursday.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7) + 3);
-  
+
   // Calculate the Monday of the target week
   const targetDate = new Date(firstThursday);
   targetDate.setDate(firstThursday.getDate() + (weekNumber - 1) * 7 - 3);
-  
+
   const monday = targetDate;
   const friday = new Date(monday);
   friday.setDate(monday.getDate() + 4);
 
-  if (parseInt(monday.toLocaleDateString('hu-HU', { day: '2-digit' })) > parseInt(friday.toLocaleDateString('hu-HU', { day: '2-digit' })))
-    return monday.toLocaleDateString('hu-HU', { year: "numeric", month: 'short', day: '2-digit' }) + ' - ' + friday.toLocaleDateString('hu-HU', { month: "short", day: '2-digit' })
+  if (
+    parseInt(monday.toLocaleDateString("hu-HU", { day: "2-digit" })) >
+    parseInt(friday.toLocaleDateString("hu-HU", { day: "2-digit" }))
+  )
+    return (
+      monday.toLocaleDateString("hu-HU", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      }) +
+      " - " +
+      friday.toLocaleDateString("hu-HU", { month: "short", day: "2-digit" })
+    );
 
-  return monday.toLocaleDateString('hu-HU', { year: "numeric", month: "short" }) +
-  ' ' + monday.toLocaleDateString('hu-HU', { day: '2-digit' }) + ' - ' + friday.toLocaleDateString('hu-HU', { day: '2-digit' }) + '.';
+  return (
+    monday.toLocaleDateString("hu-HU", { year: "numeric", month: "short" }) +
+    " " +
+    monday.toLocaleDateString("hu-HU", { day: "2-digit" }) +
+    " - " +
+    friday.toLocaleDateString("hu-HU", { day: "2-digit" }) +
+    "."
+  );
 }
 
 export default async function Home() {
   // Get all week numbers for 2025
   const getWeeksFor2025 = (): number[] => {
     const weeks: number[] = [];
-    
+
     // ISO 8601 week date system: 2025 has 52 weeks
     for (let week = 1; week <= 52; week++) {
       weeks.push(week);
     }
-    
+
     return weeks;
   };
 
@@ -85,28 +103,32 @@ export default async function Home() {
   console.log(menu, weeksIn2025, currentWeekNumber);
 
   // Sort menu by day number and ensure it's an array
-  const sortedMenu = menu ? menu.sort((a: { day: number }, b: { day: number }) => a.day - b.day) : [];
+  const sortedMenu = menu
+    ? menu.sort((a: { day: number }, b: { day: number }) => a.day - b.day)
+    : [];
 
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logoSection}>
-          <div className={styles.logo}><UtensilsCrossed /></div>
+          <div className={styles.logo}>
+            <UtensilsCrossed />
+          </div>
           <h1 className={styles.title}>Logiker Menza</h1>
         </div>
         <nav className={styles.navbar}>
           <Link className={styles.navButton} href="./profile">
-            <User size={24}/>
+            <User size={24} />
             <span>Profil</span>
           </Link>
           <Link className={styles.navButton} href="./cart">
-            <ShoppingCart size={24}/>
+            <ShoppingCart size={24} />
             <span>Kosár</span>
             <div className={styles.cartBadge}>3</div>
           </Link>
         </nav>
       </header>
-      
+
       <main className={styles.main}>
         <div className={styles.menuHeader}>
           <div className={styles.titleSection}>
@@ -114,14 +136,16 @@ export default async function Home() {
             <div className={styles.weekInfo}>
               <span className={styles.weekDate}>{currentWeekNumber}. hét</span>
               <select defaultValue={currentWeekNumber}>
-                {weeksIn2025.map(week => (
-                  <option key={week} value={week}>{week}. hét - {getDateRangeForWeek(week)}</option>
+                {weeksIn2025.map((week) => (
+                  <option key={week} value={week}>
+                    {week}. hét - {getDateRangeForWeek(week)}
+                  </option>
                 ))}
               </select>
               <div className={styles.statusBadge}>Friss</div>
             </div>
           </div>
-          
+
           <div className={styles.menuStats}>
             <div className={styles.stat}>
               <span className={styles.statNumber}>15</span>
@@ -136,7 +160,9 @@ export default async function Home() {
 
         <div className={styles.menuContainer}>
           <div className={styles.days}>
-            <div><Utensils /></div>
+            <div>
+              <Utensils />
+            </div>
             <div>Hétfő</div>
             <div>Kedd</div>
             <div>Szerda</div>
@@ -150,7 +176,7 @@ export default async function Home() {
               <div className={styles.optionTitle}>B</div>
               <div className={styles.optionTitle}>C</div>
             </div>
-  
+
             {sortedMenu.map((day: MenuItem) => (
               <div className={styles.day} key={day.id}>
                 {day.foods.map((food: Food) => (
@@ -158,13 +184,19 @@ export default async function Home() {
                     <div className={styles.foodInfo}>
                       <span className={styles.foodName}>{food.name}</span>
                       <span className={styles.foodPrice}>
-                        {new Intl.NumberFormat("hu-HU", { style: "currency", currency: "HUF" }).format(food.price)}
+                        {new Intl.NumberFormat("hu-HU", {
+                          style: "currency",
+                          currency: "HUF",
+                        }).format(food.price)}
                       </span>
                     </div>
                     <div className={styles.actionButtons}>
                       <InfoButton text={food.description} />
-                      <input type="radio" name={day.id} style={{ display: 'none' }} />
-                      <button className={styles.addToCart}>+</button>
+                      <AddButton
+                        className={styles.addToCart}
+                        foodId={food.id}
+                        date={{ year: day.year, week: day.week, day: day.day }}
+                      />
                     </div>
                   </div>
                 ))}

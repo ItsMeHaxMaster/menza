@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 
@@ -32,6 +34,16 @@ class Api {
       const menu = await this.fetch(`/v1/menu?week=${week}${yearParam}`);
       if (!menu.ok) return null;
       return await menu.json();
+    } catch {
+      return null;
+    }
+  });
+
+  public getFood = cache(async (id: string) => {
+    try {
+      const food = await this.fetch(`/v1/food/${id}`);
+      if (!food.ok) return null;
+      return await food.json();
     } catch {
       return null;
     }
