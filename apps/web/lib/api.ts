@@ -36,6 +36,16 @@ class Api {
       return null;
     }
   });
+
+  public getFood = cache(async (id: string) => {
+    try {
+      const food = await this.fetch(`/v1/food/${id}`);
+      if (!food.ok) return null;
+      return await food.json();
+    } catch {
+      return null;
+    }
+  });
 }
 
 const api = new Api();
