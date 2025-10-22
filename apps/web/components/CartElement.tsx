@@ -7,7 +7,13 @@ import { getFood } from '@/app/actions';
 import InfoButton from './InfoButton';
 import AddButton from './AddButton';
 
-export default function CartElement({ foodCart, onDelete }: { foodCart: any, onDelete: any }) {
+export default function CartElement({
+  foodCart,
+  onDelete
+}: {
+  foodCart: any;
+  onDelete: any;
+}) {
   const [food, setFood] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +32,7 @@ export default function CartElement({ foodCart, onDelete }: { foodCart: any, onD
       case 6:
         return 'Szombat';
     }
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -40,15 +46,15 @@ export default function CartElement({ foodCart, onDelete }: { foodCart: any, onD
   return (
     <div>
       <div className={styles.foodItem}>
-        <div style={{
+        <div
+          style={{
             flex: '1',
             display: 'flex',
             flexDirection: 'column',
             gap: '4px'
-        }}>
-          <span className={styles.food}>
-            {food.name}
-          </span>
+          }}
+        >
+          <span className={styles.food}>{food.name}</span>
 
           <span>
             {foodCart.date.week}. hét, {nap(foodCart.date.day)}
@@ -56,9 +62,9 @@ export default function CartElement({ foodCart, onDelete }: { foodCart: any, onD
         </div>
 
         <span className={styles.foodPrice}>
-          {new Intl.NumberFormat("hu-HU", {
-            style: "currency",
-            currency: "HUF",
+          {new Intl.NumberFormat('hu-HU', {
+            style: 'currency',
+            currency: 'HUF'
           }).format(food.price)}
         </span>
 
@@ -67,7 +73,9 @@ export default function CartElement({ foodCart, onDelete }: { foodCart: any, onD
           <AddButton
             className={styles.addToCart}
             foodId={food.id}
-            onClick={() => { onDelete() }}
+            onClick={() => {
+              onDelete();
+            }}
             date={{
               year: foodCart.date.year,
               week: foodCart.date.week,
