@@ -1,24 +1,61 @@
-"use client";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import React from "react";
+'use client';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-import "../globals.css";
-import "./page.modules.css";
+import '../globals.css';
+import './page.modules.css';
+import CartElement from '@/components/CartElement';
 
 export default function CartPage() {
-  const router = useRouter();
+  const [cart, setCart] = useState<
+    {
+      id: string;
+      date: { year: number; week: number; day: number };
+    }[]
+  >([]);
+  useEffect(() => {
+    const storedCart: {
+      id: string;
+      date: { year: number; week: number; day: number };
+    }[] = JSON.parse(localStorage.getItem('cart') || '[]');
+    storedCart.sort((a, b) => a.date.day - b.date.day);
+    setCart(storedCart);
+  }, []);
 
   return (
     <main className="cart-container">
       <h1 className="cart-title">Kosár és fizetés</h1>
 
       <div className="cart-elements">
-        {}
-        <p className="empty-cart">A kosár jelenleg üres.</p>
+        {cart.length > 0 ? (
+          <>
+            {cart.map((food) => (
+              <CartElement
+                key={`${food.date.day}${food.date.week}`}
+                foodCart={food}
+                onDelete={() => {
+                  const tmp = [...cart];
+
+                  const index = tmp.findIndex(
+                    (item) =>
+                      item.id === food.id &&
+                      item.date.year === food.date.year &&
+                      item.date.week === food.date.week &&
+                      item.date.day === food.date.day
+                  );
+                  if (index !== -1) {
+                    tmp.splice(index, 1);
+                    setCart(tmp);
+                  }
+                }}
+              />
+            ))}
+          </>
+        ) : (
+          <p className="empty-cart">A kosár jelenleg üres.</p>
+        )}
       </div>
-
-
       <div className="cart-buttons">
         <Link href="" className="btn btn-blue">
           Fizetés

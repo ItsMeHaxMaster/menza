@@ -9,12 +9,15 @@ import { z } from 'zod';
 export const schemas = {
   get: {
     req: z.object({
-      week_start: z.string()
+      week: z.string(),
+      year: z.string().optional()
     }),
     res: z.array(
       z.object({
         id: z.string(),
-        date: z.date(),
+        year: z.number(),
+        week: z.number(),
+        day: z.number(),
         foods: z.array(
           z.object({
             id: z.string(),
@@ -37,18 +40,18 @@ export const get = async (
   const db = (await orm).em.fork();
 
   try {
-    const { week_start } = req.validateQuery(schemas.get.req);
+    const { week, year } = req.validateQuery(schemas.get.req);
 
-    const monday = new Date(parseInt(week_start));
-    const friday = new Date(monday);
-    friday.setDate(monday.getDate() + 4);
+    const weekNum = parseInt(week);
+    const yearNum = year ? parseInt(year) : new Date().getFullYear();
 
     const weekMenus = await db.find(Menu, {
-      date: {
-        $gte: monday,
-        $lte: friday
-      }
+      week: weekNum,
+      year: yearNum
     });
+
+    if (weekMenus.length <= 0)
+      return res.error(Status.NotFound, 'Menu for this week is not found.');
 
     const populatedMenus = await Promise.all(
       weekMenus.map(async (menu) => {
@@ -73,27 +76,18 @@ export const get = async (
 
         return {
           id: menu.id.toString(),
-          date: menu.date,
+          year: menu.year,
+          week: menu.week,
+          day: menu.day,
           foods: populatedFoods
         };
       })
     );
 
-    console.log(`Found ${weekMenus.length} menus for the week`);
-    console.log(
-      `Date range: ${monday.toDateString()} to ${friday.toDateString()}`
-    );
-    console.log('Populated menus:', populatedMenus.length);
-
-    // Log summary of each menu
-    populatedMenus.forEach((menu, index) => {
-      console.log(
-        `Menu ${index + 1}: ${menu.date.toDateString()} - ${menu.foods.length} foods: ${menu.foods.map((f) => f.name).join(', ')}`
-      );
-    });
-
     res.status(Status.Ok).json(populatedMenus);
   } catch (e: unknown) {
     console.error(e);
+
+    res.error(Status.InternalServerError, 'Internal Server Error');
   }
 };

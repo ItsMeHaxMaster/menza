@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from "react";
 import styles from "./InfoButton.module.css";
 import { Info } from "lucide-react";

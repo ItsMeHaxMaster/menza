@@ -163,14 +163,6 @@ function getRandomItems<T>(array: T[], count: number): T[] {
   return shuffled.slice(0, count);
 }
 
-function getDateForWeekday(startDate: Date, weekday: number): Date {
-  const date = new Date(startDate);
-  const day = date.getDay();
-  const diff = weekday - day;
-  date.setDate(date.getDate() + diff);
-  return date;
-}
-
 export async function generateDummyData() {
   const em = (await orm).em.fork();
 
@@ -224,24 +216,43 @@ export async function generateDummyData() {
     console.log(`✅ Created ${foods.length} foods`);
 
     console.log(
-      '📅 Creating menus for 2 weeks (1 menu per day with 3 foods)...'
+      '📅 Creating menus for the entire year (1 menu per day with 3 foods)...'
     );
 
-    // Create menus for 2 weeks (Monday to Friday only)
-    const startDate = new Date(); // Start from today
+    // Helper function to get current ISO week number
+    function getWeekNumber(date: Date): number {
+      const target = new Date(date.valueOf());
+      const dayNr = (date.getDay() + 6) % 7;
+      target.setDate(target.getDate() - dayNr + 3);
+      const firstThursday = target.valueOf();
+      target.setMonth(0, 1);
+      if (target.getDay() !== 4) {
+        target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
+      }
+      return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
+    }
+
+    // Helper function to get the number of ISO weeks in a year
+    function getWeeksInYear(year: number): number {
+      const dec28 = new Date(year, 11, 28);
+      return getWeekNumber(dec28);
+    }
+
+    // Create menus for entire year (day 1-5, Monday to Friday)
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const totalWeeks = getWeeksInYear(currentYear);
     const menus: Menu[] = [];
 
-    for (let week = 0; week < 2; week++) {
-      for (let day = 1; day <= 5; day++) {
-        // Monday (1) to Friday (5)
+    for (let weekNumber = 1; weekNumber <= totalWeeks; weekNumber++) {
+      for (let dayNumber = 1; dayNumber <= 5; dayNumber++) {
+        // day 1 = Monday, 2 = Tuesday, ... 5 = Friday
 
         // Create 1 menu per day with 3 food options
         const menu = new Menu();
-
-        // Calculate the date for this weekday
-        const weekStart = new Date(startDate);
-        weekStart.setDate(startDate.getDate() + week * 7);
-        menu.date = getDateForWeekday(weekStart, day);
+        menu.year = currentYear;
+        menu.week = weekNumber;
+        menu.day = dayNumber;
 
         // Add 3 random foods to this single menu
         const selectedFoods = getRandomItems(foods, 3);
@@ -253,14 +264,19 @@ export async function generateDummyData() {
         menus.push(menu);
         em.persist(menu);
 
-        console.log(
-          `📋 Menu for ${menu.date.toDateString()}: ${selectedFoods.map((f) => f.name).join(', ')}`
-        );
+        if (weekNumber <= 2 || weekNumber >= totalWeeks - 1) {
+          // Log first 2 and last 2 weeks to avoid console spam
+          console.log(
+            `📋 Menu for ${currentYear}, week ${weekNumber}, day ${dayNumber}: ${selectedFoods.map((f) => f.name).join(', ')}`
+          );
+        }
       }
     }
 
     await em.flush();
-    console.log(`✅ Created ${menus.length} menus for 2 weeks`);
+    console.log(
+      `✅ Created ${menus.length} menus for the entire year (${totalWeeks} weeks)`
+    );
 
     // Summary
     console.log('\n🎉 Dummy data generation completed!');
@@ -268,11 +284,9 @@ export async function generateDummyData() {
     console.log(`   - ${allergens.length} allergens`);
     console.log(`   - ${foods.length} foods`);
     console.log(
-      `   - ${menus.length} menus (2 weeks, Monday-Friday, 3 foods per menu)`
+      `   - ${menus.length} menus (entire year, days 1-5, 3 foods per menu)`
     );
-    console.log(
-      `   - Date range: ${menus[0].date.toDateString()} to ${menus[menus.length - 1].date.toDateString()}`
-    );
+    console.log(`   - Year: ${currentYear}, Weeks: 1 to ${totalWeeks}`);
   } catch (error) {
     console.error('❌ Error generating dummy data:', error);
     throw error;

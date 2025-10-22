@@ -10,9 +10,6 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
     "baseUrl": "./src",
     "rootDir": "./src",
     "paths": {
