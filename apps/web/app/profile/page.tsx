@@ -2,13 +2,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
 import api from "@/lib/api";
-
-interface ProfileData {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-}
+import { deleteSession } from "../actions";
 
 export default async function Profile() {
   const profile = await api.getUser();
@@ -55,8 +49,8 @@ export default async function Profile() {
 
           <div className={styles.profileDetails}>
             <h3>Felhasználói adatok</h3>
-            <p><strong>Név:</strong> {}</p>
-            <p><strong>Email:</strong> {profile.email}</p>
+            <p><strong>Név:</strong></p> <input type="text" name="name" defaultValue={profile.name} />
+            <p><strong>Email:</strong></p> <input type="email" name="email" defaultValue={profile.email} />
             <p>
               <strong>Regisztráció dátuma:</strong>{" "}
               {new Date(profile.createdAt).toLocaleDateString("hu-HU")}
@@ -66,6 +60,7 @@ export default async function Profile() {
 
             <button
               className={styles.logoutButton}
+              onClick={deleteSession}
             >
               Kijelentkezés
             </button>

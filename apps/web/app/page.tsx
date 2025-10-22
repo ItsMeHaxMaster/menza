@@ -6,6 +6,12 @@ import api from "@/lib/api";
 import { useState } from "react";
 import AddButton from "@/components/AddButton";
 
+declare global {
+  interface Date {
+    getWeek(): number;
+  }
+}
+
 // Types for menu data
 interface Food {
   id: string;
@@ -24,10 +30,9 @@ interface MenuItem {
   foods: Food[];
 }
 
-// Helper function to get ISO week number
-function getWeekNumber(date: Date): number {
-  const target = new Date(date.valueOf());
-  const dayNr = (date.getDay() + 6) % 7;
+Date.prototype.getWeek = function() {
+  const target = new Date(this.valueOf());
+  const dayNr = (this.getDay() + 6) % 7;
   target.setDate(target.getDate() - dayNr + 3);
   const firstThursday = target.valueOf();
   target.setMonth(0, 1);
@@ -77,32 +82,24 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
 }
 
 export default async function Home() {
-  // Get all week numbers for 2025
-  const getWeeksFor2025 = (): number[] => {
+  const getWeeksForCurrentYear = (): number[] => {
     const weeks: number[] = [];
+    const currentYear = new Date().getFullYear();
 
-    // ISO 8601 week date system: 2025 has 52 weeks
-    for (let week = 1; week <= 52; week++) {
+    const dec31 = new Date(currentYear, 11, 31);
+    const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
+
+    for (let week = 1; week <= weeksInYear; week++) {
       weeks.push(week);
     }
 
     return weeks;
   };
 
-  const getCurrentWeekNumber = (): number => {
-    const today = new Date();
-    return getWeekNumber(today);
-  };
+  const weeksIn2025 = getWeeksForCurrentYear();
+  const currentWeekNumber = new Date().getWeek();
 
-  const weeksIn2025 = getWeeksFor2025();
-  const currentWeekNumber = getCurrentWeekNumber();
-  const currentYear = 2025;
-
-  const menu = await api.getMenu(currentWeekNumber, currentYear);
-
-  console.log(menu, weeksIn2025, currentWeekNumber);
-
-  // Sort menu by day number and ensure it's an array
+  const menu = await api.getMenu(currentWeekNumber, new Date().getFullYear());
   const sortedMenu = menu
     ? menu.sort((a: { day: number }, b: { day: number }) => a.day - b.day)
     : [];
@@ -132,9 +129,8 @@ export default async function Home() {
       <main className={styles.main}>
         <div className={styles.menuHeader}>
           <div className={styles.titleSection}>
-            <h2 className={styles.menuTitle}>Heti menü</h2>
+            <h2 className={styles.menuTitle}>Heti Menü</h2>
             <div className={styles.weekInfo}>
-              <span className={styles.weekDate}>{currentWeekNumber}. hét</span>
               <select defaultValue={currentWeekNumber}>
                 {weeksIn2025.map((week) => (
                   <option key={week} value={week}>
@@ -142,7 +138,7 @@ export default async function Home() {
                   </option>
                 ))}
               </select>
-              <div className={styles.statusBadge}>Friss</div>
+              {/* <div className={styles.statusBadge}>Friss</div> */}
             </div>
           </div>
 
