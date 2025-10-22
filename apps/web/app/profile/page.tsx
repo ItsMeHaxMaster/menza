@@ -1,9 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
+import api from "@/lib/api";
 
 interface ProfileData {
   id: string;
@@ -12,56 +10,12 @@ interface ProfileData {
   createdAt: string;
 }
 
-export default function Profile() {
-  const [profile, setProfile] = useState<ProfileData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default async function Profile() {
+  const profile = await api.getUser();
 
-//
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/profile`, {
-          method: "GET",
-          credentials: "include",
-          cache: "no-store",
-        });
-
-        if (!res.ok) {
-          setError("Hiba történt a profil betöltésekor.");
-          setLoading(false);
-          return;
-        }
-
-        const { id, name, email, createdAt }: ProfileData = await res.json();
-        setProfile({ id, name, email, createdAt });
-        setLoading(false);
-      } catch (error) {
-        setError("Hiba történt a profil betöltésekor.");
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  if (loading) return <div className={styles.page}>Betöltés...</div>;
-
-  if (error)
-    return (
-      <div className={styles.page}>
-        <div className={styles.errorContainer}>
-          <h2 className={styles.errorTitle}>Hiba történt</h2>
-          <p className={styles.errorMessage}>{error}</p>
-          <Link href="/login" className={styles.retryButton}>
-            Bejelentkezés újra
-          </Link>
-        </div>
-      </div>
-    );
-
-  if (!profile) return <div className={styles.page}>Nincs adat.</div>;
+  if (!profile) {
+    return (<p>Hiba!</p>);
+  }
 
   return (
     <div className={styles.page}>
@@ -89,7 +43,7 @@ export default function Profile() {
             <div className={styles.avatar}>
               {profile.name
                 .split(" ")
-                .map((n) => n[0])
+                .map((n:string) => n[0])
                 .join("")
                 .toUpperCase()}
             </div>
@@ -112,11 +66,6 @@ export default function Profile() {
 
             <button
               className={styles.logoutButton}
-              onClick={() => {
-                // cookie törlése
-                document.cookie = "session_mz=; max-age=0; path=/";
-                window.location.href = "/login";
-              }}
             >
               Kijelentkezés
             </button>
