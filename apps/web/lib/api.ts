@@ -61,6 +61,16 @@ class Api {
       return null;
     }
   });
+
+  public getUser = cache(async () => {
+    try {
+      const user = await this.fetch(`/v1/user/me`);
+      if (!user.ok) return null;
+      return await user.json();
+    } catch {
+      return null;
+    }
+  });
 }
 
 const api = new Api();
