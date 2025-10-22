@@ -1,117 +1,17 @@
-import styles from './page.module.css';
+"use client";
+import Image from "next/image";
+import styles from "./page.module.css";
 import {
+  Info,
   ShoppingCart,
   User,
   Utensils,
   UtensilsCrossed,
-  Calendar,
-  ChevronRight,
-  ChevronLeft
-} from 'lucide-react';
-import Link from 'next/link';
-import InfoButton from '../components/InfoButton';
-import api from '@/lib/api';
-import { useState } from 'react';
-import AddButton from '@/components/AddButton';
+} from "lucide-react";
+import Link from "next/link";
+import InfoButton from "../components/InfoButton";
 
-declare global {
-  interface Date {
-    getWeek(): number;
-  }
-}
-
-// Types for menu data
-interface Food {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  pictureId: string;
-  allergens: string[];
-}
-
-interface MenuItem {
-  id: string;
-  year: number;
-  week: number;
-  day: number;
-  foods: Food[];
-}
-
-Date.prototype.getWeek = function () {
-  const target = new Date(this.valueOf());
-  const dayNr = (this.getDay() + 6) % 7;
-  target.setDate(target.getDate() - dayNr + 3);
-  const firstThursday = target.valueOf();
-  target.setMonth(0, 1);
-  if (target.getDay() !== 4) {
-    target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
-  }
-  return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
-};
-
-// Get date range for a week number
-function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
-  // Find the first Thursday of the year
-  const jan4 = new Date(year, 0, 4);
-  const firstThursday = new Date(jan4);
-  firstThursday.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7) + 3);
-
-  // Calculate the Monday of the target week
-  const targetDate = new Date(firstThursday);
-  targetDate.setDate(firstThursday.getDate() + (weekNumber - 1) * 7 - 3);
-
-  const monday = targetDate;
-  const friday = new Date(monday);
-  friday.setDate(monday.getDate() + 4);
-
-  if (
-    parseInt(monday.toLocaleDateString('hu-HU', { day: '2-digit' })) >
-    parseInt(friday.toLocaleDateString('hu-HU', { day: '2-digit' }))
-  )
-    return (
-      monday.toLocaleDateString('hu-HU', {
-        year: 'numeric',
-        month: 'short',
-        day: '2-digit'
-      }) +
-      ' - ' +
-      friday.toLocaleDateString('hu-HU', { month: 'short', day: '2-digit' })
-    );
-
-  return (
-    monday.toLocaleDateString('hu-HU', { year: 'numeric', month: 'short' }) +
-    ' ' +
-    monday.toLocaleDateString('hu-HU', { day: '2-digit' }) +
-    ' - ' +
-    friday.toLocaleDateString('hu-HU', { day: '2-digit' }) +
-    '.'
-  );
-}
-
-export default async function Home() {
-  const getWeeksForCurrentYear = (): number[] => {
-    const weeks: number[] = [];
-    const currentYear = new Date().getFullYear();
-
-    const dec31 = new Date(currentYear, 11, 31);
-    const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
-
-    for (let week = 1; week <= weeksInYear; week++) {
-      weeks.push(week);
-    }
-
-    return weeks;
-  };
-
-  const weeksIn2025 = getWeeksForCurrentYear();
-  const currentWeekNumber = new Date().getWeek();
-
-  const menu = await api.getMenu(currentWeekNumber, new Date().getFullYear());
-  const sortedMenu = menu
-    ? menu.sort((a: { day: number }, b: { day: number }) => a.day - b.day)
-    : [];
-
+export default function Home() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -148,20 +48,11 @@ export default async function Home() {
               </select>
             </div>
           </div>
-          <img
-            className={styles.menuLogo}
-            src="./imgs/Logiker_logo.svg"
-            alt="logó"
-          />
-          <div className={styles.orderStatus}>
-            <div className={styles.statusSummary}>
-              <div className={styles.statusIcon}>
-                <Calendar />
-              </div>
-              <div className={styles.statusInfo}>
-                <span className={styles.statusLabel}>Heti rendelés</span>
-                <span className={styles.statusValue}>3 nap kiválasztva</span>
-              </div>
+
+          <div className={styles.menuStats}>
+            <div className={styles.stat}>
+              <span className={styles.statNumber}>15</span>
+              <span className={styles.statLabel}>Étel</span>
             </div>
             <div className={styles.orderDetails}>
               <div className={styles.selectedDays}>
