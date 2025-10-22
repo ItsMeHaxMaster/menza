@@ -33,7 +33,9 @@ export default function CartPage() {
           <CartElement key={`${food.date.day}${food.date.week}`} foodCart={food} onDelete={() => {
             alert(JSON.stringify(food));
 
-            const index = cart.findIndex(
+            const tmp = [ ...cart ];
+
+            const index = tmp.findIndex(
               (item) =>
                 item.id === food.id &&
                 item.date.year === food.date.year &&
@@ -41,7 +43,8 @@ export default function CartPage() {
                 item.date.day === food.date.day
             );
             if (index !== -1) {
-              cart.splice(index, 1);
+              tmp.splice(index, 1);
+              setCart(tmp);
             }
            }} />
         ))}

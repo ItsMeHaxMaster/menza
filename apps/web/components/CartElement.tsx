@@ -67,7 +67,7 @@ export default function CartElement({ foodCart, onDelete }: { foodCart: any, onD
           <AddButton
             className={styles.addToCart}
             foodId={food.id}
-            onClick={onDelete}
+            onClick={() => { onDelete() }}
             date={{
               year: foodCart.date.year,
               week: foodCart.date.week,

@@ -67,7 +67,7 @@ export default function AddButton({
     }
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    onClick();
+    if(onClick) onClick();
   };
   return (
     <button className={className} data-action={action} onClick={click}>
