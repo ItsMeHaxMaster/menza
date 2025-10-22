@@ -1,5 +1,13 @@
 import styles from './page.module.css';
-import { ShoppingCart, User, Utensils, UtensilsCrossed } from 'lucide-react';
+import {
+  ShoppingCart,
+  User,
+  Utensils,
+  UtensilsCrossed,
+  Calendar,
+  ChevronRight,
+  ChevronLeft
+} from 'lucide-react';
 import Link from 'next/link';
 import InfoButton from '../components/InfoButton';
 import api from '@/lib/api';
@@ -138,6 +146,35 @@ export default async function Home() {
                   </option>
                 ))}
               </select>
+            </div>
+          </div>
+          <img
+            className={styles.menuLogo}
+            src="./imgs/Logiker_logo.svg"
+            alt="logó"
+          />
+          <div className={styles.orderStatus}>
+            <div className={styles.statusSummary}>
+              <div className={styles.statusIcon}>
+                <Calendar />
+              </div>
+              <div className={styles.statusInfo}>
+                <span className={styles.statusLabel}>Heti rendelés</span>
+                <span className={styles.statusValue}>3 nap kiválasztva</span>
+              </div>
+            </div>
+            <div className={styles.orderDetails}>
+              <div className={styles.selectedDays}>
+                <div className={styles.dayChip}>H</div>
+                <div className={styles.dayChip}>K</div>
+                <div className={`${styles.dayChip} ${styles.active}`}>Sz</div>
+                <div className={`${styles.dayChip} ${styles.active}`}>Cs</div>
+                <div className={`${styles.dayChip} ${styles.active}`}>P</div>
+              </div>
+              <div className={styles.orderTotal}>
+                <span>Összesen:</span>
+                <span className={styles.totalAmount}>3900 Ft</span>
+              </div>
             </div>
           </div>
         </div>
