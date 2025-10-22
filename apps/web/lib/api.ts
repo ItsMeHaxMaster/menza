@@ -28,6 +28,19 @@ class Api {
     });
   }
 
+  public deleteSession = cache(async () => {
+    if (!(await this.hasSessionCookie())) return false;
+
+    try {
+      //const del = await this.fetch('/v1/session', { method: 'DELETE' });
+      //if (!del.ok) return false;
+      (await cookies()).delete('session');
+      return true;
+    } catch {
+      return false;
+    }
+  });
+
   public getMenu = cache(async (week: number, year?: number) => {
     try {
       const yearParam = year ? `&year=${year}` : '';
