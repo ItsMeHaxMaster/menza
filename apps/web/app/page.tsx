@@ -1,10 +1,10 @@
-import styles from "./page.module.css";
-import { ShoppingCart, User, Utensils, UtensilsCrossed } from "lucide-react";
-import Link from "next/link";
-import InfoButton from "../components/InfoButton";
-import api from "@/lib/api";
-import { useState } from "react";
-import AddButton from "@/components/AddButton";
+import styles from './page.module.css';
+import { ShoppingCart, User, Utensils, UtensilsCrossed } from 'lucide-react';
+import Link from 'next/link';
+import InfoButton from '../components/InfoButton';
+import api from '@/lib/api';
+import { useState } from 'react';
+import AddButton from '@/components/AddButton';
 
 declare global {
   interface Date {
@@ -30,7 +30,7 @@ interface MenuItem {
   foods: Food[];
 }
 
-Date.prototype.getWeek = function() {
+Date.prototype.getWeek = function () {
   const target = new Date(this.valueOf());
   const dayNr = (this.getDay() + 6) % 7;
   target.setDate(target.getDate() - dayNr + 3);
@@ -40,7 +40,7 @@ Date.prototype.getWeek = function() {
     target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
   }
   return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
-}
+};
 
 // Get date range for a week number
 function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
@@ -58,26 +58,26 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
   friday.setDate(monday.getDate() + 4);
 
   if (
-    parseInt(monday.toLocaleDateString("hu-HU", { day: "2-digit" })) >
-    parseInt(friday.toLocaleDateString("hu-HU", { day: "2-digit" }))
+    parseInt(monday.toLocaleDateString('hu-HU', { day: '2-digit' })) >
+    parseInt(friday.toLocaleDateString('hu-HU', { day: '2-digit' }))
   )
     return (
-      monday.toLocaleDateString("hu-HU", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
+      monday.toLocaleDateString('hu-HU', {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
       }) +
-      " - " +
-      friday.toLocaleDateString("hu-HU", { month: "short", day: "2-digit" })
+      ' - ' +
+      friday.toLocaleDateString('hu-HU', { month: 'short', day: '2-digit' })
     );
 
   return (
-    monday.toLocaleDateString("hu-HU", { year: "numeric", month: "short" }) +
-    " " +
-    monday.toLocaleDateString("hu-HU", { day: "2-digit" }) +
-    " - " +
-    friday.toLocaleDateString("hu-HU", { day: "2-digit" }) +
-    "."
+    monday.toLocaleDateString('hu-HU', { year: 'numeric', month: 'short' }) +
+    ' ' +
+    monday.toLocaleDateString('hu-HU', { day: '2-digit' }) +
+    ' - ' +
+    friday.toLocaleDateString('hu-HU', { day: '2-digit' }) +
+    '.'
   );
 }
 
@@ -154,6 +154,10 @@ export default async function Home() {
           </div>
         </div>
 
+        <div className={styles.warning}>
+          Napont csak 1 ételt lehet választani.
+        </div>
+
         <div className={styles.menuContainer}>
           <div className={styles.days}>
             <div>
@@ -180,9 +184,9 @@ export default async function Home() {
                     <div className={styles.foodInfo}>
                       <span className={styles.foodName}>{food.name}</span>
                       <span className={styles.foodPrice}>
-                        {new Intl.NumberFormat("hu-HU", {
-                          style: "currency",
-                          currency: "HUF",
+                        {new Intl.NumberFormat('hu-HU', {
+                          style: 'currency',
+                          currency: 'HUF'
                         }).format(food.price)}
                       </span>
                     </div>
