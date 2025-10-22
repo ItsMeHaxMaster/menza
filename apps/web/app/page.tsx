@@ -138,24 +138,12 @@ export default async function Home() {
                   </option>
                 ))}
               </select>
-              {/* <div className={styles.statusBadge}>Friss</div> */}
-            </div>
-          </div>
-
-          <div className={styles.menuStats}>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>15</span>
-              <span className={styles.statLabel}>Étel</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>3</span>
-              <span className={styles.statLabel}>Opció</span>
             </div>
           </div>
         </div>
 
         <div className={styles.warning}>
-          Napont csak 1 ételt lehet választani.
+          Naponta csak 1 ételt lehet választani.
         </div>
 
         <div className={styles.menuContainer}>
@@ -177,31 +165,55 @@ export default async function Home() {
               <div className={styles.optionTitle}>C</div>
             </div>
 
-            {sortedMenu.map((day: MenuItem) => (
-              <div className={styles.day} key={day.id}>
-                {day.foods.map((food: Food) => (
-                  <div className={styles.menuCard} key={food.id}>
-                    <div className={styles.foodInfo}>
-                      <span className={styles.foodName}>{food.name}</span>
-                      <span className={styles.foodPrice}>
-                        {new Intl.NumberFormat('hu-HU', {
-                          style: 'currency',
-                          currency: 'HUF'
-                        }).format(food.price)}
-                      </span>
+            {sortedMenu.map((day: MenuItem) => {
+              const dayNames = [
+                '',
+                'Hétfő',
+                'Kedd',
+                'Szerda',
+                'Csütörtök',
+                'Péntek'
+              ];
+              const options = ['A', 'B', 'C'];
+
+              return (
+                <div
+                  className={styles.day}
+                  key={day.id}
+                  data-day={dayNames[day.day]}
+                >
+                  {day.foods.map((food: Food, index: number) => (
+                    <div
+                      className={styles.menuCard}
+                      key={food.id}
+                      data-option={options[index]}
+                    >
+                      <div className={styles.foodInfo}>
+                        <span className={styles.foodName}>{food.name}</span>
+                        <span className={styles.foodPrice}>
+                          {new Intl.NumberFormat('hu-HU', {
+                            style: 'currency',
+                            currency: 'HUF'
+                          }).format(food.price)}
+                        </span>
+                      </div>
+                      <div className={styles.actionButtons}>
+                        <InfoButton text={food.description} />
+                        <AddButton
+                          className={styles.addToCart}
+                          foodId={food.id}
+                          date={{
+                            year: day.year,
+                            week: day.week,
+                            day: day.day
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className={styles.actionButtons}>
-                      <InfoButton text={food.description} />
-                      <AddButton
-                        className={styles.addToCart}
-                        foodId={food.id}
-                        date={{ year: day.year, week: day.week, day: day.day }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
+                  ))}
+                </div>
+              );
+            })}
           </div>
         </div>
       </main>
