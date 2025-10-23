@@ -8,12 +8,22 @@ import { z } from 'zod';
 export const schemas = {
   get: {
     res: z.object({
-      id: z.string(),
+      id: z.bigint(),
       name: z.string(),
       description: z.string(),
       price: z.number(),
       pictureId: z.string(),
-      allergens: z.array(z.string())
+      allergens: z.array(
+        z.object({
+          id: z.bigint(),
+          name: z.string(),
+          icon: z.string(),
+          createdAt: z.date(),
+          updatedAt: z.date()
+        })
+      ),
+      createdAt: z.date(),
+      updatedAt: z.date()
     })
   }
 };
@@ -35,14 +45,14 @@ export const get = async (
 
     await food.allergens.init();
     res.status(Status.Ok).json({
-      id: food.id.toString(),
+      id: food.id,
       name: food.name,
       description: food.description,
       price: food.price,
       pictureId: food.pictureId,
-      allergens: food.allergens
-        .getItems()
-        .map((allergen) => allergen.id.toString())
+      allergens: food.allergens.getItems(),
+      createdAt: food.createdAt,
+      updatedAt: food.updatedAt
     });
   } catch (e: unknown) {
     console.error(e);

@@ -25,7 +25,17 @@ export const schemas = {
             description: z.string(),
             price: z.number(),
             pictureId: z.string(),
-            allergens: z.array(z.string())
+            allergens: z.array(
+              z.object({
+                id: z.bigint(),
+                name: z.string(),
+                icon: z.string(),
+                createdAt: z.date(),
+                updatedAt: z.date()
+              })
+            ),
+            createdAt: z.date(),
+            updatedAt: z.date()
           })
         )
       })
@@ -67,9 +77,9 @@ export const get = async (
               description: food.description,
               price: food.price,
               pictureId: food.pictureId,
-              allergens: food.allergens
-                .getItems()
-                .map((allergen) => allergen.id.toString())
+              allergens: food.allergens.getItems(),
+              createdAt: food.createdAt,
+              updatedAt: food.updatedAt
             };
           })
         );

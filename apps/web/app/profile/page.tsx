@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
 import api from "@/lib/api";
 import { deleteSession } from "../../actions/actions";
+import CartCounter from "@/components/CartCounter";
 
 export default async function Profile() {
   const profile = await api.getUser();

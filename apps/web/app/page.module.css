@@ -503,6 +503,50 @@
   }
 }
 
+/* Loading Skeleton Styles */
+.skeleton {
+  pointer-events: none;
+  user-select: none;
+}
+
+.skeletonText {
+  background: linear-gradient(
+    90deg,
+    rgba(79, 70, 229, 0.1) 25%,
+    rgba(79, 70, 229, 0.2) 50%,
+    rgba(79, 70, 229, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  display: inline-block;
+  width: 100%;
+  height: 1em;
+}
+
+.skeletonButton {
+  background: linear-gradient(
+    90deg,
+    rgba(79, 70, 229, 0.1) 25%,
+    rgba(79, 70, 229, 0.2) 50%,
+    rgba(79, 70, 229, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 /* Mobile devices - vertical layout */
 @media (max-width: 768px) {
   .header {

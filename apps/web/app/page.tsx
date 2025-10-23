@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './page.module.css';
 import {
   ShoppingCart,
@@ -12,9 +14,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import InfoButton from '../components/InfoButton';
 import api from '@/lib/api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddButton from '@/components/AddButton';
 import CartCounter from '@/components/CartCounter';
+import { getMenu } from '@/actions/actions';
 
 declare global {
   interface Date {
@@ -91,8 +94,7 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
   );
 }
 
-export default async function Home() {
-  const getWeeksForCurrentYear = (): number[] => {
+const getWeeksForCurrentYear = (): number[] => {
     const weeks: number[] = [];
     const currentYear = new Date().getFullYear();
 
@@ -106,13 +108,27 @@ export default async function Home() {
     return weeks;
   };
 
+export default function Home() {
+  const [menu, setMenu] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const weeksIn2025 = getWeeksForCurrentYear();
   const currentWeekNumber = new Date().getWeek();
 
-  const menu = await api.getMenu(currentWeekNumber, new Date().getFullYear());
-  const sortedMenu = menu
-    ? menu.sort((a: { day: number }, b: { day: number }) => a.day - b.day)
-    : [];
+  const updateMenu = async (week: number) => {
+    setLoading(true);
+    const menuData = await getMenu(week, new Date().getFullYear());
+    setMenu(
+      menuData
+        ? menuData.sort((a: { day: number }, b: { day: number }) => a.day - b.day)
+        : []
+    );
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    updateMenu(currentWeekNumber);
+  }, [currentWeekNumber]);
 
   return (
     <div className={styles.page}>
@@ -141,7 +157,9 @@ export default async function Home() {
           <div className={styles.titleSection}>
             <h2 className={styles.menuTitle}>Heti Menü</h2>
             <div className={styles.weekInfo}>
-              <select defaultValue={currentWeekNumber}>
+              <select defaultValue={currentWeekNumber} onChange={(e) => {
+                updateMenu(parseInt((e.target as HTMLSelectElement).value))
+              }}>
                 {weeksIn2025.map((week) => (
                   <option key={week} value={week}>
                     {week}. hét - {getDateRangeForWeek(week)}
@@ -207,55 +225,94 @@ export default async function Home() {
               <div className={styles.optionTitle}>C</div>
             </div>
 
-            {sortedMenu.map((day: MenuItem) => {
-              const dayNames = [
-                '',
-                'Hétfő',
-                'Kedd',
-                'Szerda',
-                'Csütörtök',
-                'Péntek'
-              ];
-              const options = ['A', 'B', 'C'];
-
-              return (
-                <div
-                  className={styles.day}
-                  key={day.id}
-                  data-day={dayNames[day.day]}
-                >
-                  {day.foods.map((food: Food, index: number) => (
+            {loading ? (
+              // Loading skeleton
+              Array.from({ length: 5 }).map((_, dayIndex) => (
+                <div className={styles.day} key={`loading-${dayIndex}`}>
+                  {Array.from({ length: 3 }).map((_, optionIndex) => (
                     <div
-                      className={styles.menuCard}
-                      key={food.id}
-                      data-option={options[index]}
+                      className={`${styles.menuCard} ${styles.skeleton}`}
+                      key={`loading-${dayIndex}-${optionIndex}`}
                     >
                       <div className={styles.foodInfo}>
-                        <span className={styles.foodName}>{food.name}</span>
-                        <span className={styles.foodPrice}>
-                          {new Intl.NumberFormat('hu-HU', {
-                            style: 'currency',
-                            currency: 'HUF'
-                          }).format(food.price)}
+                        <span className={`${styles.foodName} ${styles.skeletonText}`}>
+                          &nbsp;
+                        </span>
+                        <span className={`${styles.foodPrice} ${styles.skeletonText}`}>
+                          &nbsp;
                         </span>
                       </div>
                       <div className={styles.actionButtons}>
-                        <InfoButton text={food.description} />
-                        <AddButton
-                          className={styles.addToCart}
-                          foodId={food.id}
-                          date={{
-                            year: day.year,
-                            week: day.week,
-                            day: day.day
-                          }}
-                        />
+                        <div className={styles.skeletonButton}>&nbsp;</div>
+                        <div className={styles.skeletonButton}>&nbsp;</div>
                       </div>
                     </div>
                   ))}
                 </div>
-              );
-            })}
+              ))
+            ) : menu.length === 0 ? (
+              <div style={{ gridColumn: '2 / -1', textAlign: 'center', padding: '3rem' }}>
+                <p style={{ fontSize: '1.2rem', opacity: 0.7 }}>
+                  Nincs elérhető menü erre a hétre.
+                </p>
+              </div>
+            ) : (
+              menu.map((day: MenuItem) => {
+                const dayNames = [
+                  '',
+                  'Hétfő',
+                  'Kedd',
+                  'Szerda',
+                  'Csütörtök',
+                  'Péntek'
+                ];
+                const options = ['A', 'B', 'C'];
+
+                return (
+                  <div
+                    className={styles.day}
+                    key={day.id}
+                    data-day={dayNames[day.day]}
+                  >
+                    {day.foods.map((food: Food, index: number) => (
+                      <div
+                        className={styles.menuCard}
+                        key={food.id}
+                        data-option={options[index]}
+                      >
+                        <div className={styles.foodInfo}>
+                          <span className={styles.foodName}>{food.name}</span>
+                          <span className={styles.foodPrice}>
+                            {new Intl.NumberFormat('hu-HU', {
+                              style: 'currency',
+                              currency: 'HUF'
+                            }).format(food.price)}
+                          </span>
+                        </div>
+                        <div className={styles.actionButtons}>
+                          <InfoButton 
+                            text={food.description} 
+                            allergens={food.allergens}
+                            foodName={food.name}
+                            price={food.price}
+                            pictureId={food.pictureId}
+                          />
+                          <AddButton
+                            className={styles.addToCart}
+                            foodId={food.id}
+                            date={{
+                              year: day.year,
+                              week: day.week,
+                              day: day.day
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </main>
