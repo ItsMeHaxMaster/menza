@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
 import api from "@/lib/api";
+import CartCounter from '@/components/CartCounter';
 import { deleteSession } from "../actions";
 
 export default async function Profile() {
@@ -27,7 +28,7 @@ export default async function Profile() {
           <Link className={styles.navButton} href="/cart">
             <ShoppingCart size={24} />
             <span>Kosár</span>
-            <div className={styles.cartBadge}>3</div>
+            <CartCounter />
           </Link>
         </nav>
       </header>

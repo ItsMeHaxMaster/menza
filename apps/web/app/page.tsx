@@ -13,6 +13,7 @@ import InfoButton from '../components/InfoButton';
 import api from '@/lib/api';
 import { useState } from 'react';
 import AddButton from '@/components/AddButton';
+import CartCounter from '@/components/CartCounter';
 
 declare global {
   interface Date {
@@ -129,7 +130,7 @@ export default async function Home() {
           <Link className={styles.navButton} href="./cart">
             <ShoppingCart size={24} />
             <span>Kosár</span>
-            <div className={styles.cartBadge}>3</div>
+            <CartCounter />
           </Link>
         </nav>
       </header>
