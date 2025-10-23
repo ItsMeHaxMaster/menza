@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import styles from "./InfoButton.module.css";
 import { Info, AlertTriangle, Milk, Wheat, Fish, Egg, Nut, Beef, Apple, Leaf, LucideIcon, X, ChefHat } from "lucide-react";
 import Image from "next/image";
+import Showdown from "showdown";
 
 interface Allergen {
   id: string;
@@ -44,6 +45,12 @@ export default function InfoButton({
   pictureId?: string;
 }) {
     const [isOpen, setIsOpen] = useState(false);
+    
+    // Convert markdown to HTML using showdown
+    const htmlContent = useMemo(() => {
+      const converter = new Showdown.Converter();
+      return converter.makeHtml(text);
+    }, [text]);
     
     const getIcon = (iconName: string) => {
       const IconComponent = iconMap[iconName.toLowerCase()] || AlertTriangle;
@@ -110,7 +117,10 @@ export default function InfoButton({
               <ChefHat size={20} />
               <h2>Összetevők</h2>
             </div>
-            <p className={styles.description}>{text}</p>
+            <div 
+              className={styles.description} 
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
           </div>
         </div>
       </div>

@@ -20,61 +20,206 @@ const foodData = [
   // Main dishes
   {
     name: 'Rántott Csirkemell',
-    description: 'Ropogós bundában sült csirkemell, citrommal és krumplival',
+    description: `**Ropogós bundában sült csirkemell házi körettel**
+
+Friss csirkemell filé aranybarnára sütve ropogós bundában, frissen facsart citrommal és illatos körettel tálalva.
+
+**Összetevők:**
+- Csirkemell filé
+- Liszt
+- Tojás
+- Zsemlemorzsa
+- Sütőolaj
+- Citrom
+- Petrezselyem
+- Párolt burgonya
+- Só, bors`,
     price: 2890,
     allergens: ['Glutén', 'Tojás']
   },
   {
     name: 'Gulyásleves',
-    description: 'Hagyományos magyar gulyásleves marhahússal és zöldségekkel',
+    description: `**Hagyományos magyar gulyásleves eredeti receptúra szerint**
+
+Omlós marhahús gazdagon fűszerezve, friss zöldségekkel és burgonyával főzve, magyaros fűszerpaprikával ízesítve.
+
+**Összetevők:**
+- Marhahús
+- Burgonya
+- Sárgarépa
+- Fehérrépa
+- Zellergumó
+- Paradicsom
+- Hagyma
+- Fokhagyma
+- Fűszerpaprika
+- Köménymag
+- Só, bors
+- Csípős paprika (opcionális)`,
     price: 2490,
     allergens: []
   },
   {
     name: 'Töltött Káposzta',
-    description: 'Házi töltött káposzta darált hússal, rizzsel és tejföllel',
+    description: `**Házi töltött káposzta nagymama receptje szerint**
+
+Savanyú káposztába tekert ízletes darált hús és rizs keverék, tejfölös mártásban lassan párolva, igazi házi ízekkel.
+
+**Összetevők:**
+- Savanyú káposzta
+- Darált sertéshús
+- Rizs
+- Hagyma
+- Tojás
+- Fűszerpaprika
+- Tejföl
+- Paradicsom
+- Fokhagyma
+- Babérlevél
+- Só, bors`,
     price: 3190,
     allergens: ['Tejtermék']
   },
   {
     name: 'Sült Harcsa',
-    description: 'Friss harcsa filé fűszerekkel, párolt zöldségekkel',
+    description: `**Friss harcsa filé mediterrán fűszerekkel**
+
+Omlós harcsa filé édes vajon sütve, friss gyógynövényekkel és citrommal ízesítve, párolt szezonális zöldségekkel tálalva.
+
+**Összetevők:**
+- Harcsa filé
+- Vaj
+- Citrom
+- Fokhagyma
+- Petrezselyem
+- Rozmaring
+- Párolt brokkoli
+- Sárgarépa
+- Cukkini
+- Só, bors
+- Fehérbor`,
     price: 3590,
     allergens: ['Hal']
   },
   {
     name: 'Paprikás Krumpli',
-    description: 'Fűszerpaprikás krumpli kolbásszal, tejföllel',
+    description: `**Fűszerpaprikás krumpli házi debreceni kolbásszal**
+
+Kiadós magyar egytálétel vajban pirított hagymával, fűszerpaprikával és főtt burgonyával, debreceni kolbásszal és tejföllel tálalva.
+
+**Összetevők:**
+- Burgonya
+- Debreceni kolbász
+- Hagyma
+- Fűszerpaprika
+- Paradicsom
+- Paprika
+- Tejföl
+- Vaj
+- Fokhagyma
+- Só, bors
+- Kenyér`,
     price: 2290,
     allergens: ['Tejtermék']
   },
   {
     name: 'Lángos',
-    description: 'Házi lángos tejföllel, sajttal és kolbásszal',
+    description: `**Házi lángos hagyományos feltétekkel**
+
+Forró olajban sült, puha belsejű és ropogós szélű lángos, friss tejföllel, reszelt sajttal és szeletelt debreceni kolbásszal megrakva.
+
+**Összetevők:**
+- Liszt
+- Élesztő
+- Tej
+- Cukor
+- Só
+- Sütőolaj
+- Tejföl
+- Reszelt sajt
+- Debreceni kolbász
+- Fokhagyma (opcionális)`,
     price: 1890,
     allergens: ['Glutén', 'Tejtermék']
   },
   {
     name: 'Halászlé',
-    description: 'Szegedi halászlé pontyból és harcsából, csípős fűszerekkel',
+    description: `**Szegedi halászlé eredeti receptúra szerint**
+
+Tüzes, csípős halászlé friss folyami halakból (ponty és harcsa), fűszerpaprikával és erős paprikával gazdagon ízesítve.
+
+**Összetevők:**
+- Ponty
+- Harcsa
+- Hagyma
+- Paradicsom
+- Fűszerpaprika
+- Erős paprika
+- Fokhagyma
+- Só
+- Kenyér`,
     price: 3290,
     allergens: ['Hal']
   },
   {
     name: 'Rántotthús',
-    description: 'Klasszikus bécsi szelet borjúhúsból, citrommal',
+    description: `**Klasszikus bécsi szelet eredeti módszer szerint**
+
+Vékonyra kalapált borjúhús aranybarnára sütve ropogós bundában, friss citrommal, petrezselymes burgonyával és áfonyalekváral tálalva.
+
+**Összetevők:**
+- Borjúhús
+- Liszt
+- Tojás
+- Zsemlemorzsa
+- Sütőolaj
+- Citrom
+- Petrezselyem
+- Burgonya
+- Áfonyalekvár
+- Só, bors`,
     price: 4190,
     allergens: ['Glutén', 'Tojás']
   },
   {
     name: 'Lecsó Kolbásszal',
-    description: 'Házi lecsó debreceni kolbásszal, kenyérrel',
+    description: `**Házi lecsó magyaros ízekkel**
+
+Friss paprika, paradicsom és hagyma fűszerpaprikával készítve, füstölt debreceni kolbásszal gazdagítva, friss kenyérrel tálalva.
+
+**Összetevők:**
+- Paprika (zöld, piros, sárga)
+- Paradicsom
+- Hagyma
+- Debreceni kolbász
+- Fűszerpaprika
+- Fokhagyma
+- Tojás (opcionális)
+- Só, bors
+- Kenyér`,
     price: 2590,
     allergens: ['Glutén']
   },
   {
     name: 'Vegetáriánus Fasírt',
-    description: 'Zöldséges fasírt bulgurral és tahini szósszal',
+    description: `**Zöldséges fasírt keleti fűszerekkel**
+
+Ízletes növényi fasírt bulgurból, friss zöldségekből és fűszerekből, krémes tahini szósszal és friss salátával tálalva.
+
+**Összetevők:**
+- Bulgur
+- Sárgarépa
+- Cukkini
+- Hagyma
+- Fokhagyma
+- Petrezselyem
+- Koriander
+- Köménymag
+- Tahini
+- Citrom
+- Liszt
+- Só, bors
+- Vegyes saláta`,
     price: 2190,
     allergens: ['Glutén', 'Szezám']
   },
@@ -82,25 +227,80 @@ const foodData = [
   // Soups
   {
     name: 'Paradicsomleves',
-    description: 'Krémes paradicsomleves friss bazsalikommal',
+    description: `**Krémes paradicsomleves mediterrán ízekkel**
+
+Érett paradicsomból készült selymes krémleves friss bazsalikommal, tejszínnel és ropogós krutonnal tálalva.
+
+**Összetevők:**
+- Paradicsom
+- Hagyma
+- Fokhagyma
+- Bazsalikom
+- Tejszín
+- Zöldségleves alaplé
+- Vaj
+- Cukor
+- Só, bors
+- Kruton`,
     price: 1590,
     allergens: ['Tejtermék']
   },
   {
     name: 'Húsleves Cérnametélttel',
-    description: 'Házi húsleves cérnametélttel és zöldségekkel',
+    description: `**Házi húsleves nagyi receptje szerint**
+
+Tiszta, aranyló húsleves csirkéből és marhahúsból főzve, friss zöldségekkel és házi cérnametélttel gazdagítva.
+
+**Összetevők:**
+- Csirke
+- Marhahús
+- Sárgarépa
+- Fehérrépa
+- Zellergumó
+- Petrezselyem gyökér
+- Karalábé
+- Hagyma
+- Cérnametélt
+- Só, bors
+- Babérlevél`,
     price: 1890,
     allergens: ['Glutén', 'Tojás']
   },
   {
     name: 'Gombaleves',
-    description: 'Krémes vegyesgomba leves tejszínnel',
+    description: `**Krémes vegyesgomba leves erdei ízekkel**
+
+Selymes gombaleves friss vegyesgombából (champignon, laska, shiitake), tejszínnel és friss petrezselyemmel készítve.
+
+**Összetevők:**
+- Vegyesgomba
+- Hagyma
+- Fokhagyma
+- Tejszín
+- Vaj
+- Liszt
+- Zöldségleves alaplé
+- Petrezselyem
+- Fehérbor
+- Só, bors`,
     price: 1790,
     allergens: ['Tejtermék']
   },
   {
     name: 'Lencsefőzelék',
-    description: 'Házi lencsefőzelék füstölt kolbásszal',
+    description: `**Házi lencsefőzelék füstölt kolbásszal**
+
+Tápláló vöröslencsefőzelék füstölt kolbásszal, hagymával és fűszerpaprikával ízesítve, ecetes céklával tálalva.
+
+**Összetevők:**
+- Vöröslencse
+- Füstölt kolbász
+- Hagyma
+- Fokhagyma
+- Fűszerpaprika
+- Babérlevél
+- Só, bors
+- Ecetes cékla`,
     price: 1690,
     allergens: []
   },
@@ -108,25 +308,65 @@ const foodData = [
   // Sides
   {
     name: 'Fokhagymás Kenyér',
-    description: 'Ropogós kenyér fokhagymás vajjal és fűszerekkel',
+    description: `**Ropogós kenyér házi fokhagymás vajjal**
+
+Frissen sült kenyér ropogósra pirítva, illatos fokhagymás vajjal megkenve, friss petrezselyemmel megszórva.
+
+**Összetevők:**
+- Kenyér
+- Vaj
+- Fokhagyma
+- Petrezselyem
+- Só
+- Oregánó`,
     price: 890,
     allergens: ['Glutén', 'Tejtermék']
   },
   {
     name: 'Hasábburgonya',
-    description: 'Aranysárga, ropogós sültkrumpli',
+    description: `**Aranysárga ropogós sültkrumpli**
+
+Házi hasábburgonya kívül ropogós, belül puha, finom fűszerekkel ízesítve, házi majonézzel vagy ketchup-pal tálalva.
+
+**Összetevők:**
+- Burgonya
+- Sütőolaj
+- Só
+- Paprika
+- Fokhagymapor`,
     price: 690,
     allergens: []
   },
   {
     name: 'Káposztasaláta',
-    description: 'Friss káposztasaláta ecetes-olajos öntettel',
+    description: `**Friss káposztasaláta házi öntettel**
+
+Vékonyra szeletelt fehérkáposzta friss ecetes-olajos öntettel, köménymaggal ízesítve.
+
+**Összetevők:**
+- Fehérkáposzta
+- Ecet
+- Olaj
+- Cukor
+- Só
+- Köménymag`,
     price: 590,
     allergens: []
   },
   {
     name: 'Rántott Hagymakarika',
-    description: 'Bundában sült hagymakarikák',
+    description: `**Ropogós bundában sült hagymakarikák**
+
+Édes vöröshagyma vastag karikái aranybarnára sütve ropogós bundában, csípős szósszal tálalva.
+
+**Összetevők:**
+- Vöröshagyma
+- Liszt
+- Tojás
+- Panko zsemlemorzsa
+- Sütőolaj
+- Só, bors
+- Csípős szósz`,
     price: 790,
     allergens: ['Glutén', 'Tojás']
   },
@@ -134,25 +374,76 @@ const foodData = [
   // Desserts
   {
     name: 'Somlói Galuska',
-    description: 'Hagyományos somlói galuska diós-mákos töltelékkel',
+    description: `**Hagyományos somlói galuska házi módra**
+
+Háromféle piskóta (natúr, diós, kakaós) vaníliakrémmel, diós-mákos töltelékkel, csokoládé öntettel és tejszínhabbal tálalva.
+
+**Összetevők:**
+- Piskóta (natúr, diós, kakaós)
+- Vaníliakrém
+- Dió
+- Mák
+- Csokoládé öntet
+- Tejszínhab
+- Rum
+- Mazsola
+- Cukor
+- Tojás
+- Tej`,
     price: 1290,
     allergens: ['Glutén', 'Tejtermék', 'Tojás', 'Dióféle']
   },
   {
     name: 'Rétes Almával',
-    description: 'Házi almás rétes fahéjjal és porcukorral',
+    description: `**Házi almás rétes hagyományos módszer szerint**
+
+Vékony, ropogós rétes tésztában zamatos almás töltelék fahéjjal, cukorral és mazsolával, porcukorral megszórva, meleg állapotban tálalva.
+
+**Összetevők:**
+- Rétes tészta
+- Alma
+- Cukor
+- Fahéj
+- Mazsola
+- Vaj
+- Zsemlemorzsa
+- Porcukor
+- Citromhéj`,
     price: 990,
     allergens: ['Glutén', 'Tejtermék']
   },
   {
     name: 'Fagylalt Kehely',
-    description: 'Vanília fagylalt csokoládé szósszal és diókkal',
+    description: `**Házi vaníliafagylalt desszert kehely**
+
+Krémes vaníliafagylalt meleg csokoládé szósszal, friss tejszínhabbal, pirított dióval és cseresznye öntettel díszítve.
+
+**Összetevők:**
+- Vaníliafagylalt
+- Csokoládé szósz
+- Tejszínhab
+- Pirított dió
+- Cseresznye öntet
+- Ostya`,
     price: 890,
     allergens: ['Tejtermék', 'Dióféle']
   },
   {
     name: 'Gyümölcssaláta',
-    description: 'Friss szezonális gyümölcsök',
+    description: `**Friss szezonális gyümölcsök tálalva**
+
+Színes gyümölcskeverék friss szezonális gyümölcsökből (alma, körte, narancs, banán, szőlő), friss mentával díszítve.
+
+**Összetevők:**
+- Alma
+- Körte
+- Narancs
+- Banán
+- Szőlő
+- Eper (szezonálisan)
+- Citromlé
+- Méz
+- Menta`,
     price: 790,
     allergens: []
   }
