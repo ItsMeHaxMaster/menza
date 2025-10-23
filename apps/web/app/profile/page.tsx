@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
@@ -8,9 +9,9 @@ export default async function Profile() {
   const profile = await api.getUser();
 
   if (!profile) {
-    return (<p>Hiba!</p>);
+    redirect("/login");
   }
-
+  
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -26,7 +27,7 @@ export default async function Profile() {
           <Link className={styles.navButton} href="/cart">
             <ShoppingCart size={24} />
             <span>Kosár</span>
-            <div className={styles.cartBadge}>3</div>
+            <CartCounter />
           </Link>
         </nav>
       </header>
