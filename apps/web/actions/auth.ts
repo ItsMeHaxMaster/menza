@@ -3,7 +3,11 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export async function login(initialState: any, formData: FormData) {
+interface AuthState {
+  message: string;
+}
+
+export async function login(initialState: AuthState, formData: FormData, redirectUrl?: string) {
   const userData = {
     email: formData.get('email'),
     password: formData.get('password'),
@@ -26,8 +30,8 @@ export async function login(initialState: any, formData: FormData) {
     const cookieStore = await cookies();
     cookieStore.set('session_mz', data.jwt);
 
-    redirect('/');
-  } catch (e: any) {
+    redirect(redirectUrl || '/');
+  } catch (e: unknown) {
     if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;
 
     console.error(e);
@@ -35,7 +39,7 @@ export async function login(initialState: any, formData: FormData) {
   }
 }
 
-export async function register(initialState: any, formData: FormData) {
+export async function register(initialState: AuthState, formData: FormData) {
   const userData = {
     name: formData.get('name'),
     email: formData.get('email'),
@@ -64,7 +68,7 @@ export async function register(initialState: any, formData: FormData) {
     cookieStore.set('session_mz', data.jwt);
 
     redirect('/');
-  } catch (e: any) {
+  } catch (e: unknown) {
     if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;
 
     console.error(e);

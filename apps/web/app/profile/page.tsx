@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
@@ -8,9 +9,9 @@ export default async function Profile() {
   const profile = await api.getUser();
 
   if (!profile) {
-    return (<p>Hiba!</p>);
+    redirect("/login");
   }
-
+  
   return (
     <div className={styles.page}>
       <header className={styles.header}>
