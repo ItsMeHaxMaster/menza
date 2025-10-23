@@ -9,6 +9,7 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import InfoButton from '../components/InfoButton';
 import api from '@/lib/api';
 import { useState } from 'react';
@@ -148,10 +149,13 @@ export default async function Home() {
               </select>
             </div>
           </div>
-          <img
+          <Image
             className={styles.menuLogo}
-            src="./imgs/Logiker_logo.svg"
+            src="/imgs/Logiker_logo.svg"
             alt="logó"
+            width={200}
+            height={200}
+            priority
           />
           <div className={styles.orderStatus}>
             <div className={styles.statusSummary}>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
 import api from "@/lib/api";
-import { deleteSession } from "../actions";
+import { deleteSession } from "../../actions/actions";
 
 export default async function Profile() {
   const profile = await api.getUser();

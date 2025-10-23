@@ -3,7 +3,7 @@
 import styles from './CartElement.module.css';
 
 import { useEffect, useState } from 'react';
-import { getFood } from '@/app/actions';
+import { getFood } from '@/actions/actions';
 import InfoButton from './InfoButton';
 import AddButton from './AddButton';
 

@@ -1,8 +1,13 @@
 'use server';
 
 import api from '@/lib/api';
+
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+
+export async function getMenu(week: number, year: number) {
+  return await api.getMenu(week, year);
+}
 
 export async function getFood(id: string) {
   return await api.getFood(id);
