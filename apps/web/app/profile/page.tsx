@@ -54,8 +54,8 @@ export default async function Profile() {
 
           <form className={styles.profileDetails} action={updateUser}>
             <h3>Felhasználói adatok</h3>
-            <p><strong>Név:</strong></p> <input type="text" name="name" defaultValue={profile.name} />
-            <p><strong>Email:</strong></p> <input type="email" name="email" defaultValue={profile.email} />
+            <p><strong>Név:</strong></p> <input type="text" name="name" defaultValue={profile.name} required />
+            <p><strong>Email:</strong></p> <input type="email" name="email" defaultValue={profile.email} required />
             <p>
               <strong>Regisztráció dátuma:</strong>{" "}
               {new Date(profile.createdAt).toLocaleDateString("hu-HU")}

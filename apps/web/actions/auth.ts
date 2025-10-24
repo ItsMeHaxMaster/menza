@@ -1,5 +1,6 @@
 'use server';
 
+import api from '@/lib/api';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -78,20 +79,14 @@ export async function register(initialState: AuthState, formData: FormData) {
 
 export async function updateUser(formData: FormData) {
   const userData = {
-    name: formData.get('name'),
-    email: formData.get('email'),
+    name: formData.get('name') as string,
+    email: formData.get('email') as string,
   }
 
   try {
-    const req = await fetch('http://localhost:3001/v1/user/me', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    });
-    const data = await req.json();
-
+    const data = await api.patchUser(userData.name, userData.email)
+    
+    console.log(data)
   } catch (e: unknown) {
     if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;
 

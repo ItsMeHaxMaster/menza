@@ -17,11 +17,13 @@ class Api {
   });
 
   private async fetch(url: string, settings?: RequestInit) {
-    console.log(`${process.env.NEXT_PUBLIC_API_URL!}${url}`);
     return fetch(`${process.env.NEXT_PUBLIC_API_URL!}${url}`, {
       ...settings,
-      // @ts-expect-error we set to null, essentially like we didn't set it at all.
+
       headers: {
+        ...settings?.headers,
+
+        // @ts-expect-error we set to null, essentially like we didn't set it at all.
         Authorization: (await this.hasSessionCookie()) ? `Bearer ${await this.getSessionToken()}` : null,
         'User-Agent': 'MenzaWeb/1.0.0'
       }
@@ -59,19 +61,19 @@ class Api {
     }
   });
   
-  public patchUser = cache(async (name?:string, email?:string) => {
+  public patchUser = async (name?: string, email?: string) => {
     try {
       const user = await this.fetch(`/v1/user/me`, {
         method: 'PATCH',
         body: JSON.stringify({ name, email }),
         headers: { 'Content-Type': 'application/json' }
       });
-      if (!user.ok) return null;
+      if (!user.ok) return user.json();
       return await user.json();
     } catch {
       return null;
     }
-  });
+  };
 }
 
 const api = new Api();
