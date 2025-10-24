@@ -1,6 +1,7 @@
 'use server';
 
 import api from '@/lib/api';
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -86,7 +87,7 @@ export async function updateUser(formData: FormData) {
   try {
     const data = await api.patchUser(userData.name, userData.email)
     
-    console.log(data)
+    revalidatePath('/profile');
   } catch (e: unknown) {
     if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;
 
