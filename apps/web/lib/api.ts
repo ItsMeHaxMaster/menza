@@ -58,6 +58,20 @@ class Api {
       return null;
     }
   });
+  
+  public patchUser = cache(async (name?:string, email?:string) => {
+    try {
+      const user = await this.fetch(`/v1/user/me`, {
+        method: 'PATCH',
+        body: JSON.stringify({ name, email }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (!user.ok) return null;
+      return await user.json();
+    } catch {
+      return null;
+    }
+  });
 }
 
 const api = new Api();

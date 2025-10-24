@@ -75,3 +75,26 @@ export async function register(initialState: AuthState, formData: FormData) {
     return { message: 'Very big hiba történt.' };
   }
 }
+
+export async function updateUser(formData: FormData) {
+  const userData = {
+    name: formData.get('name'),
+    email: formData.get('email'),
+  }
+
+  try {
+    const req = await fetch('http://localhost:3001/v1/user/me', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+    const data = await req.json();
+
+  } catch (e: unknown) {
+    if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;
+
+    console.error(e);
+  }
+}

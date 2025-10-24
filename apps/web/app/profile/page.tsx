@@ -5,8 +5,11 @@ import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
 import api from "@/lib/api";
 import { deleteSession } from "../../actions/actions";
 import CartCounter from "@/components/CartCounter";
+import { updateUser } from "@/actions/auth";
+import { useActionState } from "react";
 
 export default async function Profile() {
+
   const profile = await api.getUser();
 
   if (!profile) {
@@ -49,7 +52,7 @@ export default async function Profile() {
             </div>
           </div>
 
-          <div className={styles.profileDetails}>
+          <form className={styles.profileDetails} action={updateUser}>
             <h3>Felhasználói adatok</h3>
             <p><strong>Név:</strong></p> <input type="text" name="name" defaultValue={profile.name} />
             <p><strong>Email:</strong></p> <input type="email" name="email" defaultValue={profile.email} />
@@ -58,7 +61,7 @@ export default async function Profile() {
               {new Date(profile.createdAt).toLocaleDateString("hu-HU")}
             </p>
 
-            <button className={styles.editButton}>Adatok szerkesztése</button>
+            <button className={styles.editButton} type="submit">Adatok szerkesztése</button>
 
             <button
               className={styles.logoutButton}
@@ -66,7 +69,7 @@ export default async function Profile() {
             >
               Kijelentkezés
             </button>
-          </div>
+          </form>
 
           <div className={styles.orderHistory}>
             <h3>Rendelési előzmények</h3>

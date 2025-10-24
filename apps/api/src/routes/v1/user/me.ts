@@ -3,6 +3,7 @@ import { Request, Response } from '@/util/handler';
 import Status from '@/enum/status';
 
 import { z } from 'zod';
+import { orm } from '@/util/orm';
 
 export const schemas = {
   get: {
@@ -29,6 +30,34 @@ export const get = async (
       email: user.email,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
+    });
+  } catch (err) {
+    return res.error(Status.Unauthorized, 'Unauthorized');
+  }
+};
+
+export const patch = async (req: Request, res: Response<any>) => {
+  try {
+    const user = await req.getUser();
+
+    const email = req.body.email;
+    const name = req.body.name;
+
+    console.log(req.body);
+
+    if (email) {
+      user.email = email;
+    }
+
+    if (name) {
+      user.name = name;
+    }
+    const db = (await orm).em.fork();
+
+    await db.persistAndFlush(user);
+
+    return res.status(Status.Ok).json({
+      message: 'Success'
     });
   } catch (err) {
     return res.error(Status.Unauthorized, 'Unauthorized');

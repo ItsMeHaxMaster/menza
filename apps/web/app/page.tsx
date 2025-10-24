@@ -32,7 +32,7 @@ interface Food {
   description: string;
   price: number;
   pictureId: string;
-  allergens: string[];
+  allergens: any[];
 }
 
 interface MenuItem {
