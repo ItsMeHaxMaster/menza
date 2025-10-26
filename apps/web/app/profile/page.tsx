@@ -8,6 +8,28 @@ import CartCounter from '@/components/CartCounter';
 import { updateUser } from '@/actions/auth';
 import { useActionState } from 'react';
 
+interface OrderFood {
+  id: string;
+  name: string;
+  price: number;
+}
+
+interface Order {
+  id: string;
+  totalAmount: number;
+  vat: number;
+  currency: string;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  createdAt: string;
+  foods: OrderFood[];
+}
+
+interface OrderHistory {
+  orders: Order[];
+  total: number;
+  hasMore: boolean;
+}
+
 export default async function Profile() {
   const profile = await api.getUser();
 
@@ -15,7 +37,7 @@ export default async function Profile() {
     redirect('/login');
   }
 
-  const orders = await api.getOrderHistory(5);
+  const orders = (await api.getOrderHistory(5)) as OrderHistory | null;
 
   return (
     <div className={styles.page}>
@@ -89,32 +111,37 @@ export default async function Profile() {
 
           <div className={styles.orderHistory}>
             <h3>Rendelési előzmények</h3>
-            <ul className={styles.orderList}>
-              {orders.orders.map((order) => (
-                <li key={order.id} className={styles.orderItem}>
-                  <p>
-                    Rendelés #{order.id} - {order.createdAt} - {new Intl.NumberFormat('hu-HU', {
-                      style: 'currency',
-                      currency: order.currency
-                    }).format(order.totalAmount)}
-                  </p>
-                  <p>
-                    {(() => {
-                      switch (order.paymentStatus) {
-                        case 'pending':
-                          return 'Feldolgozás'
-                        case 'paid':
-                          return 'Kifizetve'
-                        case 'failed':
-                          return 'Elutasítva'
-                        case 'refunded':
-                          return 'Visszafizetve'
-                      }
-                    })()}
-                  </p>
-                </li>
-              ))}
-            </ul>
+            {orders ? (
+              <ul className={styles.orderList}>
+                {orders.orders.map((order) => (
+                  <li key={order.id} className={styles.orderItem}>
+                    <p>
+                      Rendelés #{order.id} - {order.createdAt} -{' '}
+                      {new Intl.NumberFormat('hu-HU', {
+                        style: 'currency',
+                        currency: order.currency
+                      }).format(order.totalAmount)}
+                    </p>
+                    <p>
+                      {(() => {
+                        switch (order.paymentStatus) {
+                          case 'pending':
+                            return 'Feldolgozás';
+                          case 'paid':
+                            return 'Kifizetve';
+                          case 'failed':
+                            return 'Elutasítva';
+                          case 'refunded':
+                            return 'Visszafizetve';
+                        }
+                      })()}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Nem sikerült betölteni a rendelési előzményeket.</p>
+            )}
           </div>
 
           <div className={styles.paymentMethods}>
