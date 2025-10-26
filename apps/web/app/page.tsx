@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import AddButton from '@/components/AddButton';
 import CartCounter from '@/components/CartCounter';
 import { getMenu } from '@/actions/actions';
+import OrderStatus from '@/components/OrderStatus';
 
 declare global {
   interface Date {
@@ -95,18 +96,18 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
 }
 
 const getWeeksForCurrentYear = (): number[] => {
-    const weeks: number[] = [];
-    const currentYear = new Date().getFullYear();
+  const weeks: number[] = [];
+  const currentYear = new Date().getFullYear();
 
-    const dec31 = new Date(currentYear, 11, 31);
-    const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
+  const dec31 = new Date(currentYear, 11, 31);
+  const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
 
-    for (let week = 1; week <= weeksInYear; week++) {
-      weeks.push(week);
-    }
+  for (let week = 1; week <= weeksInYear; week++) {
+    weeks.push(week);
+  }
 
-    return weeks;
-  };
+  return weeks;
+};
 
 export default function Home() {
   const [menu, setMenu] = useState([]);
@@ -120,11 +121,13 @@ export default function Home() {
     const menuData = await getMenu(week, new Date().getFullYear());
     setMenu(
       menuData
-        ? menuData.sort((a: { day: number }, b: { day: number }) => a.day - b.day)
+        ? menuData.sort(
+            (a: { day: number }, b: { day: number }) => a.day - b.day
+          )
         : []
     );
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     updateMenu(currentWeekNumber);
@@ -157,9 +160,12 @@ export default function Home() {
           <div className={styles.titleSection}>
             <h2 className={styles.menuTitle}>Heti Menü</h2>
             <div className={styles.weekInfo}>
-              <select defaultValue={currentWeekNumber} onChange={(e) => {
-                updateMenu(parseInt((e.target as HTMLSelectElement).value))
-              }}>
+              <select
+                defaultValue={currentWeekNumber}
+                onChange={(e) => {
+                  updateMenu(parseInt((e.target as HTMLSelectElement).value));
+                }}
+              >
                 {weeksIn2025.map((week) => (
                   <option key={week} value={week}>
                     {week}. hét - {getDateRangeForWeek(week)}
@@ -176,32 +182,8 @@ export default function Home() {
             height={200}
             priority
           />
-          <div className={styles.orderStatus}>
-            <div className={styles.statusSummary}>
-              <div className={styles.statusIcon}>
-                <Calendar />
-              </div>
-              <div className={styles.statusInfo}>
-                <span className={styles.statusLabel}>Heti rendelés</span>
-                <span className={styles.statusValue}>3 nap kiválasztva</span>
-              </div>
-            </div>
-            <div className={styles.orderDetails}>
-              <div className={styles.selectedDays}>
-                <div className={styles.dayChip}>H</div>
-                <div className={styles.dayChip}>K</div>
-                <div className={`${styles.dayChip} ${styles.active}`}>Sz</div>
-                <div className={`${styles.dayChip} ${styles.active}`}>Cs</div>
-                <div className={`${styles.dayChip} ${styles.active}`}>P</div>
-              </div>
-              <div className={styles.orderTotal}>
-                <span>Összesen:</span>
-                <span className={styles.totalAmount}>3900 Ft</span>
-              </div>
-            </div>
-          </div>
+          <OrderStatus />
         </div>
-
         <div className={styles.warning}>
           Naponta csak 1 ételt lehet választani.
         </div>
@@ -235,10 +217,14 @@ export default function Home() {
                       key={`loading-${dayIndex}-${optionIndex}`}
                     >
                       <div className={styles.foodInfo}>
-                        <span className={`${styles.foodName} ${styles.skeletonText}`}>
+                        <span
+                          className={`${styles.foodName} ${styles.skeletonText}`}
+                        >
                           &nbsp;
                         </span>
-                        <span className={`${styles.foodPrice} ${styles.skeletonText}`}>
+                        <span
+                          className={`${styles.foodPrice} ${styles.skeletonText}`}
+                        >
                           &nbsp;
                         </span>
                       </div>
@@ -251,7 +237,13 @@ export default function Home() {
                 </div>
               ))
             ) : menu.length === 0 ? (
-              <div style={{ gridColumn: '2 / -1', textAlign: 'center', padding: '3rem' }}>
+              <div
+                style={{
+                  gridColumn: '2 / -1',
+                  textAlign: 'center',
+                  padding: '3rem'
+                }}
+              >
                 <p style={{ fontSize: '1.2rem', opacity: 0.7 }}>
                   Nincs elérhető menü erre a hétre.
                 </p>
@@ -290,8 +282,8 @@ export default function Home() {
                           </span>
                         </div>
                         <div className={styles.actionButtons}>
-                          <InfoButton 
-                            text={food.description} 
+                          <InfoButton
+                            text={food.description}
                             allergens={food.allergens}
                             foodName={food.name}
                             price={food.price}
