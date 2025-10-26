@@ -1,12 +1,10 @@
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import styles from './page.module.css';
-import { UtensilsCrossed, ShoppingCart, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import api from '@/lib/api';
 import { deleteSession } from '../../actions/actions';
-import CartCounter from '@/components/CartCounter';
 import { updateUser } from '@/actions/auth';
-import { useActionState } from 'react';
+import Navbar from '@/components/Navbar';
 
 interface OrderFood {
   id: string;
@@ -41,25 +39,17 @@ export default async function Profile() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.logoSection}>
-          <div className={styles.logo}>
-            <User />
+      <Navbar 
+        currentPage="profile"
+        logoSection={
+          <div className={styles.logoSection}>
+            <div className={styles.logo}>
+              <User />
+            </div>
+            <h1 className={styles.title}>Profilom</h1>
           </div>
-          <h1 className={styles.title}>Profilom</h1>
-        </div>
-        <nav className={styles.navbar}>
-          <Link className={styles.navButton} href="/">
-            <UtensilsCrossed size={24} />
-            <span>Menü</span>
-          </Link>
-          <Link className={styles.navButton} href="/cart">
-            <ShoppingCart size={24} />
-            <span>Kosár</span>
-            <CartCounter />
-          </Link>
-        </nav>
-      </header>
+        }
+      />
 
       <main className={styles.main}>
         <div className={styles.profileContainer}>
