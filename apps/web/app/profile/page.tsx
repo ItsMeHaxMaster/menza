@@ -15,6 +15,8 @@ export default async function Profile() {
     redirect('/login');
   }
 
+  const orders = await api.getOrderHistory(5);
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -88,15 +90,30 @@ export default async function Profile() {
           <div className={styles.orderHistory}>
             <h3>Rendelési előzmények</h3>
             <ul className={styles.orderList}>
-              <li className={styles.orderItem}>
-                Rendelés #12345 - 2023.01.20 - 3,600 Ft
-              </li>
-              <li className={styles.orderItem}>
-                Rendelés #12346 - 2023.01.21 - 2,400 Ft
-              </li>
-              <li className={styles.orderItem}>
-                Rendelés #12347 - 2023.01.22 - 1,800 Ft
-              </li>
+              {orders.orders.map((order) => (
+                <li key={order.id} className={styles.orderItem}>
+                  <p>
+                    Rendelés #{order.id} - {order.createdAt} - {new Intl.NumberFormat('hu-HU', {
+                      style: 'currency',
+                      currency: order.currency
+                    }).format(order.totalAmount)}
+                  </p>
+                  <p>
+                    {(() => {
+                      switch (order.paymentStatus) {
+                        case 'pending':
+                          return 'Feldolgozás'
+                        case 'paid':
+                          return 'Kifizetve'
+                        case 'failed':
+                          return 'Elutasítva'
+                        case 'refunded':
+                          return 'Visszafizetve'
+                      }
+                    })()}
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
 

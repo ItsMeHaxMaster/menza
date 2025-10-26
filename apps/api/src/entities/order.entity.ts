@@ -3,12 +3,13 @@ import {
   BigIntType,
   Entity,
   ManyToOne,
+  ManyToMany,
+  Collection,
   PrimaryKey,
   Property
 } from '@mikro-orm/core';
 
 import { User } from './user.entity';
-import { Menu } from './menu.entity';
 import { Food } from './food.entity';
 
 @Entity()
@@ -19,12 +20,27 @@ export class Order {
   @ManyToOne(() => User)
   user!: User;
 
-  @ManyToOne(() => Menu)
-  menu!: Menu;
+  @ManyToMany(() => Food)
+  foods = new Collection<Food>(this);
 
-  @ManyToOne(() => Food)
-  food!: Food;
+  @Property()
+  totalAmount!: number;
+
+  @Property()
+  vat!: number;
+
+  @Property({ length: 255, nullable: true })
+  stripeSessionId?: string;
+
+  @Property({ length: 50 })
+  paymentStatus!: string; // 'pending', 'paid', 'failed', 'refunded'
+
+  @Property({ length: 10 })
+  currency: string = 'HUF';
 
   @Property()
   createdAt: Date = new Date();
+
+  @Property({ onUpdate: () => new Date() })
+  updatedAt: Date = new Date();
 }

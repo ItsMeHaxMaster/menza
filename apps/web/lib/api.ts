@@ -17,6 +17,7 @@ class Api {
   });
 
   private async fetch(url: string, settings?: RequestInit) {
+    console.log(`${process.env.NEXT_PUBLIC_API_URL!}${url}`)
     return fetch(`${process.env.NEXT_PUBLIC_API_URL!}${url}`, {
       ...settings,
 
@@ -74,6 +75,52 @@ class Api {
       return null;
     }
   };
+
+  public getSubtotal = cache(async (items: (string|bigint)[]) => {
+    try {
+      const urlSafe = encodeURIComponent(JSON.stringify(items))
+      const subtotal = await this.fetch(`/v1/checkout/subtotal?foods=${urlSafe}`);
+      if (!subtotal.ok) return null;
+      return await subtotal.json();
+    } catch {
+      return null;
+    }
+  });
+
+  public createCheckoutSession = async (items: (string|bigint)[]) => {
+    try {
+      const session = await this.fetch(`/v1/checkout/session`, {
+        method: 'POST',
+        body: JSON.stringify({ foods: items.map(item => item.toString()) }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (!session.ok) return null;
+      return await session.json();
+    } catch {
+      return null;
+    }
+  };
+
+  public verifyCheckoutSession = async (sessionId: string) => {
+    try {
+      const verification = await this.fetch(`/v1/checkout/verify?session_id=${sessionId}`);
+      if (!verification.ok) return null;
+      return await verification.json();
+    } catch {
+      return null;
+    }
+  };
+
+  public getOrderHistory = cache(async (limit?: number) => {
+    try {
+      const limitParam = limit ? `?limit=${limit}` : '';
+      const history = await this.fetch(`/v1/order/history${limitParam}`);
+      if (!history.ok) return null;
+      return await history.json();
+    } catch {
+      return null;
+    }
+  });
 }
 
 const api = new Api();
