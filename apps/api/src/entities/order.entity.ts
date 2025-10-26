@@ -11,6 +11,7 @@ import {
 
 import { User } from './user.entity';
 import { Food } from './food.entity';
+import { Menu } from './menu.entity';
 
 @Entity()
 export class Order {
@@ -22,6 +23,9 @@ export class Order {
 
   @ManyToMany(() => Food)
   foods = new Collection<Food>(this);
+
+  @ManyToMany(() => Menu)
+  menus = new Collection<Menu>(this);
 
   @Property()
   totalAmount!: number;

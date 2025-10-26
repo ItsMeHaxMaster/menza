@@ -98,12 +98,22 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
 const getWeeksForCurrentYear = (): number[] => {
   const weeks: number[] = [];
   const currentYear = new Date().getFullYear();
+  const currentWeekNumber = new Date().getWeek();
 
-  const dec31 = new Date(currentYear, 11, 31);
-  const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
-
-  for (let week = 1; week <= weeksInYear; week++) {
-    weeks.push(week);
+  // Only show current week + next 2 weeks (3 weeks total)
+  for (let i = 0; i < 3; i++) {
+    const weekNumber = currentWeekNumber + i;
+    
+    // Handle year wrap (if week number exceeds weeks in year)
+    const dec31 = new Date(currentYear, 11, 31);
+    const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
+    
+    if (weekNumber <= weeksInYear) {
+      weeks.push(weekNumber);
+    } else {
+      // Week in next year
+      weeks.push(weekNumber - weeksInYear);
+    }
   }
 
   return weeks;
@@ -113,8 +123,9 @@ export default function Home() {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const weeksIn2025 = getWeeksForCurrentYear();
   const currentWeekNumber = new Date().getWeek();
+  const nextWeekNumber = currentWeekNumber + 1;
+  const weeksAvailable = getWeeksForCurrentYear();
 
   const updateMenu = async (week: number) => {
     setLoading(true);
@@ -130,8 +141,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    updateMenu(currentWeekNumber);
-  }, [currentWeekNumber]);
+    // Start with next week by default
+    updateMenu(nextWeekNumber);
+  }, [nextWeekNumber]);
 
   return (
     <div className={styles.page}>
@@ -161,12 +173,12 @@ export default function Home() {
             <h2 className={styles.menuTitle}>Heti Menü</h2>
             <div className={styles.weekInfo}>
               <select
-                defaultValue={currentWeekNumber}
+                defaultValue={nextWeekNumber}
                 onChange={(e) => {
                   updateMenu(parseInt((e.target as HTMLSelectElement).value));
                 }}
               >
-                {weeksIn2025.map((week) => (
+                {weeksAvailable.map((week: number) => (
                   <option key={week} value={week}>
                     {week}. hét - {getDateRangeForWeek(week)}
                   </option>
@@ -185,7 +197,7 @@ export default function Home() {
           <OrderStatus />
         </div>
         <div className={styles.warning}>
-          Naponta csak 1 ételt lehet választani.
+          Csak a következő hétre lehet rendelni, naponta maximum 1 ételt. Előrendelés max. 2 héttel előre lehetséges.
         </div>
 
         <div className={styles.menuContainer}>

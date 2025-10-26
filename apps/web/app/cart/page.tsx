@@ -44,9 +44,26 @@ export default function CartPage() {
 
     setIsProcessing(true);
     try {
+      // Extract year, week, and unique days from cart
+      const firstItem = cart[0].date;
+      const year = firstItem.year;
+      const week = firstItem.week;
+      const days = [...new Set(cart.map((item) => item.date.day))];
+
+      // Validate all items are from the same year and week
+      const allSameWeek = cart.every(
+        (item) => item.date.year === year && item.date.week === week
+      );
+
+      if (!allSameWeek) {
+        alert('Csak egy hét ételeit lehet egyszerre megrendelni!');
+        setIsProcessing(false);
+        return;
+      }
+
       const foodIds = cart.map((item) => item.id);
-      const session = await createCheckoutSession(foodIds);
-      
+      const session = await createCheckoutSession(foodIds, year, week, days);
+
       if (session && session.url) {
         // Redirect to Stripe checkout
         window.location.href = session.url;

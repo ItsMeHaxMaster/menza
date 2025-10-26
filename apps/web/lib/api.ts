@@ -87,11 +87,21 @@ class Api {
     }
   });
 
-  public createCheckoutSession = async (items: (string|bigint)[]) => {
+  public createCheckoutSession = async (
+    items: (string | bigint)[],
+    year: number,
+    week: number,
+    days: number[]
+  ) => {
     try {
       const session = await this.fetch(`/v1/checkout/session`, {
         method: 'POST',
-        body: JSON.stringify({ foods: items.map(item => item.toString()) }),
+        body: JSON.stringify({
+          foods: items.map((item) => item.toString()),
+          year,
+          week,
+          days
+        }),
         headers: { 'Content-Type': 'application/json' }
       });
       if (!session.ok) return null;
