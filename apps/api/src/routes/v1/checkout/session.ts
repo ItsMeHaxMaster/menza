@@ -88,6 +88,10 @@ export const post = async (
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'link', 'revolut_pay', 'samsung_pay'],
       line_items: lineItems,
+      billing_address_collection: 'required',
+      invoice_creation: {
+        enabled: true
+      },
       mode: 'payment',
       success_url: `${process.env.WEB_URL || 'http://localhost:3000'}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.WEB_URL || 'http://localhost:3000'}/cart`,
