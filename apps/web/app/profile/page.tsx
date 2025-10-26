@@ -1,26 +1,27 @@
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import styles from "./page.module.css";
-import { UtensilsCrossed, ShoppingCart, User } from "lucide-react";
-import api from "@/lib/api";
-import { deleteSession } from "../../actions/actions";
-import CartCounter from "@/components/CartCounter";
-import { updateUser } from "@/actions/auth";
-import { useActionState } from "react";
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
+import styles from './page.module.css';
+import { UtensilsCrossed, ShoppingCart, User } from 'lucide-react';
+import api from '@/lib/api';
+import { deleteSession } from '../../actions/actions';
+import CartCounter from '@/components/CartCounter';
+import { updateUser } from '@/actions/auth';
+import { useActionState } from 'react';
 
 export default async function Profile() {
-
   const profile = await api.getUser();
 
   if (!profile) {
-    redirect("/login");
+    redirect('/login');
   }
-  
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logoSection}>
-          <div className={styles.logo}><User /></div>
+          <div className={styles.logo}>
+            <User />
+          </div>
           <h1 className={styles.title}>Profilom</h1>
         </div>
         <nav className={styles.navbar}>
@@ -41,9 +42,9 @@ export default async function Profile() {
           <div className={styles.profileHeader}>
             <div className={styles.avatar}>
               {profile.name
-                .split(" ")
-                .map((n:string) => n[0])
-                .join("")
+                .split(' ')
+                .map((n: string) => n[0])
+                .join('')
                 .toUpperCase()}
             </div>
             <div>
@@ -54,19 +55,32 @@ export default async function Profile() {
 
           <form className={styles.profileDetails} action={updateUser}>
             <h3>Felhasználói adatok</h3>
-            <p><strong>Név:</strong></p> <input type="text" name="name" defaultValue={profile.name} required />
-            <p><strong>Email:</strong></p> <input type="email" name="email" defaultValue={profile.email} required />
             <p>
-              <strong>Regisztráció dátuma:</strong>{" "}
-              {new Date(profile.createdAt).toLocaleDateString("hu-HU")}
+              <strong>Név:</strong>
+            </p>{' '}
+            <input
+              type="text"
+              name="name"
+              defaultValue={profile.name}
+              required
+            />
+            <p>
+              <strong>Email:</strong>
+            </p>{' '}
+            <input
+              type="email"
+              name="email"
+              defaultValue={profile.email}
+              required
+            />
+            <p>
+              <strong>Regisztráció dátuma:</strong>{' '}
+              {new Date(profile.createdAt).toLocaleDateString('hu-HU')}
             </p>
-
-            <button className={styles.editButton} type="submit">Adatok szerkesztése</button>
-
-            <button
-              className={styles.logoutButton}
-              onClick={deleteSession}
-            >
+            <button className={styles.editButton} type="submit">
+              Mentés
+            </button>
+            <button className={styles.logoutButton} onClick={deleteSession}>
               Kijelentkezés
             </button>
           </form>
@@ -74,16 +88,24 @@ export default async function Profile() {
           <div className={styles.orderHistory}>
             <h3>Rendelési előzmények</h3>
             <ul className={styles.orderList}>
-              <li className={styles.orderItem}>Rendelés #12345 - 2023.01.20 - 3,600 Ft</li>
-              <li className={styles.orderItem}>Rendelés #12346 - 2023.01.21 - 2,400 Ft</li>
-              <li className={styles.orderItem}>Rendelés #12347 - 2023.01.22 - 1,800 Ft</li>
+              <li className={styles.orderItem}>
+                Rendelés #12345 - 2023.01.20 - 3,600 Ft
+              </li>
+              <li className={styles.orderItem}>
+                Rendelés #12346 - 2023.01.21 - 2,400 Ft
+              </li>
+              <li className={styles.orderItem}>
+                Rendelés #12347 - 2023.01.22 - 1,800 Ft
+              </li>
             </ul>
           </div>
 
           <div className={styles.paymentMethods}>
             <h3>Fizetési módok</h3>
             <p>Hozzáadott fizetési módok még nincsenek.</p>
-            <button className={styles.addPaymentButton}>Fizetési mód hozzáadása</button>
+            <button className={styles.addPaymentButton}>
+              Fizetési mód hozzáadása
+            </button>
           </div>
         </div>
       </main>
