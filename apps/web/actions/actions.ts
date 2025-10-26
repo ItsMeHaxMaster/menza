@@ -9,8 +9,13 @@ export async function getSubtotal(items: (string|bigint)[]) {
   return await api.getSubtotal(items);
 }
 
-export async function createCheckoutSession(items: (string|bigint)[]) {
-  return await api.createCheckoutSession(items);
+export async function createCheckoutSession(
+  items: (string | bigint)[],
+  year: number,
+  week: number,
+  days: number[]
+) {
+  return await api.createCheckoutSession(items, year, week, days);
 }
 
 export async function verifyCheckoutSession(sessionId: string) {
