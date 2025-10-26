@@ -63,16 +63,17 @@ export const get = async (
     const { limit, offset } = req.validateQuery(schemas.get.req);
 
     // Fetch orders from database
-    const [orders, total] = await db.findAndCount(
-      Order,
-      { user: user.id },
-      {
-        limit,
-        offset,
-        orderBy: { createdAt: 'DESC' },
-        populate: ['foods', 'user']
-      }
-    );
+    const qb = db
+      .createQueryBuilder(Order, 'o')
+      .select('*')
+      .where({ user: user.id })
+      .orderBy({ createdAt: 'DESC' })
+      .limit(limit)
+      .offset(offset)
+      .leftJoinAndSelect('o.foods', 'foods')
+      .leftJoinAndSelect('o.user', 'user');
+
+    const [orders, total] = await qb.getResultAndCount();
 
     // Format the order history
     const formattedOrders = orders.map((order) => ({

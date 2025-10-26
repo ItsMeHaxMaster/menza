@@ -2,23 +2,16 @@
 
 import styles from './page.module.css';
 import {
-  ShoppingCart,
-  User,
   Utensils,
   UtensilsCrossed,
-  Calendar,
-  ChevronRight,
-  ChevronLeft
 } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 import InfoButton from '../components/InfoButton';
-import api from '@/lib/api';
 import { useEffect, useState } from 'react';
 import AddButton from '@/components/AddButton';
-import CartCounter from '@/components/CartCounter';
 import { getMenu } from '@/actions/actions';
 import OrderStatus from '@/components/OrderStatus';
+import Navbar from '@/components/Navbar';
 
 declare global {
   interface Date {
@@ -27,13 +20,21 @@ declare global {
 }
 
 // Types for menu data
+interface Allergen {
+  id: string;
+  name: string;
+  icon: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 interface Food {
   id: string;
   name: string;
   description: string;
   price: number;
   pictureId: string;
-  allergens: any[];
+  allergens: Allergen[];
 }
 
 interface MenuItem {
@@ -147,25 +148,17 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.logoSection}>
-          <div className={styles.logo}>
-            <UtensilsCrossed />
+      <Navbar 
+        currentPage="home"
+        logoSection={
+          <div className={styles.logoSection}>
+            <div className={styles.logo}>
+              <UtensilsCrossed />
+            </div>
+            <h1 className={styles.title}>Logiker Menza</h1>
           </div>
-          <h1 className={styles.title}>Logiker Menza</h1>
-        </div>
-        <nav className={styles.navbar}>
-          <Link className={styles.navButton} href="./profile">
-            <User size={24} />
-            <span>Profil</span>
-          </Link>
-          <Link className={styles.navButton} href="./cart">
-            <ShoppingCart size={24} />
-            <span>Kosár</span>
-            <CartCounter />
-          </Link>
-        </nav>
-      </header>
+        }
+      />
 
       <main className={styles.main}>
         <div className={styles.menuHeader}>
