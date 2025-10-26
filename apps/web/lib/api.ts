@@ -104,9 +104,14 @@ class Api {
         }),
         headers: { 'Content-Type': 'application/json' }
       });
-      if (!session.ok) return null;
+      if (!session.ok) {
+        const errorData = await session.json();
+        console.error('Checkout session error:', errorData);
+        return null;
+      }
       return await session.json();
-    } catch {
+    } catch (e) {
+      console.error('Checkout session exception:', e);
       return null;
     }
   };
@@ -131,6 +136,16 @@ class Api {
       return null;
     }
   });
+
+  public getInvoiceUrl = async (orderId: string) => {
+    try {
+      const invoice = await this.fetch(`/v1/order/invoice?orderId=${orderId}`);
+      if (!invoice.ok) return null;
+      return await invoice.json();
+    } catch {
+      return null;
+    }
+  };
 }
 
 const api = new Api();

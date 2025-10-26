@@ -15,7 +15,18 @@ export const schemas = {
     }),
     res: z.object({
       subtotal: z.number(),
-      vat: z.number()
+      vat: z.number(),
+      totalWithoutVat: z.number(),
+      items: z.array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          price: z.number(),
+          vatRate: z.number(),
+          vatAmount: z.number(),
+          priceWithoutVat: z.number()
+        })
+      )
     })
   }
 };
@@ -33,12 +44,35 @@ export const get = async (
 
     console.log(foods, foodEntities);
 
-    const subtotal = foodEntities.reduce((sum, food) => sum + food.price, 0);
-    const vat = subtotal * (0.27 / 1.27);
+    // Calculate totals using individual food VAT rates
+    let subtotal = 0;
+    let totalVat = 0;
+    const items = [];
+
+    for (const food of foodEntities) {
+      const vatAmount = food.vatAmount;
+      const priceWithoutVat = food.priceWithoutVat;
+
+      subtotal += food.price;
+      totalVat += vatAmount;
+
+      items.push({
+        id: food.id.toString(),
+        name: food.name,
+        price: food.price,
+        vatRate: food.vatRate,
+        vatAmount: vatAmount,
+        priceWithoutVat: priceWithoutVat
+      });
+    }
+
+    const totalWithoutVat = subtotal - totalVat;
 
     res.status(Status.Ok).json({
       subtotal,
-      vat
+      vat: totalVat,
+      totalWithoutVat,
+      items
     });
   } catch (e: unknown) {
     console.error(e);

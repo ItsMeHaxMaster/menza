@@ -490,6 +490,8 @@ export async function generateDummyData() {
       food.description = foodInfo.description;
       food.price = foodInfo.price;
       food.pictureId = 'd0f8d96ef806c440d4d2bce0bb56244540fd292f';
+      food.vatRate = 27; // Hungarian standard VAT rate for food
+      food.stripeTaxCode = 'txcd_99999999'; // Stripe tax code for restaurant/prepared food
 
       // Add allergens to food by finding their IDs
       for (const allergenName of foodInfo.allergens) {

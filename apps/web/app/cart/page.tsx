@@ -6,13 +6,21 @@ import { ShoppingCart, UtensilsCrossed, User } from 'lucide-react';
 import styles from './page.module.css';
 import CartElement from '@/components/CartElement';
 import { getSubtotal, createCheckoutSession } from '@/actions/actions';
-import Navbar from '@/components/Navbar';
 
 export default function CartPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [subtotal, setSubtotal] = useState({
     subtotal: 0,
-    vat: 0
+    vat: 0,
+    totalWithoutVat: 0,
+    items: [] as Array<{
+      id: string;
+      name: string;
+      price: number;
+      vatRate: number;
+      vatAmount: number;
+      priceWithoutVat: number;
+    }>
   });
 
   const [cart, setCart] = useState<
@@ -33,8 +41,19 @@ export default function CartPage() {
 
   useEffect(() => {
     (async () => {
+      if (cart.length === 0) {
+        setSubtotal({
+          subtotal: 0,
+          vat: 0,
+          totalWithoutVat: 0,
+          items: []
+        });
+        return;
+      }
       const sub = await getSubtotal(cart.map((item) => item.id));
-      setSubtotal(sub);
+      if (sub) {
+        setSubtotal(sub);
+      }
     })();
   }, [cart]);
 
@@ -61,12 +80,15 @@ export default function CartPage() {
       }
 
       const foodIds = cart.map((item) => item.id);
+      console.log('Checkout params:', { foodIds, year, week, days });
       const session = await createCheckoutSession(foodIds, year, week, days);
+      console.log('Checkout response:', session);
 
       if (session && session.url) {
         // Redirect to Stripe checkout
         window.location.href = session.url;
       } else {
+        console.error('No session URL returned:', session);
         alert('Hiba történt a fizetés indításakor. Kérjük, próbálja újra!');
         setIsProcessing(false);
       }
@@ -123,16 +145,16 @@ export default function CartPage() {
                   <h3>Összesítés</h3>
                   <div className={styles.summaryDetails}>
                     <div className={styles.summaryRow}>
-                      <span>Részösszeg:</span>
+                      <span>Nettó összeg:</span>
                       <span className={styles.amount}>
                         {new Intl.NumberFormat('hu-HU', {
                           style: 'currency',
                           currency: 'HUF'
-                        }).format(subtotal.subtotal)}
+                        }).format(subtotal.totalWithoutVat)}
                       </span>
                     </div>
                     <div className={styles.summaryRow}>
-                      <span>Áfa (27%):</span>
+                      <span>ÁFA:</span>
                       <span className={styles.amount}>
                         {new Intl.NumberFormat('hu-HU', {
                           style: 'currency',
@@ -141,7 +163,7 @@ export default function CartPage() {
                       </span>
                     </div>
                     <div className={`${styles.summaryRow} ${styles.total}`}>
-                      <span>Végösszeg:</span>
+                      <span>Végösszeg (bruttó):</span>
                       <span className={styles.amount}>
                         {new Intl.NumberFormat('hu-HU', {
                           style: 'currency',

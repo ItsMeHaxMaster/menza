@@ -191,9 +191,11 @@ export const post = async (
               description: description,
               images: food.pictureId
                 ? [`${process.env.CDN_URL || ''}/images/${food.pictureId}.jpg`]
-                : []
+                : [],
+              tax_code: food.stripeTaxCode
             },
-            unit_amount: Math.round(food.price * 100) // Stripe expects amount in cents/fillér
+            unit_amount: Math.round(food.price * 100), // Stripe expects amount in cents/fillér
+            tax_behavior: 'inclusive' // Price includes VAT
           },
           quantity: 1
         };
