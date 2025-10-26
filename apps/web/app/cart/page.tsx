@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { ShoppingCart, UtensilsCrossed, User } from 'lucide-react';
 
 import '../globals.css';
 import './page.modules.css';
@@ -20,7 +21,7 @@ export default function CartPage() {
       date: { year: number; week: number; day: number };
     }[]
   >([]);
-  
+
   useEffect(() => {
     const storedCart: {
       id: string;
@@ -32,12 +33,10 @@ export default function CartPage() {
 
   useEffect(() => {
     (async () => {
-      const sub = await getSubtotal(
-        cart.map((item) => item.id)
-      );
+      const sub = await getSubtotal(cart.map((item) => item.id));
       setSubtotal(sub);
     })();
-  }, [cart])
+  }, [cart]);
 
   const handleCheckout = async () => {
     if (cart.length === 0) return;
@@ -46,7 +45,7 @@ export default function CartPage() {
     try {
       const foodIds = cart.map((item) => item.id);
       const session = await createCheckoutSession(foodIds);
-      
+
       if (session && session.url) {
         // Redirect to Stripe checkout
         window.location.href = session.url;
@@ -62,62 +61,111 @@ export default function CartPage() {
   };
 
   return (
-    <main className="cart-container">
-      <h1 className="cart-title">Kosár és fizetés</h1>
-
-      <div className="cart-elements">
-        {cart.length > 0 ? (
-          <>
-            {cart.map((food) => (
-              <CartElement
-                key={`${food.date.day}${food.date.week}`}
-                foodCart={food}
-                onDelete={() => {
-                  const tmp = [...cart];
-
-                  const index = tmp.findIndex(
-                    (item) =>
-                      item.id === food.id &&
-                      item.date.year === food.date.year &&
-                      item.date.week === food.date.week &&
-                      item.date.day === food.date.day
-                  );
-                  if (index !== -1) {
-                    tmp.splice(index, 1);
-                    setCart(tmp);
-                    localStorage.setItem('cart', JSON.stringify(tmp));
-                  }
-                }}
-              />
-            ))}
-          </>
-        ) : (
-          <p className="empty-cart">A kosár jelenleg üres.</p>
-        )}
-
-        <div>
-          <p>Végösszeg: {new Intl.NumberFormat('hu-HU', {
-            style: 'currency',
-            currency: 'HUF'
-          }).format(subtotal.subtotal)}</p>
-          <p>Áfa (27%): {new Intl.NumberFormat('hu-HU', {
-            style: 'currency',
-            currency: 'HUF'
-          }).format(subtotal.vat)}</p>
+    <div className="page">
+      <header className="header">
+        <div className="logoSection">
+          <div className="logo">
+            <ShoppingCart size={32} />
+          </div>
+          <h1 className="title">Kosár és fizetés</h1>
         </div>
-      </div>
-      <div className="cart-buttons">
-        <button 
-          onClick={handleCheckout}
-          className="btn btn-blue"
-          disabled={cart.length === 0 || isProcessing}
-        >
-          {isProcessing ? 'Feldolgozás...' : 'Fizetés'}
-        </button>
-        <Link href="/" className="btn btn-blue">
-          Vissza a menühöz
-        </Link>
-      </div>
-    </main>
+        <nav className="navbar">
+          <Link className="navButton" href="/">
+            <UtensilsCrossed size={24} />
+            <span>Menü</span>
+          </Link>
+          <Link className="navButton" href="/profile">
+            <User size={24} />
+            <span>Profilom</span>
+          </Link>
+        </nav>
+      </header>
+
+      <main className="main">
+        <div className="cartContainer">
+          <div className="cartContent">
+            {cart.length > 0 ? (
+              <>
+                <div className="cartItems">
+                  {cart.map((food) => (
+                    <CartElement
+                      key={`${food.date.day}${food.date.week}`}
+                      foodCart={food}
+                      onDelete={() => {
+                        const tmp = [...cart];
+                        const index = tmp.findIndex(
+                          (item) =>
+                            item.id === food.id &&
+                            item.date.year === food.date.year &&
+                            item.date.week === food.date.week &&
+                            item.date.day === food.date.day
+                        );
+                        if (index !== -1) {
+                          tmp.splice(index, 1);
+                          setCart(tmp);
+                          localStorage.setItem('cart', JSON.stringify(tmp));
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="cartSummary">
+                  <h3>Összesítés</h3>
+                  <div className="summaryDetails">
+                    <div className="summaryRow">
+                      <span>Részösszeg:</span>
+                      <span className="amount">
+                        {new Intl.NumberFormat('hu-HU', {
+                          style: 'currency',
+                          currency: 'HUF'
+                        }).format(subtotal.subtotal)}
+                      </span>
+                    </div>
+                    <div className="summaryRow">
+                      <span>Áfa (27%):</span>
+                      <span className="amount">
+                        {new Intl.NumberFormat('hu-HU', {
+                          style: 'currency',
+                          currency: 'HUF'
+                        }).format(subtotal.vat)}
+                      </span>
+                    </div>
+                    <div className="summaryRow total">
+                      <span>Végösszeg:</span>
+                      <span className="amount">
+                        {new Intl.NumberFormat('hu-HU', {
+                          style: 'currency',
+                          currency: 'HUF'
+                        }).format(subtotal.subtotal + subtotal.vat)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="cartButtons">
+                    <button
+                      onClick={handleCheckout}
+                      className="checkoutButton"
+                      disabled={cart.length === 0 || isProcessing}
+                    >
+                      {isProcessing ? 'Feldolgozás...' : 'Fizetés'}
+                    </button>
+                    <Link href="/" className="backButton">
+                      Vissza a menühöz
+                    </Link>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="emptyCart">
+                <ShoppingCart size={64} />
+                <p>A kosár jelenleg üres</p>
+                <Link href="/" className="backButton">
+                  Vissza a menühöz
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }
