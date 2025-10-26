@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ShoppingCart, UtensilsCrossed, User } from 'lucide-react';
 
-import '../globals.css';
 import styles from './page.module.css';
 import CartElement from '@/components/CartElement';
 import { getSubtotal, createCheckoutSession } from '@/actions/actions';
@@ -62,32 +61,32 @@ export default function CartPage() {
   };
 
   return (
-    <div className="page">
-      <header className="header">
-        <div className="logoSection">
-          <div className="logo">
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <div className={styles.logoSection}>
+          <div className={styles.logo}>
             <ShoppingCart size={32} />
           </div>
-          <h1 className="title">Kosár és fizetés</h1>
+          <h1 className={styles.title}>Kosár és fizetés</h1>
         </div>
-        <nav className="navbar">
-          <Link className="navButton" href="/">
+        <nav className={styles.navbar}>
+          <Link className={styles.navButton} href="/">
             <UtensilsCrossed size={24} />
             <span>Menü</span>
           </Link>
-          <Link className="navButton" href="/profile">
+          <Link className={styles.navButton} href="/profile">
             <User size={24} />
             <span>Profilom</span>
           </Link>
         </nav>
       </header>
 
-      <main className="main">
-        <div className="cartContainer">
-          <div className="cartContent">
+      <main className={styles.main}>
+        <div className={styles.cartContainer}>
+          <div className={styles.cartContent}>
             {cart.length > 0 ? (
               <>
-                <div className="cartItems">
+                <div className={styles.cartItems}>
                   {cart.map((food) => (
                     <CartElement
                       key={`${food.date.day}${food.date.week}`}
@@ -110,56 +109,56 @@ export default function CartPage() {
                     />
                   ))}
                 </div>
-                <div className="cartSummary">
+                <div className={styles.cartSummary}>
                   <h3>Összesítés</h3>
-                  <div className="summaryDetails">
-                    <div className="summaryRow">
+                  <div className={styles.summaryDetails}>
+                    <div className={styles.summaryRow}>
                       <span>Részösszeg:</span>
-                      <span className="amount">
+                      <span className={styles.amount}>
                         {new Intl.NumberFormat('hu-HU', {
                           style: 'currency',
                           currency: 'HUF'
                         }).format(subtotal.subtotal)}
                       </span>
                     </div>
-                    <div className="summaryRow">
+                    <div className={styles.summaryRow}>
                       <span>Áfa (27%):</span>
-                      <span className="amount">
+                      <span className={styles.amount}>
                         {new Intl.NumberFormat('hu-HU', {
                           style: 'currency',
                           currency: 'HUF'
                         }).format(subtotal.vat)}
                       </span>
                     </div>
-                    <div className="summaryRow total">
+                    <div className={`${styles.summaryRow} ${styles.total}`}>
                       <span>Végösszeg:</span>
-                      <span className="amount">
+                      <span className={styles.amount}>
                         {new Intl.NumberFormat('hu-HU', {
                           style: 'currency',
                           currency: 'HUF'
-                        }).format(subtotal.subtotal + subtotal.vat)}
+                        }).format(subtotal.subtotal)}
                       </span>
                     </div>
                   </div>
-                  <div className="cartButtons">
+                  <div className={styles.cartButtons}>
                     <button
                       onClick={handleCheckout}
-                      className="checkoutButton"
+                      className={styles.checkoutButton}
                       disabled={cart.length === 0 || isProcessing}
                     >
                       {isProcessing ? 'Feldolgozás...' : 'Fizetés'}
                     </button>
-                    <Link href="/" className="backButton">
+                    <Link href="/" className={styles.backButton}>
                       Vissza a menühöz
                     </Link>
                   </div>
                 </div>
               </>
             ) : (
-              <div className="emptyCart">
+              <div className={styles.emptyCart}>
                 <ShoppingCart size={64} />
                 <p>A kosár jelenleg üres</p>
-                <Link href="/" className="backButton">
+                <Link href="/" className={styles.backButton}>
                   Vissza a menühöz
                 </Link>
               </div>
