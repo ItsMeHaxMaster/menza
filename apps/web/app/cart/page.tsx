@@ -6,6 +6,7 @@ import { ShoppingCart, UtensilsCrossed, User } from 'lucide-react';
 import styles from './page.module.css';
 import CartElement from '@/components/CartElement';
 import { getSubtotal, createCheckoutSession } from '@/actions/actions';
+import Navbar from '@/components/Navbar';
 
 export default function CartPage() {
   const [isProcessing, setIsProcessing] = useState(false);
