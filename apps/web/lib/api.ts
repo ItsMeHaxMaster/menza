@@ -114,7 +114,7 @@ class Api {
   public getOrderHistory = cache(async (limit?: number) => {
     try {
       const limitParam = limit ? `?limit=${limit}` : '';
-      const history = await this.fetch(`/v1/orders/history${limitParam}`);
+      const history = await this.fetch(`/v1/order/history${limitParam}`);
       if (!history.ok) return null;
       return await history.json();
     } catch {
