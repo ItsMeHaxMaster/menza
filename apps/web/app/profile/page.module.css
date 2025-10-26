@@ -18,6 +18,7 @@
   justify-content: space-between;
   align-items: center;
   backdrop-filter: blur(10px);
+  animation: fadeSlideDown 0.6s ease-out 0s backwards;
 }
 
 .logoSection {
@@ -37,6 +38,7 @@
   box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
   transition: all 0.3s ease;
   color: white;
+  animation: logoSpin 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s backwards;
 }
 
 .logo:hover {
@@ -58,29 +60,7 @@
   background-clip: text;
   margin: 0 !important;
   font-weight: 700;
-}
-
-.navbar {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.navButton {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(79, 70, 229, 0.3);
-  border-radius: 12px;
-  color: var(--foreground);
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-  backdrop-filter: blur(5px);
-  text-decoration: none;
-  cursor: pointer;
+  animation: fadeSlideRight 0.6s ease-out 0.2s backwards;
 }
 
 .cartBadge {
@@ -99,13 +79,6 @@
   font-weight: 600;
 }
 
-.navButton:hover {
-  background: var(--button);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
-}
-
 .main {
   flex: 1;
   padding: 2rem 4vw;
@@ -119,6 +92,7 @@
   border: 1px solid rgba(79, 70, 229, 0.3);
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeSlideUp 0.6s ease-out 0.4s backwards;
 }
 
 .profileHeader {
@@ -146,6 +120,8 @@
   font-weight: 700;
   color: white;
   box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+  animation: fadeScale 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s
+    backwards;
 }
 
 .userName {
@@ -167,6 +143,7 @@
 .profileDetails {
   padding: 2rem;
   border-bottom: 1px solid rgba(79, 70, 229, 0.3);
+  animation: fadeSlideUp 0.6s ease-out 0.8s backwards;
 }
 
 .profileDetails h3 {
@@ -224,6 +201,7 @@
 .orderHistory {
   padding: 2rem;
   border-bottom: 1px solid rgba(79, 70, 229, 0.3);
+  animation: fadeSlideUp 0.6s ease-out 1s backwards;
 }
 
 .orderHistory h3 {
@@ -359,20 +337,6 @@
 }
 
 @media (max-width: 768px) {
-  .logo {
-    width: 50px;
-    height: 50px;
-  }
-
-  .logo svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .title {
-    font-size: 2rem !important;
-  }
-
   .header {
     padding: 1rem;
     flex-direction: column;
@@ -382,6 +346,20 @@
   .navbar {
     width: 100%;
     justify-content: center;
+  }
+
+  .logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .logo svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .title {
+    font-size: 1.75rem !important;
   }
 
   .main {
@@ -448,4 +426,70 @@
   background: #dc2626;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logoSpin {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
 }

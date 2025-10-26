@@ -3,6 +3,26 @@
 import styles from './OrderStatus.module.css';
 import { Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { getSubtotal } from '@/actions/actions';
+
+// Add getWeek() to the Date prototype
+declare global {
+  interface Date {
+    getWeek(): number;
+  }
+}
+
+Date.prototype.getWeek = function () {
+  const target = new Date(this.valueOf());
+  const dayNr = (this.getDay() + 6) % 7;
+  target.setDate(target.getDate() - dayNr + 3);
+  const firstThursday = target.valueOf();
+  target.setMonth(0, 1);
+  if (target.getDay() !== 4) {
+    target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
+  }
+  return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
+};
 
 /**
  * Type definition for items in the shopping cart
@@ -44,13 +64,22 @@ type MenuItem = {
  * @returns boolean - True if there is a food item selected for the given day
  */
 const isDaySelected = (cart: CartItem[], day: number) => {
-  const currentWeek = new Date().getWeek();
-  const currentYear = new Date().getFullYear();
+  // Get current week and year
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentWeek = currentDate.getWeek();
 
+  // Get next week, handling year wrap
+  const dec31 = new Date(currentYear, 11, 31);
+  const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
+  const nextWeek = currentWeek === weeksInYear ? 1 : currentWeek + 1;
+  const nextYear = currentWeek === weeksInYear ? currentYear + 1 : currentYear;
+
+  // Check for items in both current and next week
   return cart.some(
     (item) =>
-      item.date.year === currentYear &&
-      item.date.week === currentWeek &&
+      ((item.date.year === currentYear && item.date.week === currentWeek) ||
+        (item.date.year === nextYear && item.date.week === nextWeek)) &&
       item.date.day === day
   );
 };
@@ -66,18 +95,30 @@ export default function OrderStatus() {
   const [cart, setCart] = useState<CartItem[]>([]);
   // State to track number of days with selected meals
   const [selectedDays, setSelectedDays] = useState(0);
+  // State to track subtotal
+  const [subtotal, setSubtotal] = useState({
+    subtotal: 0,
+    vat: 0
+  });
 
   /**
    * Updates the component state based on current cart contents
    * Reads cart data from localStorage and updates the UI accordingly
    */
-  const updateCartStatus = () => {
+  const updateCartStatus = async () => {
     const storedCart = JSON.parse(
       localStorage.getItem('cart') || '[]'
     ) as CartItem[];
     setCart(storedCart);
     // Count unique days that have selections
     setSelectedDays(new Set(storedCart.map((item) => item.date.day)).size);
+    // Calculate subtotal
+    if (storedCart.length > 0) {
+      const sub = await getSubtotal(storedCart.map((item) => item.id));
+      setSubtotal(sub);
+    } else {
+      setSubtotal({ subtotal: 0, vat: 0 });
+    }
   };
 
   /**
@@ -145,8 +186,7 @@ export default function OrderStatus() {
             {new Intl.NumberFormat('hu-HU', {
               style: 'currency',
               currency: 'HUF'
-            }).format(0)}{' '}
-            {/* We'll implement price calculation later */}
+            }).format(subtotal.subtotal)}
           </span>
         </div>
       </div>

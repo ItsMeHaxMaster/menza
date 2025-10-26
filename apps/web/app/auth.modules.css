@@ -94,10 +94,15 @@
     border: 1px solid rgba(79, 70, 229, 0.3);
     border-radius: 12px;
     font-size: 16px;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--secondary);
+    color: #ffffff;
     transition: all 0.3s ease;
-    opacity: 0;
     transform: translateY(10px);
+    animation: fadeSlideUp 0.5s ease-out forwards;
+  }
+
+  .auth-form input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
   }
 
   .auth-form input:nth-child(2) {

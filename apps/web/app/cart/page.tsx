@@ -79,24 +79,17 @@ export default function CartPage() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.logoSection}>
-          <div className={styles.logo}>
-            <ShoppingCart size={32} />
+      <Navbar
+        currentPage="cart"
+        logoSection={
+          <div className={styles.logoSection}>
+            <div className={styles.logo}>
+              <ShoppingCart size={32} />
+            </div>
+            <h1 className={styles.title}>Kosár és fizetés</h1>
           </div>
-          <h1 className={styles.title}>Kosár és fizetés</h1>
-        </div>
-        <nav className={styles.navbar}>
-          <Link className={styles.navButton} href="/">
-            <UtensilsCrossed size={24} />
-            <span>Menü</span>
-          </Link>
-          <Link className={styles.navButton} href="/profile">
-            <User size={24} />
-            <span>Profilom</span>
-          </Link>
-        </nav>
-      </header>
+        }
+      />
 
       <main className={styles.main}>
         <div className={styles.cartContainer}>

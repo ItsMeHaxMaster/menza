@@ -14,6 +14,8 @@
   border: 1px solid rgba(79, 70, 229, 0.3);
   padding: 0;
   margin: 4vh 2vw;
+  animation: fadeScale 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s
+    backwards;
 }
 
 .days {
@@ -139,12 +141,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition:
     box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    transform 0.2s ease;
   border: 1px solid rgba(79, 70, 229, 0.6);
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 80px;
+  animation: fadeScale 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) backwards;
 }
 
 .menuCard:hover {
@@ -165,6 +169,7 @@
   justify-content: space-between;
   align-items: center;
   backdrop-filter: blur(10px);
+  animation: fadeSlideDown 0.6s ease-out forwards;
 }
 
 .logoSection {
@@ -184,6 +189,7 @@
   box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
   transition: all 0.3s ease;
   color: white;
+  animation: logoSpin 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s backwards;
 }
 
 .logo:hover {
@@ -205,12 +211,14 @@
   background-clip: text;
   margin: 0 !important;
   font-weight: 700;
+  animation: fadeSlideRight 0.6s ease-out 0.2s backwards;
 }
 
 .navbar {
   display: flex;
   gap: 1rem;
   align-items: center;
+  animation: fadeSlideLeft 0.6s ease-out 0.2s backwards;
 }
 
 .navButton {
@@ -266,6 +274,7 @@
   );
   border-radius: 20px;
   border: 1px solid rgba(79, 70, 229, 0.3);
+  animation: fadeSlideUp 0.6s ease-out 0.4s backwards;
 }
 
 .menuLogo {
@@ -458,9 +467,28 @@
 /* Mobile devices - vertical layout */
 @media (max-width: 768px) {
   .header {
+    padding: 1rem;
     flex-direction: column;
-    align-items: center;
     gap: 1rem;
+  }
+
+  .navbar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .logo svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .title {
+    font-size: 1.75rem !important;
   }
 
   .menuContainer {
@@ -650,7 +678,9 @@
   box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  animation: pulse 2s infinite;
+  animation:
+    fadeSlideUp 0.6s ease-out 0.5s backwards,
+    pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -665,5 +695,71 @@
   100% {
     box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
     border-color: rgba(239, 68, 68, 0.4);
+  }
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logoSpin {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
   }
 }
