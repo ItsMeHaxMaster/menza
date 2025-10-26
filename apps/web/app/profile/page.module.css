@@ -269,6 +269,15 @@
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(79, 70, 229, 0.2);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.orderHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .orderId {
@@ -287,6 +296,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .orderAmount {

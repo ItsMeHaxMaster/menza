@@ -25,6 +25,22 @@ export class Food {
   @Property()
   price!: number;
 
+  @Property({ default: 27 })
+  vatRate: number = 27; // VAT rate in percentage (default 27%)
+
+  @Property({ length: 50, default: 'txcd_99999999' })
+  stripeTaxCode: string = 'txcd_99999999'; // Stripe product tax code for restaurant/prepared food
+
+  @Property({ persist: false })
+  get vatAmount(): number {
+    return this.price * (this.vatRate / (100 + this.vatRate));
+  }
+
+  @Property({ persist: false })
+  get priceWithoutVat(): number {
+    return this.price - this.vatAmount;
+  }
+
   @Property({ length: 40 })
   pictureId!: string;
 

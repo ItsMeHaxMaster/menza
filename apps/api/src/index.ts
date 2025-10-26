@@ -39,6 +39,10 @@ app.use(
     maxAge: 86400
   })
 );
+
+// Webhook needs raw body for signature verification
+app.use('/v1/checkout/webhook', bodyParser.raw({ type: 'application/json' }));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(multer().any());

@@ -26,6 +26,10 @@ export async function getOrderHistory(limit?: number) {
   return await api.getOrderHistory(limit);
 }
 
+export async function getInvoiceUrl(orderId: string) {
+  return await api.getInvoiceUrl(orderId);
+}
+
 export async function getMenu(week: number, year: number) {
   return await api.getMenu(week, year);
 }
