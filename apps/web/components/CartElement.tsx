@@ -7,6 +7,21 @@ import { getFood } from '@/actions/actions';
 import InfoButton from './InfoButton';
 import AddButton from './AddButton';
 
+interface Allergen {
+  id: string;
+  name: string;
+  icon: string;
+}
+
+interface Food {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  pictureId: string;
+  allergens: Allergen[];
+}
+
 export default function CartElement({
   foodCart,
   onDelete
@@ -14,7 +29,7 @@ export default function CartElement({
   foodCart: any;
   onDelete: any;
 }) {
-  const [food, setFood] = useState<any>(null);
+  const [food, setFood] = useState<Food | null>(null);
   const [loading, setLoading] = useState(true);
 
   const nap = (day: number) => {
@@ -42,7 +57,7 @@ export default function CartElement({
     })();
   }, [foodCart]);
 
-  if (loading) return <></>;
+  if (loading || !food) return <></>;
   return (
     <div>
       <div className={styles.foodItem}>
@@ -69,7 +84,13 @@ export default function CartElement({
         </span>
 
         <div className={styles.buttons}>
-          <InfoButton text={food.description} />{' '}
+          <InfoButton
+            text={food.description}
+            allergens={food.allergens}
+            foodName={food.name}
+            price={food.price}
+            pictureId={food.pictureId}
+          />{' '}
           <AddButton
             className={styles.addToCart}
             foodId={food.id}
