@@ -3,7 +3,7 @@
   --foreground: #ededed;
   --button: #4f46e5;
   --secondary: #222222;
-  --primary: #2938DC;
+  --primary: #2938dc;
 }
 
 html,
@@ -20,18 +20,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-header{
+header {
   display: flex;
   width: 100%;
 }
 
-h1, h2{
+h1,
+h2 {
   flex: 1;
   text-align: center;
   justify-content: center;
 }
 
-h1{
+h1 {
   font-size: 60px;
   margin: 20px 0 10px 0;
 }

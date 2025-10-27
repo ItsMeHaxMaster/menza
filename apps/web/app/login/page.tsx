@@ -1,16 +1,16 @@
-"use client";
-import React, { useActionState } from "react";
-import Link from "next/link";
-import "../globals.css";
-import "../auth.modules.css";
+'use client';
+import React, { useActionState } from 'react';
+import Link from 'next/link';
+import '../globals.css';
+import '../auth.modules.css';
 
-import { login } from "@/actions/auth";
-import Turnstile from "@/components/Turnstile";
+import { login } from '@/actions/auth';
+import Turnstile from '@/components/Turnstile';
 
 // 0x4AAAAAAB3E4tl6nWFLbTmH
 
 const initialState = {
-  message: "",
+  message: ''
 };
 
 export default function Register() {

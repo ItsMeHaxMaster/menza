@@ -40,7 +40,7 @@ export default async function Profile() {
 
   return (
     <div className={styles.page}>
-      <Navbar 
+      <Navbar
         currentPage="profile"
         logoSection={
           <div className={styles.logoSection}>
@@ -112,13 +112,16 @@ export default async function Profile() {
                       </span>
                       <div className={styles.orderHeaderRight}>
                         <span className={styles.orderDate}>
-                          {new Date(order.createdAt).toLocaleDateString('hu-HU', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          {new Date(order.createdAt).toLocaleDateString(
+                            'hu-HU',
+                            {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            }
+                          )}
                         </span>
                         <InvoiceButton
                           orderId={order.id}

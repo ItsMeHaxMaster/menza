@@ -1,4 +1,4 @@
-.foodItem{
+.foodItem {
   background: var(--secondary);
   border-radius: 12px;
   padding: 20px;
@@ -15,13 +15,13 @@
   margin-bottom: 16px;
 }
 
-.foodItem:hover{
+.foodItem:hover {
   box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
   border-color: var(--button);
 }
 
-.food{
-  font-size: 1.50rem;
+.food {
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .buttons {
- display: flex;
+  display: flex;
   gap: 0.5rem;
   align-items: center;
   padding: 5px;
@@ -61,10 +61,10 @@
   transform: scale(1.1);
 }
 
-.addToCart[data-action="true"] {
+.addToCart[data-action='true'] {
   background: rgba(107, 114, 128, 0.5);
 }
-.addToCart[data-action="true"]:hover {
+.addToCart[data-action='true']:hover {
   background: rgba(255, 50, 50, 1);
 }
 

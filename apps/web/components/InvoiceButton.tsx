@@ -45,7 +45,11 @@ export default function InvoiceButton({
       onClick={handleDownload}
       disabled={!isPaid || isLoading}
       className={styles.invoiceButton}
-      title={isPaid ? 'Számla letöltése' : 'Csak kifizetve státuszú rendeléseknél érhető el'}
+      title={
+        isPaid
+          ? 'Számla letöltése'
+          : 'Csak kifizetve státuszú rendeléseknél érhető el'
+      }
     >
       <Download size={16} />
       {isLoading ? 'Betöltés...' : 'Számla'}

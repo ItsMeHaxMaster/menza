@@ -62,9 +62,9 @@ export default function CartElement({ foodCart, onDelete }: CartElementProps) {
         setLoading(true);
         setError(null);
         const foodData = await getFood(foodCart.id);
-        
+
         if (!mounted) return;
-        
+
         if (!foodData) {
           setError('Nem sikerült betölteni az étel adatait');
           return;
@@ -103,13 +103,8 @@ export default function CartElement({ foodCart, onDelete }: CartElementProps) {
   if (error || !food) {
     return (
       <div className={styles.foodItem}>
-        <div className={styles.error}>
-          {error || 'Nem található az étel'}
-        </div>
-        <button 
-          onClick={onDelete} 
-          className={styles.removeButton}
-        >
+        <div className={styles.error}>{error || 'Nem található az étel'}</div>
+        <button onClick={onDelete} className={styles.removeButton}>
           Eltávolítás a kosárból
         </button>
       </div>
@@ -140,7 +135,7 @@ export default function CartElement({ foodCart, onDelete }: CartElementProps) {
       </span>
 
       <div className={styles.buttons}>
-        <InfoButton 
+        <InfoButton
           text={food.description}
           allergens={food.allergens}
           foodName={food.name}

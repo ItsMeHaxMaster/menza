@@ -1,10 +1,7 @@
 'use client';
 
 import styles from './page.module.css';
-import {
-  Utensils,
-  UtensilsCrossed,
-} from 'lucide-react';
+import { Utensils, UtensilsCrossed } from 'lucide-react';
 import Image from 'next/image';
 import InfoButton from '../components/InfoButton';
 import { useEffect, useState } from 'react';
@@ -104,11 +101,11 @@ const getWeeksForCurrentYear = (): number[] => {
   // Only show current week + next 2 weeks (3 weeks total)
   for (let i = 0; i < 3; i++) {
     const weekNumber = currentWeekNumber + i;
-    
+
     // Handle year wrap (if week number exceeds weeks in year)
     const dec31 = new Date(currentYear, 11, 31);
     const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
-    
+
     if (weekNumber <= weeksInYear) {
       weeks.push(weekNumber);
     } else {
@@ -148,7 +145,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <Navbar 
+      <Navbar
         currentPage="home"
         logoSection={
           <div className={styles.logoSection}>
@@ -190,7 +187,8 @@ export default function Home() {
           <OrderStatus />
         </div>
         <div className={styles.warning}>
-          Csak a következő hétre lehet rendelni, naponta maximum 1 ételt. Előrendelés max. 2 héttel előre lehetséges.
+          Csak a következő hétre lehet rendelni, naponta maximum 1 ételt.
+          Előrendelés max. 2 héttel előre lehetséges.
         </div>
 
         <div className={styles.menuContainer}>

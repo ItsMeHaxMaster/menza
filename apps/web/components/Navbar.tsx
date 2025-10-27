@@ -42,8 +42,8 @@ export default function Navbar({ logoSection, currentPage }: NavbarProps) {
       {logoSection}
       <nav className={styles.navbar}>
         {navItems
-          .filter(item => item.page !== currentPage)
-          .map(item => (
+          .filter((item) => item.page !== currentPage)
+          .map((item) => (
             <Link key={item.page} className={styles.navButton} href={item.href}>
               {item.icon}
               <span>{item.label}</span>

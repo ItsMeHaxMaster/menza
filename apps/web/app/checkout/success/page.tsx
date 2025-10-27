@@ -56,7 +56,7 @@ export default function CheckoutSuccessPage() {
               <p className={styles.thankYou}>
                 Kérjük, várjon, amíg feldolgozzuk a tranzakciót.
               </p>
-            </div>
+            </div>s
           </div>
         </main>
       </div>
