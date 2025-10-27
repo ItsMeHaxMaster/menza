@@ -30,7 +30,7 @@ export const post = async (
     try {
       // Get raw body (Buffer) from the request
       const rawBody = req.req.body;
-      
+
       // Verify webhook signature with raw body
       event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
     } catch (err: unknown) {

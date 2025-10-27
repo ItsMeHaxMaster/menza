@@ -9,12 +9,16 @@ interface AuthState {
   message: string;
 }
 
-export async function login(initialState: AuthState, formData: FormData, redirectUrl?: string) {
+export async function login(
+  initialState: AuthState,
+  formData: FormData,
+  redirectUrl?: string
+) {
   const userData = {
     email: formData.get('email'),
     password: formData.get('password'),
     turnstile: formData.get('cf-turnstile-response')
-  }
+  };
 
   try {
     const req = await fetch('http://localhost:3001/v1/auth/login', {
@@ -26,8 +30,7 @@ export async function login(initialState: AuthState, formData: FormData, redirec
     });
     const data = await req.json();
 
-    if (data.error)
-      return { message: data.message };
+    if (data.error) return { message: data.message };
 
     const cookieStore = await cookies();
     cookieStore.set('session_mz', data.jwt);
@@ -47,7 +50,7 @@ export async function register(initialState: AuthState, formData: FormData) {
     email: formData.get('email'),
     password: formData.get('password'),
     turnstile: formData.get('cf-turnstile-response')
-  }
+  };
 
   if (userData.password !== formData.get('password-repeat')) {
     return { message: 'A jelszavak nem egyezenek.' };
@@ -63,8 +66,7 @@ export async function register(initialState: AuthState, formData: FormData) {
     });
     const data = await req.json();
 
-    if (data.error)
-      return { message: data.message };
+    if (data.error) return { message: data.message };
 
     const cookieStore = await cookies();
     cookieStore.set('session_mz', data.jwt);
@@ -81,12 +83,12 @@ export async function register(initialState: AuthState, formData: FormData) {
 export async function updateUser(formData: FormData) {
   const userData = {
     name: formData.get('name') as string,
-    email: formData.get('email') as string,
-  }
+    email: formData.get('email') as string
+  };
 
   try {
-    const data = await api.patchUser(userData.name, userData.email)
-    
+    const data = await api.patchUser(userData.name, userData.email);
+
     revalidatePath('/profile');
   } catch (e: unknown) {
     if (e instanceof Error && e.message === 'NEXT_REDIRECT') throw e;

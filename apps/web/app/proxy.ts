@@ -9,7 +9,7 @@ export default async function proxy(req: NextRequest) {
 
   const cookie = (await cookies()).get('mz_session')?.value;
 
-  console.log(isProtectedRoute, cookie)
+  console.log(isProtectedRoute, cookie);
 
   if (isProtectedRoute && !cookie) {
     return NextResponse.redirect(new URL('/login', req.nextUrl));

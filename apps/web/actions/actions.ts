@@ -5,7 +5,7 @@ import api from '@/lib/api';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export async function getSubtotal(items: (string|bigint)[]) {
+export async function getSubtotal(items: (string | bigint)[]) {
   return await api.getSubtotal(items);
 }
 

@@ -23,9 +23,5 @@ export default function CartCounter() {
 
   if (count === 0) return null;
 
-  return (
-    <div className={styles.cartBadge}>
-      {count}
-    </div>
-  );
+  return <div className={styles.cartBadge}>{count}</div>;
 }

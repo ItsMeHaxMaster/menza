@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn-canteen.kenderesi.hu',
-        pathname: '/images/**',
-      },
-    ],
-  },
+        pathname: '/images/**'
+      }
+    ]
+  }
 };
 
 export default nextConfig;
