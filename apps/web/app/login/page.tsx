@@ -13,6 +13,11 @@ const initialState = {
   message: ''
 };
 
+/**
+ * Login Page Component
+ * Provides user authentication with Cloudflare Turnstile protection.
+ * Handles form submission via server action and displays error messages.
+ */
 export default function Register() {
   const [state, formAction, pending] = useActionState(login, initialState);
 

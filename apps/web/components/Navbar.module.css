@@ -1,3 +1,7 @@
+/* Header container with gradient background
+ * Uses backdrop blur for a modern glass effect
+ * Animated on page load with fadeSlideDown
+ */
 .header {
   display: flex;
   justify-content: space-between;
@@ -13,6 +17,7 @@
   animation: fadeSlideDown 0.6s ease-out forwards;
 }
 
+/* Navigation container with delayed animation */
 .navbar {
   display: flex;
   gap: 1rem;
@@ -20,6 +25,9 @@
   animation: fadeSlideLeft 0.6s ease-out 0.2s backwards;
 }
 
+/* Individual navigation button with glass morphism effect
+ * Features smooth hover transitions and lift animation
+ */
 .navButton {
   display: flex;
   align-items: center;
@@ -44,6 +52,9 @@
   box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
 }
 
+/* Mobile layout: stacks items vertically
+ * Adjusts padding and centers navigation
+ */
 @media (max-width: 768px) {
   .header {
     padding: 1rem;
@@ -57,6 +68,12 @@
   }
 }
 
+/* Animation Keyframes
+ * Provides smooth entry animations for page elements
+ * All animations use opacity and transform for smooth performance
+ */
+
+/* Fade and slide from top (used by header) */
 @keyframes fadeSlideDown {
   from {
     opacity: 0;
@@ -68,6 +85,7 @@
   }
 }
 
+/* Fade and slide from bottom */
 @keyframes fadeSlideUp {
   from {
     opacity: 0;
@@ -79,6 +97,7 @@
   }
 }
 
+/* Fade and slide from left */
 @keyframes fadeSlideRight {
   from {
     opacity: 0;
@@ -90,6 +109,7 @@
   }
 }
 
+/* Fade and slide from right (used by navbar) */
 @keyframes fadeSlideLeft {
   from {
     opacity: 0;

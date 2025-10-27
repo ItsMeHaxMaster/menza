@@ -5,13 +5,25 @@ import { UtensilsCrossed, ShoppingCart, User } from 'lucide-react';
 import styles from './Navbar.module.css';
 import CartCounter from './CartCounter';
 
+/**
+ * Available navigation pages
+ */
 type NavbarPage = 'home' | 'profile' | 'cart';
 
+/**
+ * Props for Navbar component
+ */
 interface NavbarProps {
   logoSection?: React.ReactNode;
   currentPage: NavbarPage;
 }
 
+/**
+ * Navbar Component
+ * Displays a responsive navigation bar with three main sections.
+ * Automatically hides the button for the current page.
+ * Features animated cart counter badge.
+ */
 export default function Navbar({ logoSection, currentPage }: NavbarProps) {
   const navItems = [
     {

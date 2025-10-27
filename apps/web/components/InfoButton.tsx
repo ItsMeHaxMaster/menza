@@ -20,6 +20,9 @@ import {
 import Image from 'next/image';
 import Showdown from 'showdown';
 
+/**
+ * Allergen data structure
+ */
 interface Allergen {
   id: string;
   name: string;
@@ -28,7 +31,10 @@ interface Allergen {
   updatedAt?: string;
 }
 
-// Map icon names to Lucide icons
+/**
+ * Maps allergen icon names to Lucide icon components
+ * Used to dynamically render the appropriate icon for each allergen
+ */
 const iconMap: Record<string, LucideIcon> = {
   milk: Milk,
   wheat: Wheat,
@@ -45,6 +51,15 @@ const iconMap: Record<string, LucideIcon> = {
   dairy: Milk
 };
 
+/**
+ * InfoButton Component
+ * Displays detailed information about a food item in a sliding panel.
+ * Features include:
+ * - Hero section with food image and price
+ * - Markdown-rendered description
+ * - Allergen list with icons
+ * - Modal overlay with smooth animations
+ */
 export default function InfoButton({
   text,
   allergens,
@@ -60,12 +75,19 @@ export default function InfoButton({
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Convert markdown to HTML using showdown
+  /**
+   * Converts markdown text to HTML using Showdown
+   * Memoized to avoid unnecessary reprocessing
+   */
   const htmlContent = useMemo(() => {
     const converter = new Showdown.Converter();
     return converter.makeHtml(text);
   }, [text]);
 
+  /**
+   * Returns the appropriate Lucide icon component for an allergen
+   * Falls back to AlertTriangle if icon not found in iconMap
+   */
   const getIcon = (iconName: string) => {
     const IconComponent = iconMap[iconName.toLowerCase()] || AlertTriangle;
     return IconComponent;

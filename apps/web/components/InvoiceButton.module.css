@@ -1,3 +1,7 @@
+/* Invoice download button with green gradient
+ * Uses a success-oriented color scheme (green)
+ * Features smooth hover animations and disabled states
+ */
 .invoiceButton {
   display: inline-flex;
   align-items: center;
@@ -14,12 +18,16 @@
   box-shadow: 0 2px 10px rgba(16, 185, 129, 0.2);
 }
 
+/* Hover state: darker gradient with lift effect */
 .invoiceButton:hover:not(:disabled) {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
 }
 
+/* Disabled state for unpaid orders
+ * Grayed out appearance with no interactions
+ */
 .invoiceButton:disabled {
   background: rgba(156, 163, 175, 0.3);
   color: rgba(255, 255, 255, 0.5);

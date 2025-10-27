@@ -7,6 +7,9 @@ import { getFood } from '@/actions/actions';
 import InfoButton from './InfoButton';
 import AddButton from './AddButton';
 
+/**
+ * Food item structure returned from the API
+ */
 interface Food {
   id: string;
   name: string;
@@ -20,6 +23,9 @@ interface Food {
   }>;
 }
 
+/**
+ * Props for CartElement component
+ */
 interface CartElementProps {
   foodCart: {
     id: string;
@@ -32,11 +38,20 @@ interface CartElementProps {
   onDelete: () => void;
 }
 
+/**
+ * CartElement Component
+ * Displays a single food item in the shopping cart with its details,
+ * including the scheduled date, price, and action buttons.
+ * Fetches food data from the API and handles loading/error states.
+ */
 export default function CartElement({ foodCart, onDelete }: CartElementProps) {
   const [food, setFood] = useState<Food | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Converts day number to Hungarian day name
+   */
   const nap = (day: number) => {
     switch (day) {
       case 1:
@@ -54,6 +69,10 @@ export default function CartElement({ foodCart, onDelete }: CartElementProps) {
     }
   };
 
+  /**
+   * Fetches food data when component mounts or foodCart.id changes
+   * Includes cleanup to prevent state updates on unmounted components
+   */
   useEffect(() => {
     let mounted = true;
 
@@ -89,6 +108,7 @@ export default function CartElement({ foodCart, onDelete }: CartElementProps) {
     };
   }, [foodCart.id]);
 
+  // Loading state with skeleton animation
   if (loading) {
     return (
       <div className={styles.foodItem}>
@@ -100,6 +120,7 @@ export default function CartElement({ foodCart, onDelete }: CartElementProps) {
     );
   }
 
+  // Error state with remove button
   if (error || !food) {
     return (
       <div className={styles.foodItem}>

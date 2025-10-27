@@ -84,6 +84,7 @@
   padding: 2rem 4vw;
 }
 
+/* Profile card container with gradient background */
 .profileContainer {
   max-width: 800px;
   margin: 0 auto;
@@ -108,6 +109,9 @@
   border-bottom: 1px solid rgba(79, 70, 229, 0.3);
 }
 
+/* User avatar with initials
+ * Circular gradient background with animated scaling
+ */
 .avatar {
   width: 80px;
   height: 80px;
@@ -198,6 +202,7 @@
   box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
 }
 
+/* Order history section with cards */
 .orderHistory {
   padding: 2rem;
   border-bottom: 1px solid rgba(79, 70, 229, 0.3);
@@ -234,6 +239,7 @@
   backdrop-filter: blur(10px);
 }
 
+/* Order card hover effect for interactivity */
 .orderItem:hover {
   border-color: var(--button);
   box-shadow: 0 8px 25px rgba(79, 70, 229, 0.2);

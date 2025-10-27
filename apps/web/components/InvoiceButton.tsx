@@ -5,11 +5,20 @@ import { Download } from 'lucide-react';
 import { getInvoiceUrl } from '@/actions/actions';
 import styles from './InvoiceButton.module.css';
 
+/**
+ * Props for InvoiceButton component
+ */
 interface InvoiceButtonProps {
   orderId: string;
   paymentStatus: string;
 }
 
+/**
+ * InvoiceButton Component
+ * Allows users to download their invoice for paid orders.
+ * Only enabled when payment status is 'paid'.
+ * Opens invoice in a new browser tab when clicked.
+ */
 export default function InvoiceButton({
   orderId,
   paymentStatus
@@ -17,6 +26,10 @@ export default function InvoiceButton({
   const [isLoading, setIsLoading] = useState(false);
   const isPaid = paymentStatus === 'paid';
 
+  /**
+   * Fetches invoice URL from the API and opens it in a new tab
+   * Shows alerts for unpaid orders or download errors
+   */
   const handleDownload = async () => {
     if (!isPaid) {
       alert('A számla csak a kifizetve státuszú rendeléseknél érhető el.');

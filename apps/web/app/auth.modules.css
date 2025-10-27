@@ -38,7 +38,12 @@
   }
 }
 
-/* Auth forms */
+/* Authentication Forms
+ * Centered login/register forms with animated appearance
+ * Features gradient background and form bounce-in effect
+ */
+
+/* Full-screen centered container with animated gradient */
 .container {
   display: flex;
   justify-content: center;
@@ -53,6 +58,7 @@
   background-size: 200% 200%;
   animation: gradientMove 15s ease infinite;
 
+  /* Auth form card with glass morphism effect */
   .auth-form {
     background: var(--secondary);
     border-radius: 20px;
@@ -74,6 +80,7 @@
     border-color: var(--button);
   }
 
+  /* Form title with gradient text */
   .auth-form h2 {
     font-size: 2rem;
     font-weight: 700;
@@ -87,6 +94,9 @@
     animation: fadeSlideUp 0.6s ease-out 0.3s both;
   }
 
+  /* Form inputs with staggered animation
+   * Each input animates in sequence for smooth appearance
+   */
   .auth-form input {
     width: 100%;
     padding: 14px;

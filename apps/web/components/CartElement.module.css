@@ -1,3 +1,7 @@
+/* Card container for each food item in the cart
+ * Uses a subtle shadow and border with hover effects
+ * Layout: horizontal flex container with space between items
+ */
 .foodItem {
   background: var(--secondary);
   border-radius: 12px;
@@ -11,7 +15,6 @@
   align-items: center;
   justify-content: space-between;
   min-height: 80px;
-
   margin-bottom: 16px;
 }
 
@@ -73,6 +76,10 @@
   padding: 10px;
 }
 
+/* Loading skeleton animation element
+ * Creates a shimmering effect using gradient animation
+ * Used while content is being fetched
+ */
 .skeletonLine {
   height: 20px;
   background: linear-gradient(
@@ -87,6 +94,9 @@
   margin-bottom: 8px;
 }
 
+/* Animation for the loading skeleton
+ * Moves the gradient from right to left infinitely
+ */
 @keyframes loading {
   0% {
     background-position: 200% 0;

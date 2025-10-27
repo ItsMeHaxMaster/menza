@@ -1,3 +1,12 @@
+/**
+ * Global CSS Variables
+ * Design system color palette used throughout the application
+ * --background: Main dark background color
+ * --foreground: Primary text color
+ * --button: Brand accent color (indigo)
+ * --secondary: Secondary background for cards and containers
+ * --primary: Darker shade of brand color for gradients
+ */
 :root {
   --background: #171717;
   --foreground: #ededed;
@@ -6,12 +15,14 @@
   --primary: #2938dc;
 }
 
+/* Prevent horizontal scroll on all pages */
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
 }
 
+/* Base body styling with font smoothing for better rendering */
 body {
   color: var(--foreground);
   background: var(--background);
@@ -20,11 +31,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Legacy header styling (may not be actively used) */
 header {
   display: flex;
   width: 100%;
 }
 
+/* Centered headings */
 h1,
 h2 {
   flex: 1;
@@ -41,17 +54,24 @@ header > img {
   max-width: 50px;
 }
 
+/* CSS Reset
+ * Removes default browser styling for consistent appearance
+ */
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
+/* Remove default link styling */
 a {
   color: inherit;
   text-decoration: none;
 }
 
+/* Legacy button styles (replaced by component-specific styles)
+ * Kept for backwards compatibility
+ */
 .navButton {
   background-color: transparent;
   border: none;

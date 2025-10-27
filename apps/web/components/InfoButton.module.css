@@ -1,3 +1,8 @@
+/* Sliding panel for detailed food information
+ * Slides in from the right side of the screen
+ * Uses fixed positioning and transforms for smooth animation
+ * Includes shadow for depth and scrolling for overflow content
+ */
 .info {
   position: fixed;
   top: 0;
@@ -324,7 +329,12 @@
   transform: scale(1.1);
 }
 
-/* Mobile responsiveness */
+/* Responsive Design Breakpoints
+ * Tablet/Medium screens (max-width: 768px):
+ * - Info panel takes full width
+ * - Reduced font sizes and padding
+ * - Adjusted button sizes for touch
+ */
 @media (max-width: 768px) {
   .info {
     width: 100vw;

@@ -8,6 +8,15 @@ import CartElement from '@/components/CartElement';
 import { getSubtotal, createCheckoutSession } from '@/actions/actions';
 import Navbar from '@/components/Navbar';
 
+/**
+ * CartPage Component
+ * Displays shopping cart with items, price breakdown, and checkout functionality.
+ * Features:
+ * - Cart management with local storage persistence
+ * - Real-time subtotal calculation with VAT breakdown
+ * - Stripe checkout session creation
+ * - Validation for same-week ordering requirement
+ */
 export default function CartPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [subtotal, setSubtotal] = useState({
@@ -31,6 +40,9 @@ export default function CartPage() {
     }[]
   >([]);
 
+  /**
+   * Load cart from localStorage on component mount
+   */
   useEffect(() => {
     const storedCart: {
       id: string;
@@ -40,6 +52,10 @@ export default function CartPage() {
     setCart(storedCart);
   }, []);
 
+  /**
+   * Fetch price breakdown when cart changes
+   * Calculates subtotal, VAT, and net amounts
+   */
   useEffect(() => {
     (async () => {
       if (cart.length === 0) {
@@ -58,6 +74,10 @@ export default function CartPage() {
     })();
   }, [cart]);
 
+  /**
+   * Initiates Stripe checkout process
+   * Validates same-week ordering and redirects to payment page
+   */
   const handleCheckout = async () => {
     if (cart.length === 0) return;
 

@@ -8,6 +8,10 @@
   flex: 1;
 }
 
+/* Main menu grid container
+ * Uses grid layout for desktop with day columns and option rows
+ * Switches to vertical cards on mobile for better usability
+ */
 .menuContainer {
   background: rgba(79, 70, 229, 0.1);
   border-radius: 16px;
@@ -18,6 +22,9 @@
     backwards;
 }
 
+/* Day headers row (Monday-Friday)
+ * Grid layout with icon column + 5 day columns
+ */
 .days {
   display: grid;
   grid-template-columns: 150px repeat(5, 1fr);
@@ -106,6 +113,9 @@
   padding: 5px;
 }
 
+/* Circular add-to-cart button
+ * Toggles to remove mode when item is already in cart
+ */
 .addToCart {
   width: 32px;
   height: 32px;
@@ -134,6 +144,9 @@
   background: rgba(255, 50, 50, 1);
 }
 
+/* Individual food menu card with hover effects
+ * Features smooth animations and elevated shadow on hover
+ */
 .menuCard {
   background: var(--secondary);
   border-radius: 12px;
@@ -464,7 +477,11 @@
   }
 }
 
-/* Mobile devices - vertical layout */
+/* Mobile Layout (max-width: 768px)
+ * Complete restructure from grid to vertical cards
+ * Day-based sections with labeled food options
+ * Better touch-friendly interface
+ */
 @media (max-width: 768px) {
   .header {
     padding: 1rem;
@@ -540,7 +557,9 @@
     position: relative;
   }
 
-  /* Day header */
+  /* Day header created with CSS pseudo-element
+   * Positioned above the day section as a floating badge
+   */
   .day::before {
     content: attr(data-day);
     position: absolute;
@@ -580,7 +599,9 @@
     position: relative;
   }
 
-  /* Option label (A/B/C) for each card */
+  /* Option label (A/B/C) badge for each food card
+   * Positioned on the left edge of each card
+   */
   .menuCard::before {
     content: attr(data-option);
     position: absolute;
@@ -638,6 +659,7 @@
     display: none;
   }
 } /* Very small devices */
+/* Extra small devices: compact spacing */
 @media (max-width: 380px) {
   .menuCard {
     padding: 0.75rem;
@@ -661,6 +683,9 @@
   }
 }
 
+/* Warning banner for ordering restrictions
+ * Animated attention-grabbing message with pulsing effect
+ */
 .warning {
   margin: 1rem 4vw;
   padding: 1.25rem;
@@ -683,6 +708,9 @@
     pulse 2s infinite;
 }
 
+/* Pulse animation for warning banner
+ * Creates breathing effect with shadow and border
+ */
 @keyframes pulse {
   0% {
     box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
@@ -697,6 +725,11 @@
     border-color: rgba(239, 68, 68, 0.4);
   }
 }
+
+/* Page Entry Animations
+ * Provides smooth entrance effects for various elements
+ * Uses transform and opacity for GPU acceleration
+ */
 
 @keyframes fadeSlideDown {
   from {

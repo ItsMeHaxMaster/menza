@@ -68,6 +68,9 @@
   padding: 2rem;
 }
 
+/* Success/error message container
+ * Centered card with bounce-in animation
+ */
 .messageContainer {
   max-width: 600px;
   width: 100%;
@@ -90,6 +93,7 @@
   text-align: center;
 }
 
+/* Large emoji icon with bounce animation */
 .icon {
   font-size: 4rem;
   margin-bottom: 1.5rem;
@@ -189,7 +193,10 @@
   animation: spin 1s linear infinite;
 }
 
-/* Error state */
+/* Error State Styling
+ * Larger, more dramatic animations and sizing
+ * Staggered entrance for maximum impact
+ */
 .error .messageContent {
   padding: 6rem 5rem;
   display: flex;
@@ -258,6 +265,11 @@
   color: #22c55e;
 }
 
+/* Animation Keyframes
+ * Provides various entrance and attention effects
+ */
+
+/* Spinning loader */
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -292,6 +304,7 @@
   }
 }
 
+/* Bouncing entrance with overshoot effect */
 @keyframes bounceIn {
   0% {
     opacity: 0;
@@ -322,6 +335,7 @@
   }
 }
 
+/* Jump-in animation with bounce for dramatic error display */
 @keyframes jumpIn {
   0% {
     opacity: 0;

@@ -6,6 +6,16 @@ import Link from 'next/link';
 import { verifyCheckoutSession } from '@/actions/actions';
 import styles from './page.module.css';
 
+/**
+ * Checkout Success Page Component
+ * Verifies payment completion and displays appropriate status.
+ * Features:
+ * - Loading state while verifying payment
+ * - Success confirmation with order details
+ * - Error handling for failed verifications
+ * - Automatic cart clearance on success
+ * Uses session_id query parameter for verification
+ */
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
@@ -56,7 +66,8 @@ export default function CheckoutSuccessPage() {
               <p className={styles.thankYou}>
                 Kérjük, várjon, amíg feldolgozzuk a tranzakciót.
               </p>
-            </div>s
+            </div>
+            s
           </div>
         </main>
       </div>

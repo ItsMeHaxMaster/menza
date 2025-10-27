@@ -1,4 +1,7 @@
-/* Order Status Styles */
+/* Order Status Card
+ * Container for displaying order information
+ * Uses a semi-transparent background with subtle border
+ */
 .orderStatus {
   display: flex;
   flex-direction: column;
@@ -9,12 +12,14 @@
   border: 1px solid rgba(79, 70, 229, 0.2);
 }
 
+/* Top section with status icon and main info */
 .statusSummary {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
+/* Circular icon container with gradient background */
 .statusIcon {
   width: 40px;
   height: 40px;
@@ -55,6 +60,10 @@
   gap: 0.5rem;
 }
 
+/* Individual day indicator chip
+ * Circular badges representing weekdays (Mon-Sat)
+ * Active days are highlighted with gradient background
+ */
 .dayChip {
   width: 32px;
   height: 32px;
@@ -70,6 +79,7 @@
   transition: all 0.2s ease;
 }
 
+/* Active day: highlighted with brand color and scale effect */
 .dayChip.active {
   background: var(--button);
   border-color: var(--primary);

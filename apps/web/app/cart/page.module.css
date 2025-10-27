@@ -99,6 +99,9 @@
   padding: 2rem 4vw;
 }
 
+/* Cart container with centered layout
+ * Maximum width for better readability on large screens
+ */
 .cartContainer {
   max-width: 1000px;
   margin: 0 auto;
@@ -121,6 +124,9 @@
   border-bottom: 1px solid rgba(79, 70, 229, 0.3);
 }
 
+/* Price summary section
+ * Shows net amount, VAT, and total with breakdowns
+ */
 .cartSummary {
   padding: 2rem;
   background: linear-gradient(
@@ -214,6 +220,7 @@
   box-shadow: none;
 }
 
+/* Secondary button for navigation back to menu */
 .backButton {
   background: rgba(79, 70, 229, 0.1);
   color: var(--button);
@@ -227,6 +234,7 @@
   box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
 }
 
+/* Empty cart state with animated icon */
 .emptyCart {
   padding: 4rem 2rem;
   text-align: center;

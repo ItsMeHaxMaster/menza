@@ -10,13 +10,20 @@ import { getMenu } from '@/actions/actions';
 import OrderStatus from '@/components/OrderStatus';
 import Navbar from '@/components/Navbar';
 
+/**
+ * Extends the native Date object to calculate ISO week numbers
+ * Used for organizing menu data by calendar week
+ */
 declare global {
   interface Date {
     getWeek(): number;
   }
 }
 
-// Types for menu data
+/**
+ * Type definitions for menu data structure
+ */
+
 interface Allergen {
   id: string;
   name: string;
@@ -42,6 +49,10 @@ interface MenuItem {
   foods: Food[];
 }
 
+/**
+ * Calculates ISO 8601 week number for a given date
+ * Week 1 is the week with the first Thursday of the year
+ */
 Date.prototype.getWeek = function () {
   const target = new Date(this.valueOf());
   const dayNr = (this.getDay() + 6) % 7;
@@ -54,7 +65,10 @@ Date.prototype.getWeek = function () {
   return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
 };
 
-// Get date range for a week number
+/**
+ * Generates formatted date range string for a given week
+ * Returns Monday to Friday in Hungarian date format
+ */
 function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
   // Find the first Thursday of the year
   const jan4 = new Date(year, 0, 4);
@@ -93,6 +107,10 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
   );
 }
 
+/**
+ * Generates array of available weeks for ordering
+ * Returns current week + next 2 weeks (3 weeks total)
+ */
 const getWeeksForCurrentYear = (): number[] => {
   const weeks: number[] = [];
   const currentYear = new Date().getFullYear();
@@ -125,6 +143,9 @@ export default function Home() {
   const nextWeekNumber = currentWeekNumber + 1;
   const weeksAvailable = getWeeksForCurrentYear();
 
+  /**
+   * Fetches and sorts menu data for a specific week
+   */
   const updateMenu = async (week: number) => {
     setLoading(true);
     const menuData = await getMenu(week, new Date().getFullYear());
@@ -138,6 +159,9 @@ export default function Home() {
     setLoading(false);
   };
 
+  /**
+   * Initialize with next week's menu by default
+   */
   useEffect(() => {
     // Start with next week by default
     updateMenu(nextWeekNumber);

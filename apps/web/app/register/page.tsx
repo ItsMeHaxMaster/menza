@@ -10,6 +10,11 @@ const initialState = {
   message: ''
 };
 
+/**
+ * Registration Page Component
+ * Handles new user registration with Cloudflare Turnstile protection.
+ * Validates password confirmation and provides feedback messages.
+ */
 export default function Register() {
   const [state, formAction, pending] = useActionState(register, initialState);
 

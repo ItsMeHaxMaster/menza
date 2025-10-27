@@ -7,6 +7,9 @@ import { updateUser } from '@/actions/auth';
 import Navbar from '@/components/Navbar';
 import InvoiceButton from '@/components/InvoiceButton';
 
+/**
+ * Order data structure from the API
+ */
 interface OrderFood {
   id: string;
   name: string;
@@ -29,6 +32,17 @@ interface OrderHistory {
   hasMore: boolean;
 }
 
+/**
+ * Profile Page Component
+ * Displays user information, edit functionality, and order history.
+ * Features:
+ * - User profile display with avatar
+ * - Editable name and email
+ * - Logout functionality
+ * - Order history with payment status
+ * - Invoice download for paid orders
+ * Redirects to login if not authenticated
+ */
 export default async function Profile() {
   const profile = await api.getUser();
 
