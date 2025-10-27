@@ -6,6 +6,10 @@ import '../auth.modules.css';
 import { register } from '@/actions/auth';
 import Turnstile from '@/components/Turnstile';
 
+// Turnstile site key - fallback for development
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_PUBLIC || '1x00000000000000000000BB';
+
 const initialState = {
   message: ''
 };
@@ -36,7 +40,7 @@ export default function Register() {
           required
         />
 
-        <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_PUBLIC!} />
+        <Turnstile siteKey={TURNSTILE_SITE_KEY} />
 
         <button type="submit" disabled={pending}>
           Regisztrálok

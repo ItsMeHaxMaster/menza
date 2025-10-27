@@ -7,6 +7,10 @@ import '../auth.modules.css';
 import { login } from '@/actions/auth';
 import Turnstile from '@/components/Turnstile';
 
+// Turnstile site key - fallback for development
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_PUBLIC || '1x00000000000000000000BB';
+
 const initialState = {
   message: ''
 };
@@ -16,7 +20,7 @@ const initialState = {
  * Provides user authentication with Cloudflare Turnstile protection.
  * Handles form submission via server action and displays error messages.
  */
-export default function Register() {
+export default function Login() {
   const [state, formAction, pending] = useActionState(login, initialState);
 
   return (
@@ -28,7 +32,7 @@ export default function Register() {
 
         <input type="password" name="password" placeholder="Jelszó" required />
 
-        <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_PUBLIC!} />
+        <Turnstile siteKey={TURNSTILE_SITE_KEY} />
 
         <button type="submit" disabled={pending}>
           Bejelentkezek
