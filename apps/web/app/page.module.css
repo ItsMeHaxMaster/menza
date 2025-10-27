@@ -512,23 +512,47 @@
     overflow-x: hidden;
     background: none;
     border: none;
+    margin: 0 0.5rem;
   }
 
   .menuHeader {
     display: flex;
-    margin: 2vh 1rem;
-    padding: 1rem;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    margin: 2vh 0.5rem;
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+  }
+
+  .menuLogo {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    order: -1;
   }
 
   .titleSection {
     align-items: center;
     text-align: center;
+    width: 100%;
+  }
+
+  .menuTitle {
+    font-size: 2rem !important;
+  }
+
+  .weekInfo {
+    width: 100%;
+  }
+
+  .weekInfo select {
+    width: 100%;
+    max-width: 300px;
   }
 
   .warning {
-    margin: 1rem;
+    margin: 1rem 0.5rem;
+    font-size: 0.9rem;
+    padding: 1rem;
   }
 
   /* Hide original days header */
@@ -541,7 +565,7 @@
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
-    padding: 1rem;
+    padding: 0.5rem;
     padding-top: 1.5rem;
   }
 
@@ -551,7 +575,7 @@
     flex-direction: column;
     gap: 0.75rem;
     background: rgba(79, 70, 229, 0.1);
-    padding: 1.75rem;
+    padding: 1.75rem 1rem;
     border-radius: 16px;
     border: 1px solid rgba(79, 70, 229, 0.2);
     position: relative;
@@ -592,11 +616,12 @@
 
   .menuCard {
     flex-direction: row;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 0.75rem;
     gap: 0.75rem;
     background: var(--secondary);
     border: 1px solid rgba(79, 70, 229, 0.3);
     position: relative;
+    margin-left: 0.5rem;
   }
 
   /* Option label (A/B/C) badge for each food card
@@ -624,19 +649,29 @@
   .foodInfo {
     align-items: flex-start;
     text-align: left;
-    padding-left: 0.5rem;
+    padding-left: 1rem;
+    flex: 1;
+    min-width: 0;
   }
 
   .foodName {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .foodPrice {
+    font-size: 0.85rem;
   }
 
   .actionButtons {
     flex-shrink: 0;
+    display: flex;
+    gap: 0.5rem;
   }
 
-  /* Header adjustments */
+  /* Header adjustments - removed duplicate styles */
   .header {
     padding: 1rem;
   }
@@ -650,10 +685,6 @@
     font-size: 1.75rem !important;
   }
 
-  .menuTitle {
-    font-size: 2rem !important;
-  }
-
   /* Hide option titles on mobile */
   .optionTitles {
     display: none;
@@ -662,15 +693,16 @@
 /* Extra small devices: compact spacing */
 @media (max-width: 380px) {
   .menuCard {
-    padding: 0.75rem;
+    padding: 0.75rem 0.75rem 0.75rem 0.5rem;
+    margin-left: 0.25rem;
   }
 
   .foodName {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .foodPrice {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .actionButtons {
@@ -678,8 +710,21 @@
   }
 
   .addToCart {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .day {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .menuHeader {
+    padding: 1rem 0.75rem;
+  }
+
+  .menuTitle {
+    font-size: 1.5rem !important;
   }
 }
 
