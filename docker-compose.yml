@@ -14,8 +14,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./packages/sql/database.sql:/docker-entrypoint-initdb.d/database.sql
-    ports:
-      - "${DB_PORT:-3306}:3306"
     networks:
       - menza-network
     healthcheck:
