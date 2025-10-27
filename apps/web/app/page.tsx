@@ -86,7 +86,7 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
   if (
     parseInt(monday.toLocaleDateString('hu-HU', { day: '2-digit' })) >
     parseInt(friday.toLocaleDateString('hu-HU', { day: '2-digit' }))
-  )
+  ) {
     return (
       monday.toLocaleDateString('hu-HU', {
         year: 'numeric',
@@ -96,6 +96,7 @@ function getDateRangeForWeek(weekNumber: number, year: number = 2025): string {
       ' - ' +
       friday.toLocaleDateString('hu-HU', { month: 'short', day: '2-digit' })
     );
+  }
 
   return (
     monday.toLocaleDateString('hu-HU', { year: 'numeric', month: 'short' }) +

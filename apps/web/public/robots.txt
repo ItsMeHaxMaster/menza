@@ -1,0 +1,12 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin/auth pages
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /checkout
+
+# Sitemap
+Sitemap: https://canteen.kenderesi.hu/sitemap.xml
