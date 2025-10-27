@@ -75,7 +75,7 @@ services:
       dockerfile: apps/web/Dockerfile
       args:
         NODE_ENV: production
-        NEXT_PUBLIC_API_URL: ${WEB_URL:-http://localhost:3001}
+        NEXT_PUBLIC_API_URL: ${WEB_URL:-http://localhost:3001}/api
         NEXT_PUBLIC_CDN_URL: ${CDN_URL}
         NEXT_PUBLIC_STRIPE_PUBLIC: ${STRIPE_PUBLIC}
         NEXT_PUBLIC_TURNSTILE_PUBLIC: ${TURNSTILE_PUBLIC}
@@ -83,7 +83,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: ${WEB_URL:-http://localhost:3001}
+      NEXT_PUBLIC_API_URL: ${WEB_URL:-http://localhost:3001}/api
       NEXT_PUBLIC_CDN_URL: ${CDN_URL}
       NEXT_PUBLIC_STRIPE_PUBLIC: ${STRIPE_PUBLIC}
       NEXT_PUBLIC_TURNSTILE_PUBLIC: ${TURNSTILE_PUBLIC}

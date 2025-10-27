@@ -38,13 +38,16 @@ export async function login(
 
   try {
     // Direct fetch to API instead of using api wrapper for authentication
-    const req = await fetch('http://localhost:3001/v1/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    });
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL!}v1/auth/login`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      }
+    );
     const data = await req.json();
 
     if (data.error) return { message: data.message };
@@ -83,13 +86,16 @@ export async function register(initialState: AuthState, formData: FormData) {
   }
 
   try {
-    const req = await fetch('http://localhost:3001/v1/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    });
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL!}v1/auth/register`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      }
+    );
     const data = await req.json();
 
     if (data.error) return { message: data.message };
