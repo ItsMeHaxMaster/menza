@@ -67,3 +67,52 @@
 .addToCart[data-action="true"]:hover {
   background: rgba(255, 50, 50, 1);
 }
+
+.skeleton {
+  width: 100%;
+  padding: 10px;
+}
+
+.skeletonLine {
+  height: 20px;
+  background: linear-gradient(
+    90deg,
+    rgba(79, 70, 229, 0.1) 25%,
+    rgba(79, 70, 229, 0.2) 50%,
+    rgba(79, 70, 229, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.error {
+  color: #ef4444;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.removeButton {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.removeButton:hover {
+  background: #dc2626;
+}
