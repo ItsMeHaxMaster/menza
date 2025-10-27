@@ -36,7 +36,7 @@ const config: Options = {
   password: process.env.DB_PASS!,
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '3306'),
-  entities: ['dist/**/*.entity.js'],
+  entities: ['build/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
   metadataProvider: TsMorphMetadataProvider,
   debug: true,
