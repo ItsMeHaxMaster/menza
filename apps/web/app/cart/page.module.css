@@ -109,11 +109,11 @@
   background: rgba(79, 70, 229, 0.1);
   border-radius: 20px;
   border: 1px solid rgba(79, 70, 229, 0.3);
-  overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
   animation: fadeScale 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s
     backwards;
+  position: relative;
+  z-index: 1;
 }
 
 .cartItems {

@@ -57,6 +57,7 @@ export default function CheckoutSuccessPage() {
                 Kérjük, várjon, amíg feldolgozzuk a tranzakciót.
               </p>
             </div>
+            s
           </div>
         </main>
       </div>
