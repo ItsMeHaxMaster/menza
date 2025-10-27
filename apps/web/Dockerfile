@@ -28,9 +28,13 @@ COPY --from=dependencies /app/packages/eslint-config/node_modules ./packages/esl
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_CDN_URL
 ARG NEXT_PUBLIC_STRIPE_PUBLIC
+ARG NEXT_PUBLIC_TURNSTILE_PUBLIC
+
+# Set environment variables for build
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_CDN_URL=$NEXT_PUBLIC_CDN_URL
 ENV NEXT_PUBLIC_STRIPE_PUBLIC=$NEXT_PUBLIC_STRIPE_PUBLIC
+ENV NEXT_PUBLIC_TURNSTILE_PUBLIC=$NEXT_PUBLIC_TURNSTILE_PUBLIC
 
 # Copy source files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
