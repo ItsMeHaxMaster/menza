@@ -10,6 +10,7 @@ WORKDIR /app
 # Copy package files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/web/package.json ./apps/web/
+COPY packages/eslint-config/package.json ./packages/eslint-config/
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
@@ -21,6 +22,7 @@ WORKDIR /app
 # Copy dependencies
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=dependencies /app/apps/web/node_modules ./apps/web/node_modules
+COPY --from=dependencies /app/packages/eslint-config/node_modules ./packages/eslint-config/node_modules
 
 # Copy build arguments as environment variables for Next.js build
 ARG NEXT_PUBLIC_API_URL
@@ -33,6 +35,7 @@ ENV NEXT_PUBLIC_STRIPE_PUBLIC=$NEXT_PUBLIC_STRIPE_PUBLIC
 # Copy source files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/web ./apps/web
+COPY packages/eslint-config ./packages/eslint-config
 
 # Build Next.js application
 RUN pnpm run build --filter=@menza/web
