@@ -5,7 +5,6 @@ import {
   LoggerNamespace,
   LogContext
 } from '@mikro-orm/mariadb';
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 
 import Logger from '@/util/logger';
@@ -38,7 +37,6 @@ const config: Options = {
   port: parseInt(process.env.DB_PORT || '3306'),
   entities: ['build/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
-  metadataProvider: TsMorphMetadataProvider,
   debug: true,
   loggerFactory: (options) => new CustomLogger(options),
   highlighter: new SqlHighlighter()
