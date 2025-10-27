@@ -138,6 +138,7 @@ const getWeeksForCurrentYear = (): number[] => {
 export default function Home() {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
 
   const currentWeekNumber = new Date().getWeek();
   const nextWeekNumber = currentWeekNumber + 1;
@@ -148,6 +149,7 @@ export default function Home() {
    */
   const updateMenu = async (week: number) => {
     setLoading(true);
+    setSelectedWeek(week);
     const menuData = await getMenu(week, new Date().getFullYear());
     setMenu(
       menuData
@@ -208,7 +210,7 @@ export default function Home() {
             height={200}
             priority
           />
-          <OrderStatus />
+          <OrderStatus selectedWeek={selectedWeek || nextWeekNumber} />
         </div>
         <div className={styles.warning}>
           Csak a következő hétre lehet rendelni, naponta maximum 1 ételt.

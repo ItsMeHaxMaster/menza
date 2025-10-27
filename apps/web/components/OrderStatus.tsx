@@ -58,39 +58,36 @@ type MenuItem = {
 };
 
 /**
- * Checks if there is a selected food item for a specific day
+ * Checks if there is a selected food item for a specific day in the selected week
  * @param cart - Current cart contents from localStorage
  * @param day - Day number to check (1-5 for Monday-Friday)
- * @returns boolean - True if there is a food item selected for the given day
+ * @param selectedWeek - The currently selected week number
+ * @param selectedYear - The currently selected year
+ * @returns boolean - True if there is a food item selected for the given day and week
  */
-const isDaySelected = (cart: CartItem[], day: number) => {
-  // Get current week and year
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentWeek = currentDate.getWeek();
-
-  // Get next week, handling year wrap
-  const dec31 = new Date(currentYear, 11, 31);
-  const weeksInYear = dec31.getWeek() === 1 ? 52 : 53;
-  const nextWeek = currentWeek === weeksInYear ? 1 : currentWeek + 1;
-  const nextYear = currentWeek === weeksInYear ? currentYear + 1 : currentYear;
-
-  // Check for items in both current and next week
+const isDaySelected = (
+  cart: CartItem[],
+  day: number,
+  selectedWeek: number,
+  selectedYear: number
+) => {
+  // Check for items in the selected week only
   return cart.some(
     (item) =>
-      ((item.date.year === currentYear && item.date.week === currentWeek) ||
-        (item.date.year === nextYear && item.date.week === nextWeek)) &&
+      item.date.year === selectedYear &&
+      item.date.week === selectedWeek &&
       item.date.day === day
   );
 };
 
 /**
  * OrderStatus Component
- * Displays the current status of the user's food selections for the week
+ * Displays the current status of the user's food selections for the selected week
  * Shows which days have selected meals and the total number of selected days
- * Updates in real-time when cart contents change
+ * Updates in real-time when cart contents change or week selection changes
+ * @param selectedWeek - The currently selected week number to display status for
  */
-export default function OrderStatus() {
+export default function OrderStatus({ selectedWeek }: { selectedWeek: number }) {
   // State to track current cart contents
   const [cart, setCart] = useState<CartItem[]>([]);
   // State to track number of days with selected meals
@@ -100,21 +97,31 @@ export default function OrderStatus() {
     subtotal: 0,
     vat: 0
   });
+  // Current year for filtering
+  const currentYear = new Date().getFullYear();
 
   /**
-   * Updates the component state based on current cart contents
-   * Reads cart data from localStorage and updates the UI accordingly
+   * Updates the component state based on current cart contents and selected week
+   * Reads cart data from localStorage and filters by selected week
    */
   const updateCartStatus = async () => {
     const storedCart = JSON.parse(
       localStorage.getItem('cart') || '[]'
     ) as CartItem[];
-    setCart(storedCart);
-    // Count unique days that have selections
-    setSelectedDays(new Set(storedCart.map((item) => item.date.day)).size);
-    // Calculate subtotal
-    if (storedCart.length > 0) {
-      const sub = await getSubtotal(storedCart.map((item) => item.id));
+    
+    // Filter cart items for the selected week only
+    const filteredCart = storedCart.filter(
+      (item) =>
+        item.date.year === currentYear && item.date.week === selectedWeek
+    );
+    
+    setCart(filteredCart);
+    // Count unique days that have selections in the selected week
+    setSelectedDays(new Set(filteredCart.map((item) => item.date.day)).size);
+    
+    // Calculate subtotal for selected week only
+    if (filteredCart.length > 0) {
+      const sub = await getSubtotal(filteredCart.map((item) => item.id));
       setSubtotal(sub);
     } else {
       setSubtotal({ subtotal: 0, vat: 0 });
@@ -122,7 +129,7 @@ export default function OrderStatus() {
   };
 
   /**
-   * Sets up event listeners for cart updates
+   * Sets up event listeners for cart updates and week changes
    * Handles both direct updates and cross-tab synchronization
    */
   useEffect(() => {
@@ -144,7 +151,7 @@ export default function OrderStatus() {
     return () => {
       window.removeEventListener('cartUpdate', handleCartUpdate);
     };
-  }, []);
+  }, [selectedWeek]); // Re-run when selectedWeek changes
 
   return (
     <div className={styles.orderStatus}>
@@ -171,7 +178,7 @@ export default function OrderStatus() {
           {[1, 2, 3, 4, 5].map((day) => (
             <div
               key={day}
-              className={`${styles.dayChip} ${isDaySelected(cart, day) ? styles.active : ''}`}
+              className={`${styles.dayChip} ${isDaySelected(cart, day, selectedWeek, currentYear) ? styles.active : ''}`}
             >
               {/* Display day abbreviations (H, K, Sz, Cs, P) */}
               {['H', 'K', 'Sz', 'Cs', 'P'][day - 1]}
