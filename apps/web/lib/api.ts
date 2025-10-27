@@ -56,7 +56,7 @@ class Api {
 
   public getUser = cache(async () => {
     try {
-      const user = await this.fetch(`/v1/user/me`);
+      const user = await this.fetch('/v1/user/me');
       if (!user.ok) return null;
       return await user.json();
     } catch {
@@ -66,7 +66,7 @@ class Api {
 
   public patchUser = async (name?: string, email?: string) => {
     try {
-      const user = await this.fetch(`/v1/user/me`, {
+      const user = await this.fetch('/v1/user/me', {
         method: 'PATCH',
         body: JSON.stringify({ name, email }),
         headers: { 'Content-Type': 'application/json' }
@@ -98,7 +98,7 @@ class Api {
     days: number[]
   ) => {
     try {
-      const session = await this.fetch(`/v1/checkout/session`, {
+      const session = await this.fetch('/v1/checkout/session', {
         method: 'POST',
         body: JSON.stringify({
           foods: items.map((item) => item.toString()),
