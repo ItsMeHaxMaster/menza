@@ -146,6 +146,9 @@ importers:
       stripe:
         specifier: ^18.5.0
         version: 18.5.0(@types/node@20.19.17)
+      typescript:
+        specifier: ^5
+        version: 5.9.2
     devDependencies:
       "@eslint/eslintrc":
         specifier: ^3
@@ -168,9 +171,6 @@ importers:
       eslint-config-next:
         specifier: 15.5.3
         version: 15.5.3(eslint@9.34.0)(typescript@5.9.2)
-      typescript:
-        specifier: ^5
-        version: 5.9.2
 
   packages/eslint-config:
     dependencies:
