@@ -16,6 +16,7 @@ export const schemas = {
     res: z.object({
       subtotal: z.number(),
       vat: z.number(),
+      fee: z.number(),
       totalWithoutVat: z.number(),
       items: z.array(
         z.object({
@@ -49,12 +50,15 @@ export const get = async (
     let totalVat = 0;
     const items = [];
 
+    let fee = 0;
+
     for (const food of foodEntities) {
       const vatAmount = food.vatAmount;
       const priceWithoutVat = food.priceWithoutVat;
 
       subtotal += food.price;
       totalVat += vatAmount;
+      fee += food.price;
 
       items.push({
         id: food.id.toString(),
@@ -66,11 +70,16 @@ export const get = async (
       });
     }
 
+    fee *= 0.0325;
+    fee += 85;
+    subtotal += fee;
+
     const totalWithoutVat = subtotal - totalVat;
 
     res.status(Status.Ok).json({
       subtotal,
       vat: totalVat,
+      fee,
       totalWithoutVat,
       items
     });

@@ -22,6 +22,7 @@ export default function CartPage() {
   const [subtotal, setSubtotal] = useState({
     subtotal: 0,
     vat: 0,
+    fee: 0,
     totalWithoutVat: 0,
     items: [] as Array<{
       id: string;
@@ -62,6 +63,7 @@ export default function CartPage() {
         setSubtotal({
           subtotal: 0,
           vat: 0,
+          fee: 0,
           totalWithoutVat: 0,
           items: []
         });
@@ -170,6 +172,15 @@ export default function CartPage() {
                           style: 'currency',
                           currency: 'HUF'
                         }).format(subtotal.totalWithoutVat)}
+                      </span>
+                    </div>
+                    <div className={styles.summaryRow}>
+                      <span>Kényelmi Díj:</span>
+                      <span className={styles.amount}>
+                        {new Intl.NumberFormat('hu-HU', {
+                          style: 'currency',
+                          currency: 'HUF'
+                        }).format(subtotal.fee)}
                       </span>
                     </div>
                     <div className={styles.summaryRow}>

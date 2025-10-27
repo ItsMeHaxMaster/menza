@@ -204,7 +204,28 @@ export const post = async (
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'link', 'revolut_pay', 'samsung_pay'],
-      line_items: lineItems,
+      line_items: [
+        ...lineItems,
+        {
+          price_data: {
+            currency: 'huf',
+            product_data: {
+              name: 'Kényelmi Díj',
+              description: 'Csak mert miért ne.',
+              tax_code: 'txcd_10000000'
+            },
+            unit_amount: Math.round(
+              lineItems
+                .map((item) => item.price_data!.unit_amount!)
+                .reduce((p, c) => p + c) *
+                0.0325 +
+                8500
+            ),
+            tax_behavior: 'inclusive'
+          },
+          quantity: 1
+        }
+      ],
       billing_address_collection: 'required',
       invoice_creation: {
         enabled: true
