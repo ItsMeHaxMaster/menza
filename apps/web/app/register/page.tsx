@@ -1,5 +1,5 @@
 'use client';
-import React, { useActionState, useState } from 'react';
+import React, { useActionState } from 'react';
 import Link from 'next/link';
 import '../globals.css';
 import '../auth.modules.css';
@@ -36,7 +36,7 @@ export default function Register() {
           required
         />
 
-        <Turnstile siteKey="1x00000000000000000000BB" />
+        <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_PUBLIC!} />
 
         <button type="submit" disabled={pending}>
           Regisztrálok

@@ -17,7 +17,7 @@ class Api {
   });
 
   private async fetch(url: string, settings?: RequestInit) {
-    console.log(`${process.env.NEXT_PUBLIC_API_URL!}${url}`)
+    console.log(`${process.env.NEXT_PUBLIC_API_URL!}${url}`);
     return fetch(`${process.env.NEXT_PUBLIC_API_URL!}${url}`, {
       ...settings,
 
@@ -25,7 +25,9 @@ class Api {
         ...settings?.headers,
 
         // @ts-expect-error we set to null, essentially like we didn't set it at all.
-        Authorization: (await this.hasSessionCookie()) ? `Bearer ${await this.getSessionToken()}` : null,
+        Authorization: (await this.hasSessionCookie())
+          ? `Bearer ${await this.getSessionToken()}`
+          : null,
         'User-Agent': 'MenzaWeb/1.0.0'
       }
     });
@@ -54,17 +56,17 @@ class Api {
 
   public getUser = cache(async () => {
     try {
-      const user = await this.fetch(`/v1/user/me`);
+      const user = await this.fetch('/v1/user/me');
       if (!user.ok) return null;
       return await user.json();
     } catch {
       return null;
     }
   });
-  
+
   public patchUser = async (name?: string, email?: string) => {
     try {
-      const user = await this.fetch(`/v1/user/me`, {
+      const user = await this.fetch('/v1/user/me', {
         method: 'PATCH',
         body: JSON.stringify({ name, email }),
         headers: { 'Content-Type': 'application/json' }
@@ -76,10 +78,12 @@ class Api {
     }
   };
 
-  public getSubtotal = cache(async (items: (string|bigint)[]) => {
+  public getSubtotal = cache(async (items: (string | bigint)[]) => {
     try {
-      const urlSafe = encodeURIComponent(JSON.stringify(items))
-      const subtotal = await this.fetch(`/v1/checkout/subtotal?foods=${urlSafe}`);
+      const urlSafe = encodeURIComponent(JSON.stringify(items));
+      const subtotal = await this.fetch(
+        `/v1/checkout/subtotal?foods=${urlSafe}`
+      );
       if (!subtotal.ok) return null;
       return await subtotal.json();
     } catch {
@@ -94,7 +98,7 @@ class Api {
     days: number[]
   ) => {
     try {
-      const session = await this.fetch(`/v1/checkout/session`, {
+      const session = await this.fetch('/v1/checkout/session', {
         method: 'POST',
         body: JSON.stringify({
           foods: items.map((item) => item.toString()),
@@ -118,7 +122,9 @@ class Api {
 
   public verifyCheckoutSession = async (sessionId: string) => {
     try {
-      const verification = await this.fetch(`/v1/checkout/verify?session_id=${sessionId}`);
+      const verification = await this.fetch(
+        `/v1/checkout/verify?session_id=${sessionId}`
+      );
       if (!verification.ok) return null;
       return await verification.json();
     } catch {

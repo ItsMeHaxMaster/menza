@@ -53,7 +53,7 @@ export default function AddButton({
   className?: string;
   foodId: string;
   date: { year: number; week: number; day: number };
-  onClick?: any;
+  onClick?: () => void;
 }) {
   // State to track if this food item is currently selected for its day
   const [isSelected, setIsSelected] = useState(false);

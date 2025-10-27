@@ -7,8 +7,6 @@ import '../auth.modules.css';
 import { login } from '@/actions/auth';
 import Turnstile from '@/components/Turnstile';
 
-// 0x4AAAAAAB3E4tl6nWFLbTmH
-
 const initialState = {
   message: ''
 };
@@ -30,7 +28,7 @@ export default function Register() {
 
         <input type="password" name="password" placeholder="Jelszó" required />
 
-        <Turnstile siteKey="1x00000000000000000000BB" />
+        <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_PUBLIC!} />
 
         <button type="submit" disabled={pending}>
           Bejelentkezek

@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ShoppingCart, UtensilsCrossed, User } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 
 import styles from './page.module.css';
 import CartElement from '@/components/CartElement';
@@ -101,9 +101,7 @@ export default function CartPage() {
       }
 
       const foodIds = cart.map((item) => item.id);
-      console.log('Checkout params:', { foodIds, year, week, days });
       const session = await createCheckoutSession(foodIds, year, week, days);
-      console.log('Checkout response:', session);
 
       if (session && session.url) {
         // Redirect to Stripe checkout

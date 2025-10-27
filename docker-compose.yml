@@ -1,0 +1,103 @@
+version: "3.8"
+
+services:
+  # MariaDB Database
+  db:
+    image: mariadb:11
+    container_name: menza-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-canteen}
+      MYSQL_USER: ${DB_USER:-menza}
+      MYSQL_PASSWORD: ${DB_PASS:-menzapassword}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./packages/sql/database.sql:/docker-entrypoint-initdb.d/database.sql
+    networks:
+      - menza-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Service
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      args:
+        NODE_ENV: production
+    container_name: menza-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-canteen}
+      DB_USER: ${DB_USER:-menza}
+      DB_PASS: ${DB_PASS:-menzapassword}
+      JWT_SECRET: ${JWT_SECRET:-your-jwt-secret-change-in-production}
+      PORT: ${PORT:-3001}
+      SMTP_ENABLED: ${SMTP_ENABLED:-false}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      MAIL_FROM: ${MAIL_FROM}
+      S3_ENDPOINT: ${S3_ENDPOINT:-https://s3.eu-central-003.backblazeb2.com}
+      S3_REGION: ${S3_REGION:-eu-central-003}
+      S3_BUCKET: ${S3_BUCKET:-canteen}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+      STRIPE_PUBLIC: ${STRIPE_PUBLIC}
+      STRIPE_SECRET: ${STRIPE_SECRET}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      CDN_URL: ${CDN_URL}
+      WEB_URL: ${WEB_URL}
+      TURNSTILE_PUBLIC: ${TURNSTILE_PUBLIC}
+      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
+    ports:
+      - "${PORT:-3001}:${PORT:-3001}"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - menza-network
+    volumes:
+      - api_logs:/app/apps/api/logs
+
+  # Web Service (Next.js)
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NODE_ENV: production
+        NEXT_PUBLIC_API_URL: ${WEB_URL:-http://localhost:3001}
+        NEXT_PUBLIC_CDN_URL: ${CDN_URL}
+        NEXT_PUBLIC_STRIPE_PUBLIC: ${STRIPE_PUBLIC}
+        NEXT_PUBLIC_TURNSTILE_PUBLIC: ${TURNSTILE_PUBLIC}
+    container_name: menza-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${WEB_URL:-http://localhost:3001}
+      NEXT_PUBLIC_CDN_URL: ${CDN_URL}
+      NEXT_PUBLIC_STRIPE_PUBLIC: ${STRIPE_PUBLIC}
+      NEXT_PUBLIC_TURNSTILE_PUBLIC: ${TURNSTILE_PUBLIC}
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      - api
+    networks:
+      - menza-network
+
+networks:
+  menza-network:
+    driver: bridge
+
+volumes:
+  db_data:
+  api_logs:

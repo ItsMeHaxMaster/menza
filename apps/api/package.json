@@ -8,7 +8,7 @@
     "build": "tsc && resolve-tspaths",
     "dev": "nodemon -r dotenv/config -r tsconfig-paths/register src/index.ts",
     "lint": "eslint",
-    "fix": "eslint --fix",
+    "lint:fix": "eslint --fix",
     "prepare": "husky || true",
     "tool:gen_client": "ts-node -r dotenv/config -r tsconfig-paths/register src/tools/genclient.ts",
     "tool:seed_db": "ts-node -r dotenv/config -r tsconfig-paths/register src/tools/seed.ts"

@@ -53,7 +53,7 @@ type MenuItem = {
     price: number;
     description: string;
     pictureId: string;
-    allergens: any[];
+    allergens: unknown[];
   }[];
 };
 

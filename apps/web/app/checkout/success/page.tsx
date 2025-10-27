@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { verifyCheckoutSession } from '@/actions/actions';
@@ -16,7 +16,7 @@ import styles from './page.module.css';
  * - Automatic cart clearance on success
  * Uses session_id query parameter for verification
  */
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
     'loading'
@@ -61,7 +61,7 @@ export default function CheckoutSuccessPage() {
         <main className={styles.main}>
           <div className={styles.messageContainer}>
             <div className={styles.messageContent}>
-              <div className={styles.spinner}></div>
+              <div className={styles.spinner} />
               <h1>Fizetés ellenőrzése...</h1>
               <p className={styles.thankYou}>
                 Kérjük, várjon, amíg feldolgozzuk a tranzakciót.
@@ -134,5 +134,26 @@ export default function CheckoutSuccessPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className={styles.page}>
+          <main className={styles.main}>
+            <div className={styles.messageContainer}>
+              <div className={styles.messageContent}>
+                <div className={styles.spinner} />
+                <h1>Betöltés...</h1>
+              </div>
+            </div>
+          </main>
+        </div>
+      }
+    >
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }

@@ -8,7 +8,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "keywords": [],
   "author": "",
