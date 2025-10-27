@@ -59,7 +59,7 @@ services:
       TURNSTILE_PUBLIC: ${TURNSTILE_PUBLIC}
       TURNSTILE_SECRET: ${TURNSTILE_SECRET}
     ports:
-      - "${PORT:-3001}:3001"
+      - "${PORT:-3001}:${PORT:-3001}"
     depends_on:
       db:
         condition: service_healthy
