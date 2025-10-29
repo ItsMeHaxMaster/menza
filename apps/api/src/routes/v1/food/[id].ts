@@ -25,6 +25,12 @@ export const schemas = {
       createdAt: z.date(),
       updatedAt: z.date()
     })
+  },
+  del: {
+    res: z.object({
+      success: z.boolean(),
+      message: z.string()
+    })
   }
 };
 
@@ -58,5 +64,33 @@ export const get = async (
     console.error(e);
 
     res.error(Status.InternalServerError, 'Internal Server Error');
+  }
+};
+
+export const del = async (
+  req: Request,
+  res: Response<z.infer<typeof schemas.del.res>>
+) => {
+  const db = (await orm).em.fork();
+
+  try {
+    const { id } = req.params;
+
+    const food = await db.findOne(Food, { id }, { populate: ['allergens'] });
+
+    if (!food) {
+      return res.error(Status.NotFound, 'Food item not found');
+    }
+
+    // Remove the food item
+    await db.removeAndFlush(food);
+
+    return res.status(Status.Ok).json({
+      success: true,
+      message: 'Food item deleted successfully'
+    });
+  } catch (err: any) {
+    console.error('DELETE /food error:', err);
+    return res.error(Status.InternalServerError, err.message);
   }
 };

@@ -46,15 +46,6 @@ export const schemas = {
       createdAt: z.date(),
       updatedAt: z.date()
     })
-  },
-  del: {
-    req: z.object({
-      id: z.string().transform((id: string) => BigInt(id))
-    }),
-    res: z.object({
-      success: z.boolean(),
-      message: z.string()
-    })
   }
 };
 
@@ -141,35 +132,6 @@ export const post = async (
     });
   } catch (err: any) {
     console.error('POST /food error:', err);
-    return res.error(Status.InternalServerError, err.message);
-  }
-};
-
-export const del = async (
-  req: Request,
-  res: Response<z.infer<typeof schemas.del.res>>
-) => {
-  const db = (await orm).em.fork();
-
-  try {
-    const { id } = req.validate(schemas.del.req, req.body);
-
-    // Find the food item
-    const food = await db.findOne(Food, { id }, { populate: ['allergens'] });
-
-    if (!food) {
-      return res.error(Status.NotFound, 'Food item not found');
-    }
-
-    // Remove the food item
-    await db.removeAndFlush(food);
-
-    return res.status(Status.Ok).json({
-      success: true,
-      message: 'Food item deleted successfully'
-    });
-  } catch (err: any) {
-    console.error('DELETE /food error:', err);
     return res.error(Status.InternalServerError, err.message);
   }
 };
