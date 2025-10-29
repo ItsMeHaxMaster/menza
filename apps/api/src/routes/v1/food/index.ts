@@ -5,6 +5,18 @@ import { orm } from '@/util/orm';
 import { Food } from '@/entities/food.entity';
 import { Allergen } from '@/entities/allergen.entity';
 import sharp from 'sharp';
+import * as crypto from 'node:crypto';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+
+// Initialize S3 client
+const s3Client = new S3Client({
+  endpoint: process.env.S3_ENDPOINT!,
+  region: process.env.S3_REGION!,
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY!,
+    secretAccessKey: process.env.S3_SECRET_KEY!
+  }
+});
 
 export const schemas = {
   post: {
@@ -56,6 +68,9 @@ export const post = async (
   try {
     const contentType = req.getHeader('Content-Type');
     let data = req.body;
+    let fName: string | undefined;
+    let fHash: string | undefined;
+    let fBuffer: Buffer | undefined;
 
     if (contentType!.includes('multipart/form-data')) {
       const file = req.files[0];
@@ -67,16 +82,9 @@ export const post = async (
           'No file provided on the file field.'
         );
 
-      // convert the file to webp
-      const webpBuffer = await sharp(file.buffer)
-        .webp({ quality: 80 })
-        .toBuffer();
-
-      console.log(file, webpBuffer, data);
-
-      return res.error(Status.InternalServerError, 'ANY');
-
-      // TODO: IMPLEMENT FILE UPLOAD;
+      fBuffer = await sharp(file.buffer).webp({ quality: 80 }).toBuffer();
+      fHash = crypto.createHash('sha1').update(file.originalname).digest('hex');
+      fName = `${fHash}.webp`;
     }
 
     const { name, description, price, allergens } = req.validate(
@@ -101,6 +109,21 @@ export const post = async (
           food.allergens.add(allergen);
         }
       }
+    }
+
+    if (fBuffer && fName && fHash) {
+      const s3Key = `food/${food.id}/${fName}`;
+      const uploadCommand = new PutObjectCommand({
+        Bucket: process.env.S3_BUCKET!,
+        Key: s3Key,
+        Body: fBuffer,
+        ContentType: 'image/webp',
+        ACL: 'public-read'
+      });
+
+      await s3Client.send(uploadCommand);
+
+      food.pictureId = fHash;
     }
 
     await db.persistAndFlush(food);
