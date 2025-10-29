@@ -19,6 +19,7 @@ export const schemas = {
   }
 };
 
+// GET /v1/order?year=2025&week=45
 export const get = async (req: Request, res: Response<unknown>) => {
   const db = (await orm).em.fork();
 
