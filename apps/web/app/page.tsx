@@ -317,6 +317,7 @@ export default function Home() {
                             allergens={food.allergens}
                             foodName={food.name}
                             price={food.price}
+                            foodId={food.id}
                             pictureId={food.pictureId}
                           />
                           <AddButton

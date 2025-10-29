@@ -65,12 +65,14 @@ export default function InfoButton({
   allergens,
   foodName,
   price,
+  foodId,
   pictureId
 }: {
   text: string;
   allergens?: Allergen[];
   foodName: string;
   price: number;
+  foodId?: string;
   pictureId?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -113,7 +115,7 @@ export default function InfoButton({
             {pictureId && (
               <div className={styles.imageContainer}>
                 <Image
-                  src={`https://cdn-canteen.kenderesi.hu/images/${pictureId}.webp`}
+                  src={`https://cdn-canteen.kenderesi.hu/food/${foodId}/${pictureId}.webp`}
                   alt={foodName}
                   width={400}
                   height={300}

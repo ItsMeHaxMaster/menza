@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn-canteen.kenderesi.hu',
-        pathname: '/images/**'
+        pathname: '/**'
       }
     ]
   }
