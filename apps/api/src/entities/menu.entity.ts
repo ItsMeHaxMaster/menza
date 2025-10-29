@@ -9,6 +9,7 @@ import {
 } from '@mikro-orm/core';
 
 import { Food } from './food.entity';
+import { Order } from './order.entity';
 
 @Entity()
 export class Menu {
@@ -17,6 +18,9 @@ export class Menu {
 
   @ManyToMany(() => Food, (food) => food.menus, { owner: true })
   foods = new Collection<Food>(this);
+
+  @ManyToMany(() => Order, (order) => order.menus)
+  orders = new Collection<Order>(this);
 
   @Property()
   year!: number;

@@ -4,14 +4,15 @@ import {
   Entity,
   ManyToOne,
   ManyToMany,
+  OneToMany,
   Collection,
   PrimaryKey,
   Property
 } from '@mikro-orm/core';
 
 import { User } from './user.entity';
-import { Food } from './food.entity';
 import { Menu } from './menu.entity';
+import { OrderFood } from './order_food.entity';
 
 @Entity()
 export class Order {
@@ -21,8 +22,8 @@ export class Order {
   @ManyToOne(() => User)
   user!: User;
 
-  @ManyToMany(() => Food)
-  foods = new Collection<Food>(this);
+  @OneToMany(() => OrderFood, (orderFood) => orderFood.order)
+  foods = new Collection<OrderFood>(this);
 
   @ManyToMany(() => Menu)
   menus = new Collection<Menu>(this);

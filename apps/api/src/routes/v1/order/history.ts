@@ -31,7 +31,8 @@ export const schemas = {
             z.object({
               id: z.string(),
               name: z.string(),
-              price: z.number()
+              price: z.number(),
+              day: z.number()
             })
           )
         })
@@ -70,7 +71,8 @@ export const get = async (
       .orderBy({ createdAt: 'DESC' })
       .limit(limit)
       .offset(offset)
-      .leftJoinAndSelect('o.foods', 'foods')
+      .leftJoinAndSelect('o.foods', 'orderFoods')
+      .leftJoinAndSelect('orderFoods.food', 'food')
       .leftJoinAndSelect('o.user', 'user');
 
     const [orders, total] = await qb.getResultAndCount();
@@ -83,10 +85,11 @@ export const get = async (
       currency: order.currency,
       paymentStatus: order.paymentStatus,
       createdAt: order.createdAt.toISOString(),
-      foods: order.foods.getItems().map((food) => ({
-        id: food.id.toString(),
-        name: food.name,
-        price: food.price
+      foods: order.foods.getItems().map((orderFood) => ({
+        id: orderFood.food.id.toString(),
+        name: orderFood.food.name,
+        price: orderFood.food.price,
+        day: orderFood.day
       }))
     }));
 

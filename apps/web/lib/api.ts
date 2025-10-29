@@ -92,19 +92,20 @@ class Api {
   });
 
   public createCheckoutSession = async (
-    items: (string | bigint)[],
+    items: Array<{ id: string | bigint; day: number }>,
     year: number,
-    week: number,
-    days: number[]
+    week: number
   ) => {
     try {
       const session = await this.fetch('/v1/checkout/session', {
         method: 'POST',
         body: JSON.stringify({
-          foods: items.map((item) => item.toString()),
+          foods: items.map((item) => ({
+            id: item.id.toString(),
+            day: item.day
+          })),
           year,
-          week,
-          days
+          week
         }),
         headers: { 'Content-Type': 'application/json' }
       });

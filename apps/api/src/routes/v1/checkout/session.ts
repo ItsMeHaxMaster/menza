@@ -1,5 +1,6 @@
 import { Food } from '@/entities/food.entity';
 import { Order } from '@/entities/order.entity';
+import { OrderFood } from '@/entities/order_food.entity';
 import Status from '@/enum/status';
 
 import { Request, Response } from '@/util/handler';
@@ -15,10 +16,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET!, {
 export const schemas = {
   post: {
     req: z.object({
-      foods: z.array(z.string().transform((id: string) => BigInt(id))),
+      foods: z.array(
+        z.object({
+          id: z.string().transform((id: string) => BigInt(id)),
+          day: z.number().int().min(1).max(5) // 1-5 for Monday-Friday
+        })
+      ),
       year: z.number().int().min(2020).max(2100),
-      week: z.number().int().min(1).max(53),
-      days: z.array(z.number().int().min(1).max(5)) // 1-5 for Monday-Friday
+      week: z.number().int().min(1).max(53)
     }),
     res: z.object({
       sessionId: z.string(),
@@ -48,7 +53,10 @@ export const post = async (
   const db = (await orm).em.fork();
 
   try {
-    const { foods, year, week, days } = req.validateBody(schemas.post.req);
+    const { foods, year, week } = req.validateBody(schemas.post.req);
+
+    // Extract unique days from the foods
+    const days = [...new Set(foods.map((f) => f.day))];
 
     // Get the authenticated user
     let user;
@@ -92,10 +100,11 @@ export const post = async (
 
     // Fetch the food items from the database with their menus
     // Filter by year, week, and days
+    const foodIds = foods.map((f) => f.id);
     const foodEntities = await db.find(
       Food,
       {
-        id: { $in: foods },
+        id: { $in: foodIds },
         menus: {
           year: year,
           week: week,
@@ -146,8 +155,32 @@ export const post = async (
     order.paymentStatus = 'pending';
     order.currency = 'HUF';
 
-    // Add foods to the order
-    foodEntities.forEach((food) => order.foods.add(food));
+    // Create OrderFood entries for each food with their specific day
+    for (const foodItem of foods) {
+      const foodEntity = foodEntities.find((f) => f.id === foodItem.id);
+      if (!foodEntity) continue;
+
+      // Verify that the food is available on the specified day
+      const hasMenuForDay = foodEntity.menus
+        .getItems()
+        .some(
+          (m) => m.year === year && m.week === week && m.day === foodItem.day
+        );
+
+      if (!hasMenuForDay) {
+        return res.error(
+          Status.BadRequest,
+          `Food ${foodEntity.name} is not available on day ${foodItem.day}`
+        );
+      }
+
+      const orderFood = new OrderFood();
+      orderFood.order = order;
+      orderFood.food = foodEntity;
+      orderFood.day = foodItem.day;
+      db.persist(orderFood);
+      order.foods.add(orderFood);
+    }
 
     // Add menus to the order
     foodEntities.forEach((food) => {
@@ -171,16 +204,13 @@ export const post = async (
     };
 
     // Create line items for Stripe with week and day information
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
-      foodEntities.map((food) => {
-        // Find the matching menu for this food to get the day
-        const matchingMenu = food.menus
-          .getItems()
-          .find(
-            (m) => m.year === year && m.week === week && days.includes(m.day)
-          );
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = foods.map(
+      (foodItem) => {
+        // Find the food entity
+        const food = foodEntities.find((f) => f.id === foodItem.id);
+        if (!food) throw new Error(`Food not found: ${foodItem.id}`);
 
-        const dayName = matchingMenu ? getDayName(matchingMenu.day) : '';
+        const dayName = getDayName(foodItem.day);
         const description = `${year}. év, ${week}. hét - ${dayName}`;
 
         return {
@@ -199,7 +229,8 @@ export const post = async (
           },
           quantity: 1
         };
-      });
+      }
+    );
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
@@ -238,7 +269,9 @@ export const post = async (
         enabled: true
       },
       metadata: {
-        foods: JSON.stringify(foods.map((id: bigint) => id.toString())),
+        foods: JSON.stringify(
+          foods.map((f) => ({ id: f.id.toString(), day: f.day }))
+        ),
         userId: user.id.toString(),
         userName: user.name,
         subtotal: subtotal.toFixed(2),

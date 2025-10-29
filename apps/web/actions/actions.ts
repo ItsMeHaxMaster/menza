@@ -23,19 +23,17 @@ export async function getSubtotal(items: (string | bigint)[]) {
 
 /**
  * Creates a Stripe checkout session for payment processing
- * @param items - Array of food item IDs to purchase
+ * @param items - Array of food items with id and day information
  * @param year - Year of the order
  * @param week - Week number of the order
- * @param days - Array of day numbers (1-5 for Monday-Friday)
  * @returns Stripe session with checkout URL
  */
 export async function createCheckoutSession(
-  items: (string | bigint)[],
+  items: Array<{ id: string | bigint; day: number }>,
   year: number,
-  week: number,
-  days: number[]
+  week: number
 ) {
-  return await api.createCheckoutSession(items, year, week, days);
+  return await api.createCheckoutSession(items, year, week);
 }
 
 /**
