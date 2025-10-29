@@ -134,7 +134,7 @@ export const post = async (
       name: food.name,
       description: food.description,
       price: food.price,
-      pictureId: food.pictureId,
+      pictureId: food.pictureId || '',
       allergens: food.allergens.getItems(),
       createdAt: food.createdAt,
       updatedAt: food.updatedAt

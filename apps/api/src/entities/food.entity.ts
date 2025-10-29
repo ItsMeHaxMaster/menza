@@ -41,8 +41,8 @@ export class Food {
     return this.price - this.vatAmount;
   }
 
-  @Property({ length: 40 })
-  pictureId!: string;
+  @Property({ length: 40, nullable: true })
+  pictureId?: string;
 
   @ManyToMany(() => Allergen, (allergen) => allergen.foods, { owner: true })
   allergens = new Collection<Allergen>(this);
