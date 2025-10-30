@@ -139,14 +139,59 @@ export const post = async (
   try {
     const { year, week, days } = req.validateBody(schemas.post.req);
 
-    // Flatten all food IDs from all days
+    // get all foods from the db for the days.
     const foodsPerDay: {
       [key: string]: Food[];
     } = {};
     for (const [day, foods] of Object.entries(days)) {
       const f = await db.find(Food, { id: { $in: foods } });
+      if (f.length !== foods.length) {
+        return res.error(
+          Status.BadRequest,
+          `Invalid food ID(s) provided for day ${day}.`
+        );
+      }
       foodsPerDay[day] = f;
     }
+
+    // check if a menu for the week already exists
+    const has = await db.findOne(Menu, {
+      year,
+      week
+    });
+    if (has)
+      return res.error(
+        Status.Conflict,
+        'There is already a menu present for this week.'
+      );
+
+    // create the menu
+    const menu = db.create(Menu, {
+      year,
+      week
+    });
+
+    // create the menu food links
+    const menuFoods: MenuFood[] = [];
+    for (const day of Object.keys(days)) {
+      const foods = foodsPerDay[day];
+      for (const food of foods) {
+        menuFoods.push(
+          db.create(MenuFood, {
+            menu,
+            food,
+            day: parseInt(day) || 1
+          })
+        );
+      }
+    }
+
+    console.log([menu, ...menuFoods]);
+    await db.persistAndFlush([menu, ...menuFoods]);
+
+    res.status(Status.Ok).json({
+      message: 'Menu created successfuly.'
+    });
   } catch (e: any) {
     console.error(e);
 
