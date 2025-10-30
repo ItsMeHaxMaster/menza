@@ -130,8 +130,8 @@ export const post = async (
       createdAt: food.createdAt,
       updatedAt: food.updatedAt
     });
-  } catch (err: any) {
-    console.error('POST /food error:', err);
-    return res.error(Status.InternalServerError, err.message);
+  } catch (e: any) {
+    console.error(e);
+    return res.error(Status.InternalServerError, 'Internal Server Error');
   }
 };

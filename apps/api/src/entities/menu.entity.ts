@@ -4,20 +4,21 @@ import {
   Collection,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryKey,
   Property
 } from '@mikro-orm/core';
 
-import { Food } from './food.entity';
 import { Order } from './order.entity';
+import { MenuFood } from './menu_food.entity';
 
 @Entity()
 export class Menu {
   @PrimaryKey({ type: BigIntType })
   id: bigint = snowflake.getUniqueID() as bigint;
 
-  @ManyToMany(() => Food, (food) => food.menus, { owner: true })
-  foods = new Collection<Food>(this);
+  @OneToMany(() => MenuFood, (menuFood) => menuFood.menu)
+  foods = new Collection<MenuFood>(this);
 
   @ManyToMany(() => Order, (order) => order.menus)
   orders = new Collection<Order>(this);
@@ -27,7 +28,4 @@ export class Menu {
 
   @Property()
   week!: number;
-
-  @Property()
-  day!: number; // 1 = Monday, 2 = Tuesday, ... 5 = Friday
 }

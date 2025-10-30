@@ -293,7 +293,7 @@ export default function Home() {
                 return (
                   <div
                     className={styles.day}
-                    key={day.id}
+                    key={`${day.id}-${day.day}`}
                     data-day={dayNames[day.day]}
                   >
                     {day.foods.map((food: Food, index: number) => (

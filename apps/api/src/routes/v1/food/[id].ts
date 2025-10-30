@@ -79,7 +79,7 @@ export const del = async (
     const food = await db.findOne(Food, { id }, { populate: ['allergens'] });
 
     if (!food) {
-      return res.error(Status.NotFound, 'Food item not found');
+      return res.error(Status.NotFound, 'Food item not found.');
     }
 
     // Remove the food item
@@ -89,8 +89,8 @@ export const del = async (
       success: true,
       message: 'Food item deleted successfully'
     });
-  } catch (err: any) {
-    console.error('DELETE /food error:', err);
-    return res.error(Status.InternalServerError, err.message);
+  } catch (e: any) {
+    console.error(e);
+    return res.error(Status.InternalServerError, 'Internal Server Error');
   }
 };

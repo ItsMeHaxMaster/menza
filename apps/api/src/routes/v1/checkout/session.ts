@@ -1,4 +1,6 @@
 import { Food } from '@/entities/food.entity';
+import { Menu } from '@/entities/menu.entity';
+import { MenuFood } from '@/entities/menu_food.entity';
 import { Order } from '@/entities/order.entity';
 import { OrderFood } from '@/entities/order_food.entity';
 import Status from '@/enum/status';
@@ -98,54 +100,81 @@ export const post = async (
       );
     }
 
-    // Fetch the food items from the database with their menus
-    // Filter by year, week, and days
-    const foodIds = foods.map((f) => f.id);
-    const foodEntities = await db.find(
-      Food,
-      {
-        id: { $in: foodIds },
-        menus: {
-          year: year,
-          week: week,
-          day: { $in: days }
-        }
-      },
-      { populate: ['menus'] }
-    );
+    // Fetch the food items from the database and validate they exist in the menu
+    // First, get the menu for the specified week/year
+    const menu = await db.findOne(Menu, {
+      year: year,
+      week: week
+    });
 
-    if (foodEntities.length === 0) {
+    if (!menu) {
       return res.error(
         Status.BadRequest,
-        'No valid food items found for the specified week and days'
+        'No menu found for the specified week and year'
       );
     }
 
-    // Validate that we found all requested foods
-    if (foodEntities.length !== foods.length) {
+    // Get all MenuFood entries for this menu and the requested days
+    const menuFoods = await db.find(
+      MenuFood,
+      {
+        menu: menu.id,
+        day: { $in: days }
+      },
+      { populate: ['food'] }
+    );
+
+    if (menuFoods.length === 0) {
       return res.error(
         Status.BadRequest,
-        'Some food items are not available for the specified week and days'
+        'No food items found for the specified week and days'
       );
+    }
+
+    // Create a map of food ID -> MenuFood entries for validation
+    const menuFoodMap = new Map<string, MenuFood[]>();
+    menuFoods.forEach((mf) => {
+      const foodIdStr = mf.food.id.toString();
+      if (!menuFoodMap.has(foodIdStr)) {
+        menuFoodMap.set(foodIdStr, []);
+      }
+      menuFoodMap.get(foodIdStr)!.push(mf);
+    });
+
+    // Validate that all requested foods are available on their specified days
+    const foodEntities: Food[] = [];
+    for (const foodItem of foods) {
+      const foodIdStr = foodItem.id.toString();
+      const menuFoodEntries = menuFoodMap.get(foodIdStr);
+
+      if (!menuFoodEntries) {
+        return res.error(
+          Status.BadRequest,
+          `Food ${foodIdStr} is not available for this week`
+        );
+      }
+
+      const hasMenuForDay = menuFoodEntries.some(
+        (mf) => mf.day === foodItem.day
+      );
+
+      if (!hasMenuForDay) {
+        return res.error(
+          Status.BadRequest,
+          `Food ${foodIdStr} is not available on day ${foodItem.day}`
+        );
+      }
+
+      // Add the food entity if not already added
+      const foodEntity = menuFoodEntries[0].food;
+      if (!foodEntities.find((f) => f.id === foodEntity.id)) {
+        foodEntities.push(foodEntity);
+      }
     }
 
     // Calculate totals and VAT (27% included in price)
     const subtotal = foodEntities.reduce((sum, food) => sum + food.price, 0);
     const vat = subtotal * (0.27 / 1.27);
-
-    // Collect all unique menus from the foods (matching the year, week, and days)
-    const menuSet = new Set<bigint>();
-    foodEntities.forEach((food) => {
-      food.menus.getItems().forEach((menu) => {
-        if (
-          menu.year === year &&
-          menu.week === week &&
-          days.includes(menu.day)
-        ) {
-          menuSet.add(menu.id);
-        }
-      });
-    });
 
     // Create order in database
     const order = new Order();
@@ -155,24 +184,13 @@ export const post = async (
     order.paymentStatus = 'pending';
     order.currency = 'HUF';
 
+    // Add the menu to the order
+    order.menus.add(menu);
+
     // Create OrderFood entries for each food with their specific day
     for (const foodItem of foods) {
       const foodEntity = foodEntities.find((f) => f.id === foodItem.id);
       if (!foodEntity) continue;
-
-      // Verify that the food is available on the specified day
-      const hasMenuForDay = foodEntity.menus
-        .getItems()
-        .some(
-          (m) => m.year === year && m.week === week && m.day === foodItem.day
-        );
-
-      if (!hasMenuForDay) {
-        return res.error(
-          Status.BadRequest,
-          `Food ${foodEntity.name} is not available on day ${foodItem.day}`
-        );
-      }
 
       const orderFood = new OrderFood();
       orderFood.order = order;
@@ -181,19 +199,6 @@ export const post = async (
       db.persist(orderFood);
       order.foods.add(orderFood);
     }
-
-    // Add menus to the order
-    foodEntities.forEach((food) => {
-      food.menus.getItems().forEach((menu) => {
-        if (
-          menu.year === year &&
-          menu.week === week &&
-          days.includes(menu.day)
-        ) {
-          order.menus.add(menu);
-        }
-      });
-    });
 
     await db.persistAndFlush(order);
 

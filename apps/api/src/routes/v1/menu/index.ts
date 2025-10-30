@@ -1,4 +1,6 @@
 import { Menu } from '@/entities/menu.entity';
+import { MenuFood } from '@/entities/menu_food.entity';
+import { Food } from '@/entities/food.entity';
 import Status from '@/enum/status';
 
 import { Request, Response } from '@/util/handler';
@@ -40,6 +42,19 @@ export const schemas = {
         )
       })
     )
+  },
+  post: {
+    req: z.object({
+      year: z.number().default(new Date().getFullYear()),
+      week: z.number(),
+      days: z.record(
+        z.enum(['1', '2', '3', '4', '5', '6']),
+        z.array(z.string().transform((id: string) => BigInt(id))).length(3)
+      )
+    }),
+    res: z.object({
+      message: z.string()
+    })
   }
 };
 
@@ -55,48 +70,91 @@ export const get = async (
     const weekNum = parseInt(week);
     const yearNum = year ? parseInt(year) : new Date().getFullYear();
 
-    const weekMenus = await db.find(Menu, {
+    // Find the menu for the specified week and year
+    const menu = await db.findOne(Menu, {
       week: weekNum,
       year: yearNum
     });
 
-    if (weekMenus.length <= 0)
+    if (!menu)
       return res.error(Status.NotFound, 'Menu for this week is not found.');
 
-    const populatedMenus = await Promise.all(
-      weekMenus.map(async (menu) => {
-        await menu.foods.init();
+    // Get all MenuFood entries for this menu
+    const menuFoods = await db.find(
+      MenuFood,
+      { menu: menu.id },
+      { populate: ['food', 'food.allergens'] }
+    );
 
-        const populatedFoods = await Promise.all(
-          menu.foods.getItems().map(async (food) => {
-            await food.allergens.init();
+    if (menuFoods.length <= 0)
+      return res.error(Status.NotFound, 'No foods found for this menu.');
 
-            return {
-              id: food.id.toString(),
-              name: food.name,
-              description: food.description,
-              price: food.price,
-              pictureId: food.pictureId || '',
-              allergens: food.allergens.getItems(),
-              createdAt: food.createdAt,
-              updatedAt: food.updatedAt
-            };
-          })
-        );
+    // Group by day
+    const dayMap = new Map<number, typeof menuFoods>();
+    for (const menuFood of menuFoods) {
+      if (!dayMap.has(menuFood.day)) {
+        dayMap.set(menuFood.day, []);
+      }
+      dayMap.get(menuFood.day)!.push(menuFood);
+    }
+
+    // Convert to response format
+    const populatedMenus = Array.from(dayMap.entries()).map(
+      ([day, menuFoods]) => {
+        const populatedFoods = menuFoods.map((menuFood) => ({
+          id: menuFood.food.id.toString(),
+          name: menuFood.food.name,
+          description: menuFood.food.description,
+          price: menuFood.food.price,
+          pictureId: menuFood.food.pictureId || '',
+          allergens: menuFood.food.allergens.getItems(),
+          createdAt: menuFood.food.createdAt,
+          updatedAt: menuFood.food.updatedAt
+        }));
 
         return {
           id: menu.id.toString(),
           year: menu.year,
           week: menu.week,
-          day: menu.day,
+          day: day,
           foods: populatedFoods
         };
-      })
+      }
     );
 
     res.status(Status.Ok).json(populatedMenus);
   } catch (e: unknown) {
     console.error(e);
+
+    res.error(Status.InternalServerError, 'Internal Server Error');
+  }
+};
+
+export const post = async (
+  req: Request,
+  res: Response<z.infer<typeof schemas.post.res>>
+) => {
+  const db = (await orm).em.fork();
+
+  try {
+    const { year, week, days } = req.validateBody(schemas.post.req);
+
+    // Flatten all food IDs from all days
+    const foodsPerDay: {
+      [key: string]: Food[];
+    } = {};
+    for (const [day, foods] of Object.entries(days)) {
+      const f = await db.find(Food, { id: { $in: foods } });
+      foodsPerDay[day] = f;
+    }
+  } catch (e: any) {
+    console.error(e);
+
+    if (e.name === 'ValidationError')
+      return res.error(
+        Status.BadRequest,
+        'The request body was malformed, required fields: `week` and `days` (with 3 food items per day).'
+      );
 
     res.error(Status.InternalServerError, 'Internal Server Error');
   }

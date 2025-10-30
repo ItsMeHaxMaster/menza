@@ -4,12 +4,14 @@ import {
   Collection,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryKey,
   Property
 } from '@mikro-orm/core';
 
 import { Menu } from './menu.entity';
 import { Allergen } from './allergen.entity';
+import { MenuFood } from './menu_food.entity';
 
 @Entity()
 export class Food {
@@ -47,8 +49,8 @@ export class Food {
   @ManyToMany(() => Allergen, (allergen) => allergen.foods, { owner: true })
   allergens = new Collection<Allergen>(this);
 
-  @ManyToMany(() => Menu, (menu) => menu.foods)
-  menus = new Collection<Menu>(this);
+  @OneToMany(() => MenuFood, (menu) => menu.food)
+  menuFoods = new Collection<MenuFood>(this);
 
   @Property()
   createdAt: Date = new Date();

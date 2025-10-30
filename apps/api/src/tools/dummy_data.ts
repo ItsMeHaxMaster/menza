@@ -1,5 +1,6 @@
 import { Food } from '@/entities/food.entity';
 import { Menu } from '@/entities/menu.entity';
+import { MenuFood } from '@/entities/menu_food.entity';
 import { Allergen } from '@/entities/allergen.entity';
 import { orm } from '@/util/orm';
 
@@ -460,7 +461,8 @@ export async function generateDummyData() {
   try {
     console.log('🗑️  Clearing existing data...');
 
-    // Clear existing data
+    // Clear existing data (in correct order due to foreign keys)
+    await em.nativeDelete(MenuFood, {});
     await em.nativeDelete(Menu, {});
     await em.nativeDelete(Food, {});
     await em.nativeDelete(Allergen, {});
@@ -509,7 +511,7 @@ export async function generateDummyData() {
     console.log(`✅ Created ${foods.length} foods`);
 
     console.log(
-      '📅 Creating menus for the entire year (1 menu per day with 3 foods)...'
+      '📅 Creating menus for the entire year (1 menu per week with 3 foods per day)...'
     );
 
     // Helper function to get current ISO week number
@@ -536,39 +538,48 @@ export async function generateDummyData() {
     const currentYear = today.getFullYear();
     const totalWeeks = getWeeksInYear(currentYear);
     const menus: Menu[] = [];
+    const menuFoods: MenuFood[] = [];
 
     for (let weekNumber = 1; weekNumber <= totalWeeks; weekNumber++) {
+      // Create 1 menu per week
+      const menu = new Menu();
+      menu.year = currentYear;
+      menu.week = weekNumber;
+
+      menus.push(menu);
+      em.persist(menu);
+
+      // Create MenuFood entries for each day (1-5, Monday to Friday)
+      const weekMenuDetails: string[] = [];
       for (let dayNumber = 1; dayNumber <= 5; dayNumber++) {
-        // day 1 = Monday, 2 = Tuesday, ... 5 = Friday
-
-        // Create 1 menu per day with 3 food options
-        const menu = new Menu();
-        menu.year = currentYear;
-        menu.week = weekNumber;
-        menu.day = dayNumber;
-
-        // Add 3 random foods to this single menu
+        // Select 3 random foods for this day
         const selectedFoods = getRandomItems(foods, 3);
 
         for (const food of selectedFoods) {
-          menu.foods.add(food);
+          const menuFood = new MenuFood();
+          menuFood.menu = menu;
+          menuFood.food = food;
+          menuFood.day = dayNumber;
+
+          menuFoods.push(menuFood);
+          em.persist(menuFood);
         }
 
-        menus.push(menu);
-        em.persist(menu);
+        weekMenuDetails.push(
+          `Day ${dayNumber}: ${selectedFoods.map((f) => f.name).join(', ')}`
+        );
+      }
 
-        if (weekNumber <= 2 || weekNumber >= totalWeeks - 1) {
-          // Log first 2 and last 2 weeks to avoid console spam
-          console.log(
-            `📋 Menu for ${currentYear}, week ${weekNumber}, day ${dayNumber}: ${selectedFoods.map((f) => f.name).join(', ')}`
-          );
-        }
+      if (weekNumber <= 2 || weekNumber >= totalWeeks - 1) {
+        // Log first 2 and last 2 weeks to avoid console spam
+        console.log(`📋 Menu for ${currentYear}, week ${weekNumber}:`);
+        weekMenuDetails.forEach((detail) => console.log(`   ${detail}`));
       }
     }
 
     await em.flush();
     console.log(
-      `✅ Created ${menus.length} menus for the entire year (${totalWeeks} weeks)`
+      `✅ Created ${menus.length} menus and ${menuFoods.length} menu-food entries for the entire year (${totalWeeks} weeks)`
     );
 
     // Summary
@@ -576,8 +587,9 @@ export async function generateDummyData() {
     console.log('📊 Summary:');
     console.log(`   - ${allergens.length} allergens`);
     console.log(`   - ${foods.length} foods`);
+    console.log(`   - ${menus.length} menus (1 per week for the entire year)`);
     console.log(
-      `   - ${menus.length} menus (entire year, days 1-5, 3 foods per menu)`
+      `   - ${menuFoods.length} menu-food entries (5 days × 3 foods per day)`
     );
     console.log(`   - Year: ${currentYear}, Weeks: 1 to ${totalWeeks}`);
   } catch (error) {
