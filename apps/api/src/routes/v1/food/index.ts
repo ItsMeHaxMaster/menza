@@ -19,6 +19,28 @@ const s3Client = new S3Client({
 });
 
 export const schemas = {
+  get: {
+    res: z.array(
+      z.object({
+        id: z.bigint(),
+        name: z.string(),
+        description: z.string(),
+        price: z.number(),
+        pictureId: z.string(),
+        allergens: z.array(
+          z.object({
+            id: z.bigint(),
+            name: z.string(),
+            icon: z.string(),
+            createdAt: z.date(),
+            updatedAt: z.date()
+          })
+        ),
+        createdAt: z.date(),
+        updatedAt: z.date()
+      })
+    )
+  },
   post: {
     req: z.object({
       name: z.string(),
@@ -49,7 +71,37 @@ export const schemas = {
   }
 };
 
-// POST /api/v1/food
+// GET /api/v1/food - Get all foods
+export const get = async (
+  req: Request,
+  res: Response<z.infer<typeof schemas.get.res>>
+) => {
+  const db = (await orm).em.fork();
+
+  try {
+    // Get all foods from database with allergens populated
+    const foods = await db.find(Food, {}, { populate: ['allergens'] });
+
+    // Map to response format
+    const foodsResponse = foods.map((food) => ({
+      id: food.id,
+      name: food.name,
+      description: food.description,
+      price: food.price,
+      pictureId: food.pictureId || '',
+      allergens: food.allergens.getItems(),
+      createdAt: food.createdAt,
+      updatedAt: food.updatedAt
+    }));
+
+    res.status(Status.Ok).json(foodsResponse);
+  } catch (e: unknown) {
+    console.error(e);
+    res.error(Status.InternalServerError, 'Internal Server Error');
+  }
+};
+
+// POST /api/v1/food - Create new food
 export const post = async (
   req: Request,
   res: Response<z.infer<typeof schemas.post.res>>
