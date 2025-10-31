@@ -186,7 +186,6 @@ export const post = async (
       }
     }
 
-    console.log([menu, ...menuFoods]);
     await db.persistAndFlush([menu, ...menuFoods]);
 
     res.status(Status.Ok).json({
@@ -200,6 +199,72 @@ export const post = async (
         Status.BadRequest,
         'The request body was malformed, required fields: `week` and `days` (with 3 food items per day).'
       );
+
+    res.error(Status.InternalServerError, 'Internal Server Error');
+  }
+};
+
+// PATCH /v1/menu?year=2025&week=23
+export const patch = async (
+  req: Request,
+  res: Response<z.infer<typeof schemas.post.res>>
+) => {
+  const db = (await orm).em.fork();
+
+  try {
+    const { year, week, days } = req.validateBody(schemas.post.req);
+
+    const menu = await db.findOne(Menu, {
+      year,
+      week
+    });
+
+    if (!menu)
+      return res.error(Status.NotFound, 'Menu for this week is not found.');
+
+    //const existingMenuFoods = await db.find(MenuFood, { menu: menu.id });
+
+    const foodsPerDay: {
+      [key: string]: Food[];
+    } = {};
+    for (const [day, foods] of Object.entries(days)) {
+      const f = await db.find(Food, { id: { $in: foods } });
+      if (f.length !== foods.length) {
+        return res.error(
+          Status.BadRequest,
+          `Invalid food ID(s) provided for day ${day}.`
+        );
+      }
+      foodsPerDay[day] = f;
+    }
+
+    const menuFoods: MenuFood[] = [];
+    for (const day of Object.keys(days)) {
+      const existing = await db.find(MenuFood, {
+        menu: menu.id,
+        day: parseInt(day) || 1
+      });
+      db.removeAndFlush(existing);
+
+      const foods = foodsPerDay[day];
+      for (const food of foods) {
+        menuFoods.push(
+          db.create(MenuFood, {
+            menu,
+            food,
+            day: parseInt(day) || 1
+          })
+        );
+      }
+    }
+
+    await db.persistAndFlush(menuFoods);
+
+    res.status(Status.Ok).json({
+      message: 'Menu updated successfuly.'
+    });
+  } catch (e: any) {
+    console.error(e);
 
     res.error(Status.InternalServerError, 'Internal Server Error');
   }
