@@ -2,6 +2,8 @@ import { Food } from '@/entities/food.entity';
 import { Menu } from '@/entities/menu.entity';
 import { MenuFood } from '@/entities/menu_food.entity';
 import { Allergen } from '@/entities/allergen.entity';
+import { Order } from '@/entities/order.entity';
+import { OrderFood } from '@/entities/order_food.entity';
 import { orm } from '@/util/orm';
 
 // Sample allergens data
@@ -462,8 +464,13 @@ export async function generateDummyData() {
     console.log('🗑️  Clearing existing data...');
 
     // Clear existing data (in correct order due to foreign keys)
+    // Delete order-food join entries and orders first to avoid FK violations
+    await em.nativeDelete(OrderFood, {});
+    await em.nativeDelete(Order, {});
+    // Then clear menus and menu-food join table
     await em.nativeDelete(MenuFood, {});
     await em.nativeDelete(Menu, {});
+    // Now it's safe to delete foods and allergens
     await em.nativeDelete(Food, {});
     await em.nativeDelete(Allergen, {});
 
