@@ -87,7 +87,11 @@ const isDaySelected = (
  * Updates in real-time when cart contents change or week selection changes
  * @param selectedWeek - The currently selected week number to display status for
  */
-export default function OrderStatus({ selectedWeek }: { selectedWeek: number }) {
+export default function OrderStatus({
+  selectedWeek
+}: {
+  selectedWeek: number;
+}) {
   // State to track current cart contents
   const [cart, setCart] = useState<CartItem[]>([]);
   // State to track number of days with selected meals
@@ -108,17 +112,17 @@ export default function OrderStatus({ selectedWeek }: { selectedWeek: number }) 
     const storedCart = JSON.parse(
       localStorage.getItem('cart') || '[]'
     ) as CartItem[];
-    
+
     // Filter cart items for the selected week only
     const filteredCart = storedCart.filter(
       (item) =>
         item.date.year === currentYear && item.date.week === selectedWeek
     );
-    
+
     setCart(filteredCart);
     // Count unique days that have selections in the selected week
     setSelectedDays(new Set(filteredCart.map((item) => item.date.day)).size);
-    
+
     // Calculate subtotal for selected week only
     if (filteredCart.length > 0) {
       const sub = await getSubtotal(filteredCart.map((item) => item.id));
